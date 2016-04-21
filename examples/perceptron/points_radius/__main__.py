@@ -1,3 +1,4 @@
+from argparse import ArgumentParser
 from random import randint, random
 
 from matplotlib import pyplot as plt
@@ -5,6 +6,17 @@ from matplotlib import animation
 
 from classes.solver import Perceptron
 from examples.perceptron.points_radius.find_wrong import get_correction_point
+
+parser = ArgumentParser(description='Plane curves recognizer')
+parser.add_argument('-R', '--radius',
+        type=float, default=random() * .5 + 1.2,
+        help='radius of circles')
+parser.add_argument('-t', '--interval',
+        type=int, default=200,
+        help='interval of screen refresh')
+args = parser.parse_args()
+R = args.radius
+interval = args.interval
 
 fig = plt.figure()
 
@@ -19,7 +31,6 @@ DEFAULT_Y = [0, 0]
 ax = plt.axes(xlim=(LEFT_X, RIGHT_X), ylim=(LEFT_Y, RIGHT_Y))
 
 R_MUL = 1.1
-R = random() * .5 + 1.2
 a = (random() - .5) * 5
 b = (random() - .5) * 5
 c = (random() - .5) * 5
@@ -129,7 +140,7 @@ def animate(i):
 anim = animation.FuncAnimation(fig, animate, 
                                init_func=init, 
                                frames=360, 
-                               interval=200,
+                               interval=interval,
                                blit=False)
 
 plt.show()

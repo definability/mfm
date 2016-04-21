@@ -1,3 +1,4 @@
+from argparse import ArgumentParser
 from random import randint, random
 from math import pi, sin, cos
 
@@ -9,6 +10,24 @@ from classes.solver import Perceptron
 from examples.perceptron.ellipsoid_positive_definite.ellipsoid_calculations import Y2X_ellipsoid, get_ellipse
 from examples.perceptron.ellipsoid_positive_definite.matrix_calculations import is_positive_definite, get_wrong_vector, Y2X_eigenvector
 
+parser = ArgumentParser(description='Plane curves recognizer')
+parser.add_argument('-a', '--radius-horizontal',
+        type=float, default=(random() * 2 + 1) / 4,
+        help='horizontal radius')
+parser.add_argument('-b', '--radius-vertical',
+        type=float, default=(random() * 2 + 1) / 4,
+        help='vertical radius')
+parser.add_argument('-d', '--angle-degrees',
+        type=float, default=(random() - 0.5) * 2 * pi,
+        help='angle')
+parser.add_argument('-t', '--interval',
+        type=int, default=200,
+        help='interval of screen refresh')
+args = parser.parse_args()
+a = args.radius_horizontal
+b = args.radius_vertical
+angle = args.angle_degrees * pi / 180
+interval = args.interval
 
 X0 = 0
 Y0 = 0
@@ -25,11 +44,8 @@ fig = plt.figure()
 
 ax = plt.axes(xlim=LIMITS_X, ylim=LIMITS_Y)
 
-a = (random() * 2 + 1) / 4
-b = (random() * 2 + 1) / 4
 x0 = X0
 y0 = Y0
-angle = (random() - 0.5) * 2 * pi
 w = 2 * a
 h = 2 * b
 
@@ -126,7 +142,7 @@ def animate(i):
 anim = animation.FuncAnimation(fig, animate,
                                init_func=init,
                                frames=360,
-                               interval=200,
+                               interval=interval,
                                blit=True)
 
 plt.show()
