@@ -100,7 +100,7 @@ if __name__ == '__main__':
     for x in range(test_height):
         row = []
         for y in range(test_width):
-            cur = process_colors(data[x*test_width+y], colors,
+            cur = process_colors(test_data[x*test_width+y], colors,
                                  colors_dictionary)
 
             params = {}
