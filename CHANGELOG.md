@@ -4,6 +4,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.3.2] - 2016-05-06
+### Added
+- requirements.txt.
+
+### Changed
+- Moved Conda installation to separate shell-script.
+
+### Fixed
+- Linear Separator example.
+
+
 ## [0.3.1] - 2016-05-02
 ### Added
 - Testing in travis-ci with Python 3.5.
@@ -72,7 +83,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Added basic example with letters string recognition.
 
-[Unreleased]: https://github.com/char-lie/patterns_recognition/compare/v0.3.1...HEAD
+[Unreleased]: https://github.com/char-lie/patterns_recognition/compare/v0.3.2...HEAD
+[0.3.2]: https://github.com/char-lie/patterns_recognition/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/char-lie/patterns_recognition/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/char-lie/patterns_recognition/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/char-lie/patterns_recognition/compare/v0.1.0...v0.2.0
