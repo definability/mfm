@@ -1,16 +1,41 @@
-from numpy import array, column_stack, zeros
-from OpenGL.GL import * 
-from OpenGL.GLU import * 
+from OpenGL.GL import *
+from OpenGL.GLU import *
 from OpenGL.GLUT import *
 
+from numpy import array, column_stack, zeros
+from numpy.random import randn
 
-def rasterize_triangles(vertices, triangles, colors):
-    vertices = vertices - vertices.min()
-    vertices /= vertices.max()
-    return render_face(vertices, colors, triangles)
+from calculations import get_normals, set_light, get_normal_map, centralize
+from load_model import morph
 
 
-def render_face(vertices, colors, triangles):
+def rasterize_triangles(model):
+    return render_face(model)
+
+
+def render_face(model):
+    init(model)
+
+    rotations = {
+        'x': 0.,
+        'y': 0.,
+        'z': 0.
+    }
+    glutDisplayFunc(lambda: draw(model, rotations))
+
+    glutKeyboardFunc(lambda key, x, y:
+                     keyboard(rotations, key, x, y, False, False, model))
+    glutKeyboardUpFunc(lambda key, x, y:
+                     keyboard(rotations, key, x, y, True, False, model))
+    glutSpecialFunc(lambda key, x, y:
+                    keyboard(rotations, key, x, y, False, True, model))
+    glutSpecialUpFunc(lambda key, x, y:
+                      keyboard(rotations, key, x, y, True, True, model))
+
+    glutMainLoop()
+
+
+def init(model):
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
     glutInitWindowSize(300, 300)
 
@@ -29,32 +54,17 @@ def render_face(vertices, colors, triangles):
     glEnableClientState(GL_COLOR_ARRAY)
     glEnableClientState(GL_VERTEX_ARRAY)
 
-    rotations = {
-        'x': 0.,
-        'y': 0.,
-        'z': 0.
-    }
-    glutDisplayFunc(lambda: draw(vertices, colors, triangles, rotations))
-
-    glutKeyboardFunc(lambda key, x, y:
-                     keyboard(rotations, key, x, y, False, False))
-    glutKeyboardUpFunc(lambda key, x, y:
-                     keyboard(rotations, key, x, y, True, False))
-    glutSpecialFunc(lambda key, x, y:
-                    keyboard(rotations, key, x, y, False, True))
-    glutSpecialUpFunc(lambda key, x, y:
-                      keyboard(rotations, key, x, y, True, True))
-
-    glutMainLoop()
+    calculate(model)
 
 
-def draw(vertices, colors, triangles, rotations):
+def draw(model, rotations):
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     glRotatef(1., rotations['x'], rotations['y'], rotations['z'])
-    glVertexPointer(3, GL_FLOAT, 0, vertices.ctypes.get_as_parameter())
-    glColorPointer(3, GL_FLOAT, 0, colors.ctypes.get_as_parameter());
-    glDrawElements(GL_TRIANGLES, triangles.size, GL_UNSIGNED_SHORT,
-                   triangles.ctypes.get_as_parameter())
+    glVertexPointer(3, GL_FLOAT, 0, model['vertices'].ctypes.get_as_parameter())
+    glColorPointer(3, GL_FLOAT, 0, model['colors'].ctypes.get_as_parameter());
+    glDrawElements(GL_TRIANGLES,
+                   model['triangles_flattened'].size, GL_UNSIGNED_SHORT,
+                   model['triangles_flattened'].ctypes.get_as_parameter())
     glutSwapBuffers()
 
     #glReadBuffer(GL_BACK)
@@ -63,24 +73,52 @@ def draw(vertices, colors, triangles, rotations):
     #glReadPixels(0,0,width,height, GL_RGBA, GL_UNSIGNED_BYTE, data)
 
 
-def keyboard(rotations, key, x, y, release=False, special=True):
+def keyboard(rotations, key, x, y, release=False, special=True, model=None):
     directions = {}
     if special:
         directions = {
             GLUT_KEY_UP: ('x', -1.),
             GLUT_KEY_DOWN: ('x', 1.),
-            GLUT_KEY_LEFT: ('y', -1.),
-            GLUT_KEY_RIGHT: ('y', 1.),
+            GLUT_KEY_RIGHT: ('y', -1.),
+            GLUT_KEY_LEFT: ('y', 1.)
         }
     else:
         directions = {
             b'z': ('z', -1.),
             b'a': ('z', 1.)
         }
-    if not special and key == b'q':
-        glutLeaveMainLoop()
+        if key == b'q':
+            return glutLeaveMainLoop()
+        if key == b'n' and not release:
+            model['light'] = not model['light']
+            calculate(model, False)
+        if key == b'r' and not release:
+            calculate(model)
     if key in directions:
         axis, value = directions[key]
         rotations[axis] = 0. if release else value
     glutPostRedisplay()
+
+
+def calculate(model, redraw=True):
+    lights = None
+    normal_map = None
+
+    if redraw:
+        coordinates = morph(model['mfm'], randn(199, 1)).astype('f')
+        #coordinates = morph(model, zeros(199).reshape(199, 1)).astype('f')
+        #coordinates = model['shapeMU']
+        vertices = centralize(coordinates.reshape(coordinates.shape[0]//3, 3))
+        vertices = vertices - vertices.min()
+        vertices /= vertices.max()
+        model['normals'] = get_normals(vertices, model['triangles'])
+        model['vertices'] = vertices
+
+    if model['light']:
+        light_direction = array([-1, 0, -1])/(2**.5)
+        lights = set_light(model['normals'], light_direction).astype('f')
+    else:
+        normal_map = get_normal_map(model['normals']).astype('f')
+
+    model['colors'] = lights if model['light'] else normal_map
 
