@@ -1,4 +1,4 @@
-# https://github.com/char-lie/patterns_recognition
+# https://github.com/char-lie/mfm
 language: python
 python:
   - "2.7"
