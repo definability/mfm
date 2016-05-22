@@ -4,9 +4,6 @@
 
 void normals(float* normal_vectors, uint16_t* triangles, float* result,
              int amount) {
-    int x = 0;
-    int y = 1;
-    int z = 2;
     uint16_t triangle;
     int i = 0;
     int j;
