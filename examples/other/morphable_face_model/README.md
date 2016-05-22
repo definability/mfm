@@ -13,3 +13,21 @@ Morphable face model described in the following
 >   Safety and Monitoring in Smart Environments Genova (Italy),
 >   pp 296 - 301, September, 2009
 
+# Development
+
+Run the Docker container with Python
+```bash
+docker run --rm -it -v $PWD:/src/ \
+           -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix \
+           --device=/dev/dri/card0:/dev/dri/card0 python:3 bash
+```
+
+Install needed packages
+```bash
+apt update
+apt install -y python-opengl python-numpy python-scipy
+
+pip install --upgrade pip
+pip install scipy numpy pyopengl ipython pillow
+```
+
