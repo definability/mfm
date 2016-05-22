@@ -1,5 +1,5 @@
 from load_model import load_model
-from render_triangle import rasterize_triangles
+from render_face import render_face
 
 mfm = load_model()
 
@@ -11,5 +11,5 @@ model = {
     'normals': None
 }
 
-rasterize_triangles(model)
+render_face(model)
 

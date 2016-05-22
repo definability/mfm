@@ -9,10 +9,6 @@ from calculations import get_normals, set_light, get_normal_map, centralize
 from load_model import morph
 
 
-def rasterize_triangles(model):
-    return render_face(model)
-
-
 def render_face(model):
     init(model)
 
