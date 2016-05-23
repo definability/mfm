@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- Link in CHANGELOG.
+
 ## 0.0.1
 
 ### Added
@@ -19,5 +22,5 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/patterns_recognition/compare/v0.0.1...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.0.1...HEAD
 
