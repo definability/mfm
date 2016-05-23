@@ -5,8 +5,8 @@ mfm = load_model()
 
 model = {
     'mfm': mfm,
-    'triangles': model['tl'] - 1,
-    'triangles_flattened': model['tl'].flatten() - 1,
+    'triangles': mfm['tl'] - 1,
+    'triangles_flattened': mfm['tl'].flatten() - 1,
     'light': True,
     'normals': None
 }
