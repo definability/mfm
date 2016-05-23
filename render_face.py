@@ -37,7 +37,7 @@ def init(model):
 
     glutInitWindowPosition(50, 50)
     glutInit(sys.argv)
-    glutCreateWindow(b"Happy New Year!")
+    glutCreateWindow(b"Morphable face model")
 
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
