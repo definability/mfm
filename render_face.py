@@ -41,7 +41,8 @@ def init(model):
 
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
-    glOrtho(-1.5, 1.5, -1.5, 1.5, -1.5, 1.5)
+    side = .5
+    glOrtho(-side, side, -side, side, -side, side)
     glDepthMask(GL_TRUE)
     glDepthFunc(GL_LESS)
     glEnable(GL_DEPTH_TEST)
@@ -104,9 +105,10 @@ def calculate(model, redraw=True):
         coordinates = morph(model['mfm'], randn(199, 1)).astype('f')
         #coordinates = morph(model, zeros(199).reshape(199, 1)).astype('f')
         #coordinates = model['shapeMU']
-        vertices = centralize(coordinates.reshape(coordinates.shape[0]//3, 3))
+        vertices = coordinates.reshape(coordinates.shape[0]//3, 3)
         vertices = vertices - vertices.min()
         vertices /= vertices.max()
+        vertices = centralize(vertices)
         model['normals'] = get_normals(vertices, model['triangles'])
         model['vertices'] = vertices
 
