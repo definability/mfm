@@ -67,7 +67,7 @@ def draw(model, rotations):
     #glReadBuffer(GL_BACK)
     #height, width = 300, 300
     #data = zeros(width*height*4, dtype='f')
-    #glReadPixels(0,0,width,height, GL_RGBA, GL_FLOAT, data)
+    #glReadPixels(0, 0, width, height, GL_RGBA, GL_FLOAT, data)
 
 
 def keyboard(rotations, key, x, y, release=False, special=True, model=None):
