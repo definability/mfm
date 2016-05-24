@@ -5,7 +5,6 @@ from OpenGL.GLUT import *
 from numpy import array, column_stack, zeros
 from numpy.random import randn
 
-from calculations import get_normals, set_light, get_normal_map, centralize
 from load_model import morph
 from src import Face
 
