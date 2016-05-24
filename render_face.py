@@ -7,6 +7,7 @@ from numpy.random import randn
 
 from calculations import get_normals, set_light, get_normal_map, centralize
 from load_model import morph
+from src import Face
 
 
 def render_face(model):
@@ -57,11 +58,12 @@ def init(model):
 def draw(model, rotations):
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     glRotatef(1., rotations['x'], rotations['y'], rotations['z'])
-    glVertexPointer(3, GL_FLOAT, 0, model['vertices'].ctypes.get_as_parameter())
-    glColorPointer(3, GL_FLOAT, 0, model['colors'].ctypes.get_as_parameter());
-    glDrawElements(GL_TRIANGLES,
-                   model['triangles_flattened'].size, GL_UNSIGNED_SHORT,
-                   model['triangles_flattened'].ctypes.get_as_parameter())
+    glVertexPointer(3, GL_FLOAT, 0, model['face'].get_vertices_c())
+    colors = model['face'].get_light_map_c() if model['light'] \
+             else model['face'].get_normal_map_c()
+    glColorPointer(3, GL_FLOAT, 0, colors);
+    glDrawElements(GL_TRIANGLES, model['face'].get_triangles().size,
+                   GL_UNSIGNED_SHORT, model['face'].get_triangles_c())
     glutSwapBuffers()
 
     #glReadBuffer(GL_BACK)
@@ -88,7 +90,6 @@ def keyboard(rotations, key, x, y, release=False, special=True, model=None):
             return glutLeaveMainLoop()
         if key == b'n' and not release:
             model['light'] = not model['light']
-            calculate(model, False)
         if key == b'r' and not release:
             calculate(model)
     if key in directions:
@@ -98,25 +99,10 @@ def keyboard(rotations, key, x, y, release=False, special=True, model=None):
 
 
 def calculate(model, redraw=True):
-    lights = None
-    normal_map = None
-
     if redraw:
         coordinates = morph(model['mfm'], randn(199, 1)).astype('f')
         #coordinates = morph(model, zeros(199).reshape(199, 1)).astype('f')
         #coordinates = model['shapeMU']
-        vertices = coordinates.reshape(coordinates.shape[0]//3, 3)
-        vertices = vertices - vertices.min()
-        vertices /= vertices.max()
-        vertices = centralize(vertices)
-        model['normals'] = get_normals(vertices, model['triangles'])
-        model['vertices'] = vertices
 
-    if model['light']:
-        light_direction = array([-1, 0, -1])/(2**.5)
-        lights = set_light(model['normals'], light_direction).astype('f')
-    else:
-        normal_map = get_normal_map(model['normals']).astype('f')
-
-    model['colors'] = lights if model['light'] else normal_map
+        model['face'] = Face(coordinates, [-1, 0, -1])
 
