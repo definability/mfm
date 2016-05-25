@@ -1,5 +1,5 @@
-from numpy import array, cross, dot, zeros_like, mean,
-                  apply_along_axis, column_stack
+from numpy import array, cross, dot, zeros_like, mean
+from numpy import apply_along_axis, column_stack
 from numpy.linalg import norm
 import numpy as np
 import ctypes
