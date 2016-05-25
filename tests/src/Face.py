@@ -41,3 +41,22 @@ class FaceTest(TestCase):
         face = Face(self.vertices)
         self.assertTrue(allclose(face.get_normals(), 3.**(-.5)))
 
+
+    def test_get_normal_map(self):
+        vertices = array([[1, 0, 0], [0, 1, 0], [0, 0, 1],
+                          [1, 0, 1], [0, 1, 1]], dtype='f')
+        face = Face(vertices)
+
+        triangles = array([[0, 1, 2], [2, 3, 4]], dtype='uint16')
+        triangles_c = triangles.flatten().ctypes.get_as_parameter()
+        Face.set_triangles(triangles, triangles_c)
+
+        hard_element = (2 / ((1+1+2**2)**.5) - 3**(-.5)) / (1 - 3**(-.5))
+        normal_map = [[1., 1., 0.],
+                      [1., 1., 0.],
+                      [2**(-.5), 2**(-.5), hard_element],
+                      [0., 0., 1.],
+                      [0., 0., 1.]]
+
+        self.assertTrue(allclose(face.get_normal_map(), normal_map))
+
