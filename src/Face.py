@@ -132,7 +132,7 @@ class Face:
 
 
     def __normalize(self, vertices):
-        vertices = vertices.reshape(vertices.shape[0] // 3, 3)
+        vertices = vertices.reshape(vertices.size // 3, 3)
         vertices = vertices - vertices.min()
         vertices /= vertices.max()
         vertices -= apply_along_axis(mean, 0, vertices)
