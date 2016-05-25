@@ -12,7 +12,9 @@ ERROR_TEXT = {
     'TRIANGLES_SHAPE': "Need array of triangles (x, 3), " \
                        "but array with shape {} provided",
     'TRIANGLES_VERTICES': "Each triangle should contain 3 vertices, " \
-                          "but {} provided"
+                          "but {} provided",
+    'LIGHT_DIRECTION': "Light should be represented by 3D vector, " \
+                       "but array of shape {} provided"
 }
 
 class Face:
@@ -111,8 +113,10 @@ class Face:
 
 
     def set_light(self, light):
-        assert(len(light) == 3)
-        self.__light = array(light) / norm(light)
+        light = array(light)
+        if light.shape != (3,):
+            raise ValueError(ERROR_TEXT['LIGHT_DIRECTION'].format(light.shape))
+        self.__light = light / norm(light)
         self.__light_map = None
         assert(self.__light.size == 3)
 
