@@ -44,12 +44,14 @@ class Face:
         return self.__vertices_c
 
 
-    def get_triangles_c(self):
-        return self.__triangles_c
+    @staticmethod
+    def get_triangles_c():
+        return Face.__triangles_c
 
 
-    def get_triangles(self):
-        return self.__triangles
+    @staticmethod
+    def get_triangles():
+        return Face.__triangles
 
 
     def get_light_map(self):
