@@ -6,6 +6,15 @@ import ctypes
 
 c_cross = ctypes.cdll.LoadLibrary('./lib_cross.so')
 
+ERROR_TEXT = {
+    'VERTICES_SIZE': "Size of vertices array should be a multiple of three, " \
+                     "but {} provided",
+    'TRIANGLES_SHAPE': "Need array of triangles (x, 3), " \
+                       "but array with shape {} provided",
+    'TRIANGLES_VERTICES': "Each triangle should contain 3 vertices, " \
+                          "but {} provided"
+}
+
 class Face:
 
     __triangles = None
