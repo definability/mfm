@@ -22,6 +22,8 @@ class Face:
 
 
     def __init__(self, vertices, lights=None):
+        if vertices.size % 3 != 0:
+            raise ValueError(ERROR_TEXT['VERTICES_SIZE'].format(vertices.size))
         self.__vertices = self.__normalize(vertices)
         self.__vertices_c = self.__vertices.ctypes.get_as_parameter()
         self.__points = None
@@ -116,6 +118,12 @@ class Face:
     @staticmethod
     def set_triangles(triangles=None, triangles_c=None):
         if triangles is not None:
+            if len(triangles.shape) != 2:
+                raise ValueError(ERROR_TEXT['TRIANGLES_SHAPE'] \
+                                 .format(triangles.shape))
+            elif triangles.shape[1] != 3:
+                raise ValueError(ERROR_TEXT['TRIANGLES_VERTICES'] \
+                                 .format(triangles.shape[1]))
             Face.__triangles = triangles
         if triangles_c is not None:
             Face.__triangles_c = triangles_c
