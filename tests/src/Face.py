@@ -1,5 +1,5 @@
 from unittest import TestCase
-from numpy import array, allclose, array_equal
+from numpy import array, allclose, array_equal, column_stack
 
 from src import Face
 
@@ -59,4 +59,19 @@ class FaceTest(TestCase):
                       [0., 0., 1.]]
 
         self.assertTrue(allclose(face.get_normal_map(), normal_map))
+
+
+    def test_get_light_map(self):
+        vertices = array([[1, 0, 0], [0, 1, 0], [0, 0, 1],
+                          [1, 0, 1], [0, 1, 1]], dtype='f')
+        face = Face(vertices)
+
+        triangles = array([[0, 1, 2], [2, 3, 4]], dtype='uint16')
+        triangles_c = triangles.flatten().ctypes.get_as_parameter()
+        Face.set_triangles(triangles, triangles_c)
+
+        face.set_light([1, 0, 0])
+        light_vec = [1., 1., 2**(-.5), 0., 0.]
+        light_map = column_stack([light_vec]*3)
+        self.assertTrue(allclose(face.get_light_map(), light_map))
 
