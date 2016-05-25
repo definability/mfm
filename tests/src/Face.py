@@ -7,11 +7,10 @@ class FaceTest(TestCase):
 
 
     def setUp(self):
-        vertices = [[1, 0, -1], [0, 0, 0], [-1, 0, 1]]
-        normalized_vertices = [[.5, 0, -.5], [0, 0, 0], [-.5, 0, .5]]
+        vertices = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
 
         self.original_vertices = array(vertices, dtype='f')
-        self.normalized_vertices = array(normalized_vertices, dtype='f')
+        self.normalized_vertices = self.original_vertices - 1./3
         self.vertices = self.original_vertices.flatten()
 
 
