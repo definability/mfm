@@ -52,11 +52,11 @@ class FaceTest(TestCase):
         Face.set_triangles(triangles, triangles_c)
 
         hard_element = (2 / ((1+1+2**2)**.5) - 3**(-.5)) / (1 - 3**(-.5))
-        normal_map = [[1., 1., 0.],
-                      [1., 1., 0.],
+        ooz = [1., 1., 0.]
+        zzo = [0., 0., 1.]
+        normal_map = [ooz, ooz,
                       [2**(-.5), 2**(-.5), hard_element],
-                      [0., 0., 1.],
-                      [0., 0., 1.]]
+                      zzo, zzo]
 
         self.assertTrue(allclose(face.get_normal_map(), normal_map))
 
