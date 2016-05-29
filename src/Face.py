@@ -1,10 +1,12 @@
+import ctypes
+
 from numpy import array, cross, dot, zeros_like, mean
 from numpy import apply_along_axis, column_stack
 from numpy.linalg import norm
-import numpy as np
-import ctypes
+import numpy
 
-c_cross = ctypes.cdll.LoadLibrary('./lib_cross.so')
+c_cross = ctypes.cdll.LoadLibrary('./lib_cross.so') # pylint: disable=C0103
+
 
 ERROR_TEXT = {
     'VERTICES_SIZE': "Size of vertices array should be a multiple of three, "
@@ -114,8 +116,8 @@ class Face:
             return self.__normal_map
 
         self.__normal_map = self.get_normals().copy()
-        self.__normal_map -= apply_along_axis(np.min, 0, self.__normal_map)
-        self.__normal_map /= apply_along_axis(np.max, 0, self.__normal_map)
+        self.__normal_map -= apply_along_axis(numpy.min, 0, self.__normal_map)
+        self.__normal_map /= apply_along_axis(numpy.max, 0, self.__normal_map)
         self.__normal_map = self.__normal_map.astype('f')
 
         return self.__normal_map
