@@ -4,6 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Integration with [travis-ci](https://travis-ci.org/char-lie/mfm).
+- Integration with [coveralls](https://coveralls.io/github/char-lie/mfm).
+
+
 ## [0.0.2]
 
 ### Added
