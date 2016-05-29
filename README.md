@@ -41,6 +41,7 @@ Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile ./10.lo
 export DISPLAY=:10
 ```
 
-http://askubuntu.com/questions/453109/add-fake-display-when-no-monitor-is-plugged-in
-https://xpra.org/trac/wiki/Xdummy
+Fake display explained on
+[askubuntu.com](http://askubuntu.com/questions/453109/add-fake-display-when-no-monitor-is-plugged-in)
+and [xpra.org](https://xpra.org/trac/wiki/Xdummy).
 
