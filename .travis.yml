@@ -10,7 +10,7 @@ before_install:
   - export PATH="$HOME/miniconda/bin:$PATH"
   - conda update --yes conda
 install:
-  - apt-get install -y python-opengl
+  - sudo apt-get install -y python-opengl
   - export CONDA_PACKAGES="numpy scipy"
   - conda create --yes -n testenv python=$TRAVIS_PYTHON_VERSION $CONDA_PACKAGES
   - source activate testenv
