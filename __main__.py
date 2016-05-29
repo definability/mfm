@@ -14,4 +14,3 @@ TRIANGLES_FLATTENED = (MFM['tl'] - 1).flatten()
 Face.set_triangles(TRIANGLES, TRIANGLES_FLATTENED.ctypes.get_as_parameter())
 
 render_face(MODEL)
-

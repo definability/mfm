@@ -121,4 +121,3 @@ def calculate(model, redraw=True):
         # coordinates = model['shapeMU']
 
         model['face'] = Face(coordinates, [-1, 0, -1])
-

@@ -130,4 +130,3 @@ class Face:
             Face.__triangles = triangles
         if triangles_c is not None:
             Face.__triangles_c = triangles_c
-
