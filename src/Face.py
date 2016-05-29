@@ -17,6 +17,15 @@ ERROR_TEXT = {
                        "but array of shape {} provided"
 }
 
+
+def __normalize(vertices):
+    vertices = vertices.reshape(vertices.size // 3, 3)
+    vertices = vertices - vertices.min()
+    vertices /= vertices.max()
+    vertices -= apply_along_axis(mean, 0, vertices)
+    return vertices
+
+
 class Face:
 
     __triangles = None
@@ -26,7 +35,7 @@ class Face:
     def __init__(self, vertices, lights=None):
         if vertices.size % 3 != 0:
             raise ValueError(ERROR_TEXT['VERTICES_SIZE'].format(vertices.size))
-        self.__vertices = self.__normalize(vertices)
+        self.__vertices = __normalize(vertices)
         self.__vertices_c = self.__vertices.ctypes.get_as_parameter()
         self.__points = None
         self.__light_map = None
@@ -133,12 +142,4 @@ class Face:
             Face.__triangles = triangles
         if triangles_c is not None:
             Face.__triangles_c = triangles_c
-
-
-    def __normalize(self, vertices):
-        vertices = vertices.reshape(vertices.size // 3, 3)
-        vertices = vertices - vertices.min()
-        vertices /= vertices.max()
-        vertices -= apply_along_axis(mean, 0, vertices)
-        return vertices
 
