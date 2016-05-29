@@ -1,15 +1,16 @@
 from load_model import load_model
 from render_face import render_face
+from src import Face
 
-mfm = load_model()
+MFM = load_model()
 
-model = {
-    'mfm': mfm,
-    'triangles': mfm['tl'] - 1,
-    'triangles_flattened': mfm['tl'].flatten() - 1,
+MODEL = {
+    'mfm': MFM,
     'light': True,
-    'normals': None
+    'face': None
 }
+TRIANGLES = MFM['tl'] - 1
+TRIANGLES_FLATTENED = (MFM['tl'] - 1).flatten()
+Face.set_triangles(TRIANGLES, TRIANGLES_FLATTENED.ctypes.get_as_parameter())
 
-render_face(model)
-
+render_face(MODEL)

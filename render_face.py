@@ -1,12 +1,29 @@
-from OpenGL.GL import *
-from OpenGL.GLU import *
-from OpenGL.GLUT import *
+import sys
 
-from numpy import array, column_stack, zeros
+from OpenGL.GL import GL_LESS, GL_TRUE, GL_DEPTH_TEST, GL_STENCIL_TEST
+from OpenGL.GL import GL_COLOR_ARRAY, GL_VERTEX_ARRAY, GL_TRIANGLES
+from OpenGL.GL import GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT
+from OpenGL.GL import GL_UNSIGNED_SHORT, GL_FLOAT, GL_MODELVIEW
+
+from OpenGL.GL import glMatrixMode, glLoadIdentity, glOrtho, glRotatef
+from OpenGL.GL import glDepthMask, glDepthFunc, glVertexPointer, glColorPointer
+from OpenGL.GL import glEnable, glClearColor, glEnableClientState, glClear
+from OpenGL.GL import glDrawElements
+
+from OpenGL.GLUT import GLUT_DOUBLE, GLUT_KEY_LEFT, GLUT_KEY_RIGHT
+from OpenGL.GLUT import GLUT_KEY_DOWN, GLUT_KEY_UP, GLUT_DEPTH, GLUT_RGB
+
+from OpenGL.GLUT import glutPostRedisplay, glutLeaveMainLoop, glutSwapBuffers
+from OpenGL.GLUT import glutCreateWindow, glutInit, glutInitWindowPosition
+from OpenGL.GLUT import glutInitWindowSize, glutInitDisplayMode, glutMainLoop
+from OpenGL.GLUT import glutSpecialUpFunc, glutSpecialFunc, glutKeyboardUpFunc
+from OpenGL.GLUT import glutKeyboardFunc, glutDisplayFunc
+
+# from numpy import zeros
 from numpy.random import randn
 
-from calculations import get_normals, set_light, get_normal_map, centralize
 from load_model import morph
+from src import Face
 
 
 def render_face(model):
@@ -20,13 +37,13 @@ def render_face(model):
     glutDisplayFunc(lambda: draw(model, rotations))
 
     glutKeyboardFunc(lambda key, x, y:
-                     keyboard(rotations, key, x, y, False, False, model))
+                     keyboard(rotations, key, False, False, model))
     glutKeyboardUpFunc(lambda key, x, y:
-                     keyboard(rotations, key, x, y, True, False, model))
+                       keyboard(rotations, key, True, False, model))
     glutSpecialFunc(lambda key, x, y:
-                    keyboard(rotations, key, x, y, False, True, model))
+                    keyboard(rotations, key, False, True, model))
     glutSpecialUpFunc(lambda key, x, y:
-                      keyboard(rotations, key, x, y, True, True, model))
+                      keyboard(rotations, key, True, True, model))
 
     glutMainLoop()
 
@@ -57,20 +74,21 @@ def init(model):
 def draw(model, rotations):
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     glRotatef(1., rotations['x'], rotations['y'], rotations['z'])
-    glVertexPointer(3, GL_FLOAT, 0, model['vertices'].ctypes.get_as_parameter())
-    glColorPointer(3, GL_FLOAT, 0, model['colors'].ctypes.get_as_parameter());
-    glDrawElements(GL_TRIANGLES,
-                   model['triangles_flattened'].size, GL_UNSIGNED_SHORT,
-                   model['triangles_flattened'].ctypes.get_as_parameter())
+    glVertexPointer(3, GL_FLOAT, 0, model['face'].get_vertices_c())
+    colors = model['face'].get_light_map_c() if model['light'] \
+        else model['face'].get_normal_map_c()
+    glColorPointer(3, GL_FLOAT, 0, colors)
+    glDrawElements(GL_TRIANGLES, model['face'].get_triangles().size,
+                   GL_UNSIGNED_SHORT, model['face'].get_triangles_c())
     glutSwapBuffers()
 
-    #glReadBuffer(GL_BACK)
-    #height, width = 300, 300
-    #data = zeros(width*height*4, dtype='f')
-    #glReadPixels(0, 0, width, height, GL_RGBA, GL_FLOAT, data)
+    # glReadBuffer(GL_BACK)
+    # height, width = 300, 300
+    # data = zeros(width*height*4, dtype='f')
+    # glReadPixels(0, 0, width, height, GL_RGBA, GL_FLOAT, data)
 
 
-def keyboard(rotations, key, x, y, release=False, special=True, model=None):
+def keyboard(rotations, key, release=False, special=True, model=None):
     directions = {}
     if special:
         directions = {
@@ -88,7 +106,6 @@ def keyboard(rotations, key, x, y, release=False, special=True, model=None):
             return glutLeaveMainLoop()
         if key == b'n' and not release:
             model['light'] = not model['light']
-            calculate(model, False)
         if key == b'r' and not release:
             calculate(model)
     if key in directions:
@@ -98,25 +115,9 @@ def keyboard(rotations, key, x, y, release=False, special=True, model=None):
 
 
 def calculate(model, redraw=True):
-    lights = None
-    normal_map = None
-
     if redraw:
         coordinates = morph(model['mfm'], randn(199, 1)).astype('f')
-        #coordinates = morph(model, zeros(199).reshape(199, 1)).astype('f')
-        #coordinates = model['shapeMU']
-        vertices = coordinates.reshape(coordinates.shape[0]//3, 3)
-        vertices = vertices - vertices.min()
-        vertices /= vertices.max()
-        vertices = centralize(vertices)
-        model['normals'] = get_normals(vertices, model['triangles'])
-        model['vertices'] = vertices
+        # coordinates = morph(model, zeros(199).reshape(199, 1)).astype('f')
+        # coordinates = model['shapeMU']
 
-    if model['light']:
-        light_direction = array([-1, 0, -1])/(2**.5)
-        lights = set_light(model['normals'], light_direction).astype('f')
-    else:
-        normal_map = get_normal_map(model['normals']).astype('f')
-
-    model['colors'] = lights if model['light'] else normal_map
-
+        model['face'] = Face(coordinates, [-1, 0, -1])

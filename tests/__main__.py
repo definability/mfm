@@ -27,4 +27,3 @@ if __name__ == '__main__':
         Stats(profile).sort_stats('cumulative').print_stats()
 
     exit(exit_status)
-
