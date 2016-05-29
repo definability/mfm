@@ -35,4 +35,3 @@ void normalize(float* normals, int amount) {
         i++;
     } while (i < amount);
 }
-
