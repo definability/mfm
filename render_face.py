@@ -1,8 +1,25 @@
-from OpenGL.GL import *
-from OpenGL.GLU import *
-from OpenGL.GLUT import *
+import sys
 
-from numpy import array, column_stack, zeros
+from OpenGL.GL import GL_LESS, GL_TRUE, GL_DEPTH_TEST, GL_STENCIL_TEST
+from OpenGL.GL import GL_COLOR_ARRAY, GL_VERTEX_ARRAY, GL_TRIANGLES
+from OpenGL.GL import GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT
+from OpenGL.GL import GL_UNSIGNED_SHORT, GL_FLOAT, GL_MODELVIEW
+
+from OpenGL.GL import glMatrixMode, glLoadIdentity, glOrtho, glRotatef
+from OpenGL.GL import glDepthMask, glDepthFunc, glVertexPointer, glColorPointer
+from OpenGL.GL import glEnable, glClearColor, glEnableClientState, glClear
+from OpenGL.GL import glDrawElements
+
+from OpenGL.GLUT import GLUT_DOUBLE, GLUT_KEY_LEFT, GLUT_KEY_RIGHT
+from OpenGL.GLUT import GLUT_KEY_DOWN, GLUT_KEY_UP, GLUT_DEPTH, GLUT_RGB
+
+from OpenGL.GLUT import glutPostRedisplay, glutLeaveMainLoop, glutSwapBuffers
+from OpenGL.GLUT import glutCreateWindow, glutInit, glutInitWindowPosition
+from OpenGL.GLUT import glutInitWindowSize, glutInitDisplayMode, glutMainLoop
+from OpenGL.GLUT import glutSpecialUpFunc, glutSpecialFunc, glutKeyboardUpFunc
+from OpenGL.GLUT import glutKeyboardFunc, glutDisplayFunc
+
+# from numpy import zeros
 from numpy.random import randn
 
 from load_model import morph
