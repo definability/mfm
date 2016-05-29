@@ -10,10 +10,11 @@ before_install:
   - export PATH="$HOME/miniconda/bin:$PATH"
   - conda update --yes conda
 install:
-  - export CONDA_PACKAGES="numpy scipy matplotlib"
+  - apt-get install -y python-opengl
+  - export CONDA_PACKAGES="numpy scipy"
   - conda create --yes -n testenv python=$TRAVIS_PYTHON_VERSION $CONDA_PACKAGES
   - source activate testenv
   - pip install -U -r requirements.txt
-script: coverage run --source=classes -m tests
+script: coverage run --source=src -m tests
 after_success: coveralls
 
