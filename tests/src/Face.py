@@ -74,4 +74,3 @@ class FaceTest(TestCase):
         light_vec = [1., 1., 2**(-.5), 0., 0.]
         light_map = column_stack([light_vec]*3)
         self.assertTrue(allclose(face.get_light_map(), light_map))
-
