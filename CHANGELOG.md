@@ -32,5 +32,5 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   repository, which doesn't belong to this one.
 
 [Unreleased]: https://github.com/char-lie/mfm/compare/v0.0.3...HEAD
-[0.0.3]: https://github.com/char-lie/mfm/compare/v0.0.3...v0.0.2
-[0.0.2]: https://github.com/char-lie/mfm/compare/v0.0.2...v0.0.1
+[0.0.3]: https://github.com/char-lie/mfm/compare/v0.0.2...v0.0.3
+[0.0.2]: https://github.com/char-lie/mfm/compare/v0.0.1...v0.0.2
