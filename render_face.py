@@ -36,14 +36,14 @@ def render_face(model):
     }
     glutDisplayFunc(lambda: draw(model, rotations))
 
-    glutKeyboardFunc(lambda key, x, y:
-                     keyboard(rotations, key, x, y, False, False, model))
-    glutKeyboardUpFunc(lambda key, x, y:
-                     keyboard(rotations, key, x, y, True, False, model))
-    glutSpecialFunc(lambda key, x, y:
-                    keyboard(rotations, key, x, y, False, True, model))
-    glutSpecialUpFunc(lambda key, x, y:
-                      keyboard(rotations, key, x, y, True, True, model))
+    glutKeyboardFunc(lambda key:
+                     keyboard(rotations, key, False, False, model))
+    glutKeyboardUpFunc(lambda key:
+                       keyboard(rotations, key, True, False, model))
+    glutSpecialFunc(lambda key:
+                    keyboard(rotations, key, False, True, model))
+    glutSpecialUpFunc(lambda key:
+                      keyboard(rotations, key, True, True, model))
 
     glutMainLoop()
 
@@ -88,7 +88,7 @@ def draw(model, rotations):
     # glReadPixels(0, 0, width, height, GL_RGBA, GL_FLOAT, data)
 
 
-def keyboard(rotations, key, x, y, release=False, special=True, model=None):
+def keyboard(rotations, key, release=False, special=True, model=None):
     directions = {}
     if special:
         directions = {
