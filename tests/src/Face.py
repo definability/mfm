@@ -3,8 +3,8 @@ from numpy import array, allclose, array_equal, column_stack
 
 from src import Face
 
-class FaceTest(TestCase):
 
+class FaceTest(TestCase):
 
     def setUp(self):
         vertices = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
@@ -17,14 +17,11 @@ class FaceTest(TestCase):
 
         Face.set_triangles(self.triangles, self.triangles_c)
 
-
     def tearDown(self):
         pass
 
-
     def test_constructor(self):
         self.assertIsInstance(Face(self.vertices), Face)
-
 
     def test_get_vertices(self):
         face = Face(self.vertices)
@@ -36,11 +33,9 @@ class FaceTest(TestCase):
         self.assertTrue(array_equal(Face.get_triangles(), self.triangles))
         self.assertEqual(Face.get_triangles_c(), self.triangles_c)
 
-
     def test_get_normals(self):
         face = Face(self.vertices)
         self.assertTrue(allclose(face.get_normals(), 3.**(-.5)))
-
 
     def test_get_normal_map(self):
         vertices = array([[1, 0, 0], [0, 1, 0], [0, 0, 1],
@@ -59,7 +54,6 @@ class FaceTest(TestCase):
                       zzo, zzo]
 
         self.assertTrue(allclose(face.get_normal_map(), normal_map))
-
 
     def test_get_light_map(self):
         vertices = array([[1, 0, 0], [0, 1, 0], [0, 0, 1],
