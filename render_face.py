@@ -82,10 +82,10 @@ def draw(model, rotations):
                    GL_UNSIGNED_SHORT, model['face'].get_triangles_c())
     glutSwapBuffers()
 
-    #glReadBuffer(GL_BACK)
-    #height, width = 300, 300
-    #data = zeros(width*height*4, dtype='f')
-    #glReadPixels(0, 0, width, height, GL_RGBA, GL_FLOAT, data)
+    # glReadBuffer(GL_BACK)
+    # height, width = 300, 300
+    # data = zeros(width*height*4, dtype='f')
+    # glReadPixels(0, 0, width, height, GL_RGBA, GL_FLOAT, data)
 
 
 def keyboard(rotations, key, x, y, release=False, special=True, model=None):
@@ -117,8 +117,8 @@ def keyboard(rotations, key, x, y, release=False, special=True, model=None):
 def calculate(model, redraw=True):
     if redraw:
         coordinates = morph(model['mfm'], randn(199, 1)).astype('f')
-        #coordinates = morph(model, zeros(199).reshape(199, 1)).astype('f')
-        #coordinates = model['shapeMU']
+        # coordinates = morph(model, zeros(199).reshape(199, 1)).astype('f')
+        # coordinates = model['shapeMU']
 
         model['face'] = Face(coordinates, [-1, 0, -1])
 
