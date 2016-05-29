@@ -93,7 +93,7 @@ class Face:
             return self.__normals
 
         if self.__points is None:
-            assert(self.__triangles is not None)
+            assert self.__triangles is not None
             self.__points = self.__vertices[self.__triangles]
 
         first_edges = self.__points[:,1] - self.__points[:,0]
@@ -129,7 +129,6 @@ class Face:
             raise ValueError(ERROR_TEXT['LIGHT_DIRECTION'].format(light.shape))
         self.__light = light / norm(light)
         self.__light_map = None
-        assert(self.__light.size == 3)
 
 
     @staticmethod
