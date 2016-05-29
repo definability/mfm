@@ -36,13 +36,13 @@ def render_face(model):
     }
     glutDisplayFunc(lambda: draw(model, rotations))
 
-    glutKeyboardFunc(lambda key:
+    glutKeyboardFunc(lambda key, x, y:
                      keyboard(rotations, key, False, False, model))
-    glutKeyboardUpFunc(lambda key:
+    glutKeyboardUpFunc(lambda key, x, y:
                        keyboard(rotations, key, True, False, model))
-    glutSpecialFunc(lambda key:
+    glutSpecialFunc(lambda key, x, y:
                     keyboard(rotations, key, False, True, model))
-    glutSpecialUpFunc(lambda key:
+    glutSpecialUpFunc(lambda key, x, y:
                       keyboard(rotations, key, True, True, model))
 
     glutMainLoop()
