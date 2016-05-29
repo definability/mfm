@@ -25,8 +25,8 @@ class FaceTest(TestCase):
 
     def test_get_vertices(self):
         face = Face(self.vertices)
-        self.assertTrue(allclose(face.get_vertices(), self.normalized_vertices))
-
+        self.assertTrue(allclose(face.get_vertices(),
+                                 self.normalized_vertices))
 
     def test_set_triangles(self):
         Face.set_triangles(self.triangles, self.triangles_c)
