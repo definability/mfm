@@ -122,10 +122,10 @@ class Face:
     def set_triangles(triangles=None, triangles_c=None):
         if triangles is not None:
             if len(triangles.shape) != 2:
-                raise ValueError(ERROR_TEXT['TRIANGLES_SHAPE'] \
+                raise ValueError(ERROR_TEXT['TRIANGLES_SHAPE']
                                  .format(triangles.shape))
             elif triangles.shape[1] != 3:
-                raise ValueError(ERROR_TEXT['TRIANGLES_VERTICES'] \
+                raise ValueError(ERROR_TEXT['TRIANGLES_VERTICES']
                                  .format(triangles.shape[1]))
             Face.__triangles = triangles
         if triangles_c is not None:
