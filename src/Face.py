@@ -19,7 +19,7 @@ ERROR_TEXT = {
 }
 
 
-def __normalize(vertices):
+def normalize(vertices):
     vertices = vertices.reshape(vertices.size // 3, 3)
     vertices = vertices - vertices.min()
     vertices /= vertices.max()
@@ -35,7 +35,7 @@ class Face:
     def __init__(self, vertices, lights=None):
         if vertices.size % 3 != 0:
             raise ValueError(ERROR_TEXT['VERTICES_SIZE'].format(vertices.size))
-        self.__vertices = __normalize(vertices)
+        self.__vertices = normalize(vertices)
         self.__vertices_c = self.__vertices.ctypes.get_as_parameter()
         self.__points = None
         self.__light_map = None
