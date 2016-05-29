@@ -4,13 +4,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.0.3]
 ### Added
 - Integration with [travis-ci](https://travis-ci.org/char-lie/mfm).
 - Integration with [coveralls](https://coveralls.io/github/char-lie/mfm).
 
-
 ## [0.0.2]
-
 ### Added
 - `Face` class.
 - Unit tests.
@@ -19,7 +18,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Link in CHANGELOG.
 
 ## 0.0.1
-
 ### Added
 - Basic MFM example, which can following:
  - load the model from MatLab file;
@@ -33,6 +31,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.0.2...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.0.3...HEAD
+[0.0.3]: https://github.com/char-lie/mfm/compare/v0.0.3...v0.0.2
 [0.0.2]: https://github.com/char-lie/mfm/compare/v0.0.2...v0.0.1
-
