@@ -76,8 +76,8 @@ def draw(model, rotations):
     glRotatef(1., rotations['x'], rotations['y'], rotations['z'])
     glVertexPointer(3, GL_FLOAT, 0, model['face'].get_vertices_c())
     colors = model['face'].get_light_map_c() if model['light'] \
-             else model['face'].get_normal_map_c()
-    glColorPointer(3, GL_FLOAT, 0, colors);
+        else model['face'].get_normal_map_c()
+    glColorPointer(3, GL_FLOAT, 0, colors)
     glDrawElements(GL_TRIANGLES, model['face'].get_triangles().size,
                    GL_UNSIGNED_SHORT, model['face'].get_triangles_c())
     glutSwapBuffers()
