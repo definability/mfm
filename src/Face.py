@@ -32,7 +32,6 @@ class Face:
     __triangles = None
     __triangles_c = None
 
-
     def __init__(self, vertices, lights=None):
         if vertices.size % 3 != 0:
             raise ValueError(ERROR_TEXT['VERTICES_SIZE'].format(vertices.size))
@@ -47,24 +46,19 @@ class Face:
         self.__normals = None
         self.__normal_map = None
 
-
     def get_vertices(self):
         return self.__vertices
 
-
     def get_vertices_c(self):
         return self.__vertices_c
-
 
     @staticmethod
     def get_triangles_c():
         return Face.__triangles_c
 
-
     @staticmethod
     def get_triangles():
         return Face.__triangles
-
 
     def get_light_map(self):
         if self.__light_map is not None:
@@ -78,14 +72,11 @@ class Face:
 
         return self.__light_map
 
-
     def get_light_map_c(self):
         return self.get_light_map().ctypes.get_as_parameter()
 
-
     def get_normal_map_c(self):
         return self.get_normal_map().ctypes.get_as_parameter()
-
 
     def get_normals(self):
         if self.__normals is not None:
@@ -109,7 +100,6 @@ class Face:
         c_cross.normalize(normals_c, len(self.__normals))
         return self.__normals
 
-
     def get_normal_map(self):
         if self.__normal_map is not None:
             return self.__normal_map
@@ -121,14 +111,12 @@ class Face:
 
         return self.__normal_map
 
-
     def set_light(self, light):
         light = array(light)
         if light.shape != (3,):
             raise ValueError(ERROR_TEXT['LIGHT_DIRECTION'].format(light.shape))
         self.__light = light / norm(light)
         self.__light_map = None
-
 
     @staticmethod
     def set_triangles(triangles=None, triangles_c=None):
