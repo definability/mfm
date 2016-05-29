@@ -96,8 +96,8 @@ class Face:
             assert self.__triangles is not None
             self.__points = self.__vertices[self.__triangles]
 
-        first_edges = self.__points[:,1] - self.__points[:,0]
-        second_edges = self.__points[:,2] - self.__points[:,0]
+        first_edges = self.__points[:, 1] - self.__points[:, 0]
+        second_edges = self.__points[:, 2] - self.__points[:, 0]
 
         normal_vectors = cross(first_edges, second_edges).astype('f')
         normal_vectors_c = normal_vectors.ctypes.get_as_parameter()
