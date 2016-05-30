@@ -1,4 +1,3 @@
-from sys import exit
 from argparse import ArgumentParser
 from cProfile import Profile
 from pstats import Stats
