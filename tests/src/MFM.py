@@ -29,7 +29,8 @@ class MFMTest(TestCase):
         })
         MFM.init(DATA_FILE)
 
-    def tearDownClass(cls=None):
+    @classmethod
+    def tearDownClass(cls):
         remove(DATA_FILE)
 
     def test_get_face_class(self):
