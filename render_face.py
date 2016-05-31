@@ -20,13 +20,16 @@ from OpenGL.GLUT import glutSpecialUpFunc, glutSpecialFunc, glutKeyboardUpFunc
 from OpenGL.GLUT import glutKeyboardFunc, glutDisplayFunc
 
 # from numpy import zeros
-from numpy.random import randn
 
-from load_model import morph
-from src import Face
+from src import MFM
 
 
-def render_face(model):
+def render_face():
+    MFM.init()
+    model = {
+        'light': True,
+        'face': None
+    }
     init(model)
 
     rotations = {
@@ -116,8 +119,4 @@ def keyboard(rotations, key, release=False, special=True, model=None):
 
 def calculate(model, redraw=True):
     if redraw:
-        coordinates = morph(model['mfm'], randn(199, 1)).astype('f')
-        # coordinates = morph(model, zeros(199).reshape(199, 1)).astype('f')
-        # coordinates = model['shapeMU']
-
-        model['face'] = Face(coordinates, [-1, 0, -1])
+        model['face'] = MFM.get_face()
