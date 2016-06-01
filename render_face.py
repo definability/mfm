@@ -1,43 +1,29 @@
-import sys
+from OpenGL.GLUT import GLUT_KEY_LEFT, GLUT_KEY_RIGHT
+from OpenGL.GLUT import GLUT_KEY_DOWN, GLUT_KEY_UP
 
-from OpenGL.GL import GL_LESS, GL_TRUE, GL_DEPTH_TEST, GL_STENCIL_TEST
-from OpenGL.GL import GL_COLOR_ARRAY, GL_VERTEX_ARRAY, GL_TRIANGLES
-from OpenGL.GL import GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT
-from OpenGL.GL import GL_UNSIGNED_SHORT, GL_FLOAT, GL_MODELVIEW
-
-from OpenGL.GL import glMatrixMode, glLoadIdentity, glOrtho, glRotatef
-from OpenGL.GL import glDepthMask, glDepthFunc, glVertexPointer, glColorPointer
-from OpenGL.GL import glEnable, glClearColor, glEnableClientState, glClear
-from OpenGL.GL import glDrawElements
-
-from OpenGL.GLUT import GLUT_DOUBLE, GLUT_KEY_LEFT, GLUT_KEY_RIGHT
-from OpenGL.GLUT import GLUT_KEY_DOWN, GLUT_KEY_UP, GLUT_DEPTH, GLUT_RGB
-
-from OpenGL.GLUT import glutPostRedisplay, glutLeaveMainLoop, glutSwapBuffers
-from OpenGL.GLUT import glutCreateWindow, glutInit, glutInitWindowPosition
-from OpenGL.GLUT import glutInitWindowSize, glutInitDisplayMode, glutMainLoop
 from OpenGL.GLUT import glutSpecialUpFunc, glutSpecialFunc, glutKeyboardUpFunc
-from OpenGL.GLUT import glutKeyboardFunc, glutDisplayFunc
+from OpenGL.GLUT import glutKeyboardFunc, glutPostRedisplay, glutMainLoop
 
-# from numpy import zeros
-
-from src import MFM
+from src import MFM, View
 
 
 def render_face():
     MFM.init()
     model = {
         'light': True,
-        'face': None
+        'face': None,
+        'view': None
     }
-    init(model)
+    model['view'] = View((500, 500))
+    calculate(model)
+    model['view'].set_triangles(model['face'].get_triangles_c(),
+                                model['face'].get_triangles().size)
 
     rotations = {
         'x': 0.,
         'y': 0.,
         'z': 0.
     }
-    glutDisplayFunc(lambda: draw(model, rotations))
 
     glutKeyboardFunc(lambda key, x, y:
                      keyboard(rotations, key, False, False, model))
@@ -51,72 +37,52 @@ def render_face():
     glutMainLoop()
 
 
-def init(model):
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
-    glutInitWindowSize(300, 300)
-
-    glutInitWindowPosition(50, 50)
-    glutInit(sys.argv)
-    glutCreateWindow(b"Morphable face model")
-
-    glMatrixMode(GL_MODELVIEW)
-    glLoadIdentity()
-    side = .5
-    glOrtho(-side, side, -side, side, -side, side)
-    glDepthMask(GL_TRUE)
-    glDepthFunc(GL_LESS)
-    glEnable(GL_DEPTH_TEST)
-    glEnable(GL_STENCIL_TEST)
-    glClearColor(1., 1., 1., 0.)
-    glEnableClientState(GL_COLOR_ARRAY)
-    glEnableClientState(GL_VERTEX_ARRAY)
-
-    calculate(model)
-
-
 def draw(model, rotations):
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-    glRotatef(1., rotations['x'], rotations['y'], rotations['z'])
-    glVertexPointer(3, GL_FLOAT, 0, model['face'].get_vertices_c())
+    vertices = model['face'].get_vertices_c()
     colors = model['face'].get_light_map_c() if model['light'] \
         else model['face'].get_normal_map_c()
-    glColorPointer(3, GL_FLOAT, 0, colors)
-    glDrawElements(GL_TRIANGLES, model['face'].get_triangles().size,
-                   GL_UNSIGNED_SHORT, model['face'].get_triangles_c())
-    glutSwapBuffers()
+    rotation = (rotations['x'], rotations['y'], rotations['z'])
 
-    # glReadBuffer(GL_BACK)
-    # height, width = 300, 300
-    # data = zeros(width*height*4, dtype='f')
-    # glReadPixels(0, 0, width, height, GL_RGBA, GL_FLOAT, data)
+    model['view'].draw(vertices, colors, rotation)
 
 
 def keyboard(rotations, key, release=False, special=True, model=None):
-    directions = {}
-    if special:
-        directions = {
+    directions = {
+        True: {
             GLUT_KEY_UP: ('x', -1.),
             GLUT_KEY_DOWN: ('x', 1.),
             GLUT_KEY_RIGHT: ('y', -1.),
             GLUT_KEY_LEFT: ('y', 1.)
-        }
-    else:
-        directions = {
+        },
+        False: {
             b'z': ('z', -1.),
             b'a': ('z', 1.)
         }
+    }
+
+    if key in directions[special]:
+        axis, value = directions[special][key]
+        rotations[axis] = 0. if release else value
+        rotation = (rotations['x'], rotations['y'], rotations['z'])
+        model['view'].update(rotation=rotation)
+    elif not special:
         if key == b'q':
-            return glutLeaveMainLoop()
+            return model['view'].close()
         if key == b'n' and not release:
             model['light'] = not model['light']
         if key == b'r' and not release:
-            calculate(model)
-    if key in directions:
-        axis, value = directions[key]
-        rotations[axis] = 0. if release else value
-    glutPostRedisplay()
+            return calculate(model)
+        calculate(model, False)
+
+    model['view'].redraw()
 
 
-def calculate(model, redraw=True):
-    if redraw:
+def calculate(model, new_model=True):
+    if new_model:
         model['face'] = MFM.get_face()
+
+    vertices = model['face'].get_vertices_c()
+    colors = model['face'].get_light_map_c() if model['light'] \
+        else model['face'].get_normal_map_c()
+
+    model['view'].update(vertices, colors)
