@@ -4,21 +4,21 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [0.0.5]
+## [0.0.5] - 2015-06-01
 ### Added
 - View class.
 
-## [0.0.4]
+## [0.0.4] - 2015-05-31
 ### Added
 - MFM (Morphable Face Model) singleton.
 - Added style checkers to dependencies.
 
-## [0.0.3]
+## [0.0.3] - 2015-05-29
 ### Added
 - Integration with [travis-ci](https://travis-ci.org/char-lie/mfm).
 - Integration with [coveralls](https://coveralls.io/github/char-lie/mfm).
 
-## [0.0.2]
+## [0.0.2] - 2015-05-29
 ### Added
 - `Face` class.
 - Unit tests.
@@ -26,7 +26,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Link in CHANGELOG.
 
-## 0.0.1
+## 0.0.1 - 2015-05-23
 ### Added
 - Basic MFM example, which can following:
  - load the model from MatLab file;
