@@ -16,8 +16,6 @@ def render_face():
     }
     model['view'] = View((500, 500))
     calculate(model)
-    model['view'].set_triangles(model['face'].get_triangles_c(),
-                                model['face'].get_triangles().size)
 
     rotations = {
         'x': 0.,

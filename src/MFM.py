@@ -3,6 +3,7 @@ from numpy.random import rand, randn
 from numpy import ones, dot
 
 from .Face import Face
+from .View import View
 
 
 DEFAULT_MODEL_PATH = '01_MorphableModel.mat'
@@ -10,6 +11,7 @@ DEFAULT_MODEL_PATH = '01_MorphableModel.mat'
 __model = None
 __triangles = None
 __triangles_flattened = None
+__triangles_c = None
 
 __principal_components = None
 __dimensions = None
@@ -22,12 +24,13 @@ def init(path=None):
     __model = loadmat(path if path is not None else DEFAULT_MODEL_PATH)
     __triangles = __model['tl'] - 1
     __triangles_flattened = (__model['tl'] - 1).flatten()
+    __triangles_c = __triangles_flattened.ctypes.get_as_parameter()
 
     __principal_components = __model['shapePC']
     __dimensions = __principal_components.shape[1]
 
-    Face.set_triangles(__triangles,
-                       __triangles_flattened.ctypes.get_as_parameter())
+    Face.set_triangles(__triangles, __triangles_c)
+    View.set_triangles(__triangles_c, __triangles.size)
 
 
 def __random_cos():
