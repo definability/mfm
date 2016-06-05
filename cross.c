@@ -12,7 +12,7 @@ void cross(float* vertices, uint16_t* triangles, float* result,
         v = 3 * ((size_t)triangles[3*i + 2]);
         w = 3 * ((size_t)triangles[3*i + 0]);
 
-        result[3*i]     = (vertices[u+1] - vertices[w+1]) *
+        result[3*i + 0] = (vertices[u+1] - vertices[w+1]) *
                           (vertices[v+2] - vertices[w+2]) -
                           (vertices[u+2] - vertices[w+2]) *
                           (vertices[v+1] - vertices[w+1]);
@@ -33,17 +33,17 @@ void cross(float* vertices, uint16_t* triangles, float* result,
 
 void normals(float* normal_vectors, uint16_t* triangles, float* result,
              int amount) {
-    uint16_t triangle;
+    uint16_t vertex;
     int i = 0;
     int j;
 
     do {
         j = 0;
         do {
-            triangle = triangles[3*i + j];
-            result[triangle*3]     += normal_vectors[3*i];
-            result[triangle*3 + 1] += normal_vectors[3*i + 1];
-            result[triangle*3 + 2] += normal_vectors[3*i + 2];
+            vertex = triangles[3*i + j];
+            result[vertex*3 + 0] += normal_vectors[3*i];
+            result[vertex*3 + 1] += normal_vectors[3*i + 1];
+            result[vertex*3 + 2] += normal_vectors[3*i + 2];
             j++;
         } while (j < 3);
         i++;
