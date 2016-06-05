@@ -35,15 +35,6 @@ def render_face():
     glutMainLoop()
 
 
-def draw(model, rotations):
-    vertices = model['face'].get_vertices_c()
-    colors = model['face'].get_light_map_c() if model['light'] \
-        else model['face'].get_normal_map_c()
-    rotation = (rotations['x'], rotations['y'], rotations['z'])
-
-    model['view'].draw(vertices, colors, rotation)
-
-
 def keyboard(rotations, key, release=False, special=True, model=None):
     directions = {
         True: {
