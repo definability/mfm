@@ -81,17 +81,10 @@ class Face:
         if self.__normals is not None:
             return self.__normals
 
-        normal_vectors = zeros(self.__triangles.shape, dtype='f')
-        normal_vectors_c = normal_vectors.ctypes.get_as_parameter()
-        c_cross.cross(self.__vertices_c, self.__triangles_c,
-                      normal_vectors_c, len(self.__triangles))
-
         self.__normals = zeros_like(self.__vertices)
-        normals_c = self.__normals.ctypes.get_as_parameter()
-
-        c_cross.normals(normal_vectors_c, self.__triangles_c, normals_c,
-                        len(self.__triangles))
-        c_cross.normalize(normals_c, len(self.__normals))
+        c_cross.get_normal_map(self.__vertices_c, self.__triangles_c,
+                               self.__normals.ctypes.get_as_parameter(),
+                               len(self.__vertices), len(self.__triangles))
         return self.__normals
 
     def get_normal_map(self):
