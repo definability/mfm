@@ -37,7 +37,6 @@ class Face:
             raise ValueError(ERROR_TEXT['VERTICES_SIZE'].format(vertices.size))
         self.__vertices = normalize(vertices)
         self.__vertices_c = self.__vertices.ctypes.get_as_parameter()
-        self.__points = None
         self.__light_map = None
         if lights is not None:
             self.set_light(lights)
