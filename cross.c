@@ -64,3 +64,12 @@ void normalize(float* normals, int amount) {
         i++;
     } while (i < amount);
 }
+
+void get_normal_map(float* vertices, uint16_t* triangles, float* normal_map,
+                    int vertices_count, int triangles_count) {
+    float* normal_vectors = (float*) malloc(sizeof(float) * 3 * triangles_count);
+    cross(vertices, triangles, normal_vectors, triangles_count);
+    normals(normal_vectors, triangles, normal_map, triangles_count);
+    normalize(normal_map, vertices_count);
+    free(normal_vectors);
+}
