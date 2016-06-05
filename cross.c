@@ -82,8 +82,8 @@ void normalize(float* normals, int amount) {
     } while (++i < amount);
 }
 
-void get_normal_map(float* vertices, uint16_t* triangles, float* normal_map,
-                    int vertices_count, int triangles_count) {
+void get_normals(float* vertices, uint16_t* triangles, float* normal_map,
+                 int vertices_count, int triangles_count) {
     float* normal_vectors = (float*)malloc(COMPONENTS_COUNT *
                             sizeof(float) * triangles_count);
     assert(normal_vectors);
