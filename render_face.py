@@ -4,12 +4,10 @@ from OpenGL.GLUT import GLUT_KEY_DOWN, GLUT_KEY_UP
 from OpenGL.GLUT import glutSpecialUpFunc, glutSpecialFunc, glutKeyboardUpFunc
 from OpenGL.GLUT import glutKeyboardFunc
 
-from src import MFM, Model
+from src import Model
 
 
 def render_face():
-    MFM.init()
-
     model = Model()
 
     rotations = {'x': 0., 'y': 0., 'z': 0.}
