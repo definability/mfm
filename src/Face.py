@@ -82,9 +82,9 @@ class Face:
             return self.__normals
 
         self.__normals = zeros_like(self.__vertices)
-        c_cross.get_normal_map(self.__vertices_c, self.__triangles_c,
-                               self.__normals.ctypes.get_as_parameter(),
-                               len(self.__vertices), len(self.__triangles))
+        c_cross.get_normals(self.__vertices_c, self.__triangles_c,
+                            self.__normals.ctypes.get_as_parameter(),
+                            len(self.__vertices), len(self.__triangles))
         return self.__normals
 
     def get_normal_map(self):
