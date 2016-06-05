@@ -1,6 +1,6 @@
 import ctypes
 
-from numpy import array, cross, dot, zeros_like, mean
+from numpy import array, cross, dot, zeros_like, mean, zeros
 from numpy import apply_along_axis, column_stack
 from numpy.linalg import norm
 import numpy
@@ -82,15 +82,10 @@ class Face:
         if self.__normals is not None:
             return self.__normals
 
-        if self.__points is None:
-            assert self.__triangles is not None
-            self.__points = self.__vertices[self.__triangles]
-
-        first_edges = self.__points[:, 1] - self.__points[:, 0]
-        second_edges = self.__points[:, 2] - self.__points[:, 0]
-
-        normal_vectors = cross(first_edges, second_edges).astype('f')
+        normal_vectors = zeros(self.__triangles.shape, dtype='f')
         normal_vectors_c = normal_vectors.ctypes.get_as_parameter()
+        c_cross.cross(self.__vertices_c, self.__triangles_c,
+                      normal_vectors_c, len(self.__triangles))
 
         self.__normals = zeros_like(self.__vertices)
         normals_c = self.__normals.ctypes.get_as_parameter()
