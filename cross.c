@@ -1,73 +1,92 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <math.h>
+#include <assert.h>
 
-void cross(float* vertices, uint16_t* triangles, float* result,
-           int amount) {
+#define COMPONENTS_COUNT 3
+
+#define X_OFFSET 0
+#define Y_OFFSET 1
+#define Z_OFFSET 2
+
+void cross(float* vertices, uint16_t* triangles, float* result, int amount) {
     size_t u, v, w;
+    size_t triangle;
+    float ux, uy, uz;
+    float vx, vy, vz;
+    float wx, wy, wz;
     int i = 0;
 
     do {
-        u = 3 * ((size_t)triangles[3*i + 1]);
-        v = 3 * ((size_t)triangles[3*i + 2]);
-        w = 3 * ((size_t)triangles[3*i + 0]);
+        triangle = COMPONENTS_COUNT*i;
 
-        result[3*i + 0] = (vertices[u+1] - vertices[w+1]) *
-                          (vertices[v+2] - vertices[w+2]) -
-                          (vertices[u+2] - vertices[w+2]) *
-                          (vertices[v+1] - vertices[w+1]);
+        u = COMPONENTS_COUNT * ((size_t)triangles[triangle + 0]);
+        v = COMPONENTS_COUNT * ((size_t)triangles[triangle + 1]);
+        w = COMPONENTS_COUNT * ((size_t)triangles[triangle + 2]);
 
-        result[3*i + 1] = (vertices[u+2] - vertices[w+2]) *
-                          (vertices[v+0] - vertices[w+0]) -
-                          (vertices[u+0] - vertices[w+0]) *
-                          (vertices[v+2] - vertices[w+2]);
+        wx = vertices[w + X_OFFSET];
+        wy = vertices[w + Y_OFFSET];
+        wz = vertices[w + Z_OFFSET];
 
-        result[3*i + 2] = (vertices[u+0] - vertices[w+0]) *
-                          (vertices[v+1] - vertices[w+1]) -
-                          (vertices[u+1] - vertices[w+1]) *
-                          (vertices[v+0] - vertices[w+0]);
+        ux = vertices[u + X_OFFSET] - wx;
+        uy = vertices[u + Y_OFFSET] - wy;
+        uz = vertices[u + Z_OFFSET] - wz;
 
-        i++;
-    } while (i < amount);
+        vx = vertices[v + X_OFFSET] - wx;
+        vy = vertices[v + Y_OFFSET] - wy;
+        vz = vertices[v + Z_OFFSET] - wz;
+
+        result[triangle + X_OFFSET] = uy*vz - uz*vy;
+        result[triangle + Y_OFFSET] = uz*vx - ux*vz;
+        result[triangle + Z_OFFSET] = ux*vy - uy*vx;
+    } while (++i < amount);
 }
 
 void normals(float* normal_vectors, uint16_t* triangles, float* result,
              int amount) {
     uint16_t vertex;
+    float normal_x, normal_y, normal_z;
     int i = 0;
     int j;
 
     do {
         j = 0;
+        normal_x = normal_vectors[i*COMPONENTS_COUNT + X_OFFSET];
+        normal_y = normal_vectors[i*COMPONENTS_COUNT + Y_OFFSET];
+        normal_z = normal_vectors[i*COMPONENTS_COUNT + Z_OFFSET];
         do {
-            vertex = triangles[3*i + j];
-            result[vertex*3 + 0] += normal_vectors[3*i];
-            result[vertex*3 + 1] += normal_vectors[3*i + 1];
-            result[vertex*3 + 2] += normal_vectors[3*i + 2];
-            j++;
-        } while (j < 3);
-        i++;
-    } while (i < amount);
+            vertex = triangles[i*COMPONENTS_COUNT + j];
+            result[vertex*COMPONENTS_COUNT + X_OFFSET] += normal_x;
+            result[vertex*COMPONENTS_COUNT + Y_OFFSET] += normal_y;
+            result[vertex*COMPONENTS_COUNT + Z_OFFSET] += normal_z;
+        } while (++j < COMPONENTS_COUNT);
+    } while (++i < amount);
 }
 
 void normalize(float* normals, int amount) {
     float norm;
     int i = 0;
+    size_t normal_x, normal_y, normal_z;
 
     do {
-        norm = sqrt(normals[3*i]     * normals[3*i]
-                  + normals[3*i + 1] * normals[3*i + 1]
-                  + normals[3*i + 2] * normals[3*i + 2]);
-        normals[3*i] /= norm;
-        normals[3*i + 1] /= norm;
-        normals[3*i + 2] /= norm;
-        i++;
-    } while (i < amount);
+        normal_x = i*COMPONENTS_COUNT + X_OFFSET;
+        normal_y = i*COMPONENTS_COUNT + Y_OFFSET;
+        normal_z = i*COMPONENTS_COUNT + Z_OFFSET;
+
+        norm = sqrt(normals[normal_x] * normals[normal_x]
+                  + normals[normal_y] * normals[normal_y]
+                  + normals[normal_z] * normals[normal_z]);
+        normals[normal_x] /= norm;
+        normals[normal_y] /= norm;
+        normals[normal_z] /= norm;
+    } while (++i < amount);
 }
 
 void get_normal_map(float* vertices, uint16_t* triangles, float* normal_map,
                     int vertices_count, int triangles_count) {
-    float* normal_vectors = (float*)malloc(3 * triangles_count * sizeof(float));
+    float* normal_vectors = (float*)malloc(COMPONENTS_COUNT *
+                            sizeof(float) * triangles_count);
+    assert(normal_vectors);
     cross(vertices, triangles, normal_vectors, triangles_count);
     normals(normal_vectors, triangles, normal_map, triangles_count);
     normalize(normal_map, vertices_count);
