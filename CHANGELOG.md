@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.0.8] - 2015-06-06
 ### Added
 - Model class.
 
@@ -46,7 +48,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.0.6...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.0.7...HEAD
+[0.0.7]: https://github.com/char-lie/mfm/compare/v0.0.6...v0.0.7
 [0.0.6]: https://github.com/char-lie/mfm/compare/v0.0.5...v0.0.6
 [0.0.5]: https://github.com/char-lie/mfm/compare/v0.0.4...v0.0.5
 [0.0.4]: https://github.com/char-lie/mfm/compare/v0.0.3...v0.0.4
