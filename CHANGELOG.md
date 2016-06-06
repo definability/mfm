@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [0.0.8] - 2015-06-06
+## [0.0.7] - 2015-06-06
 ### Added
 - Model class.
 
