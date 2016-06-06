@@ -1,5 +1,6 @@
-from render_face import render_face
-from src import MFM
+from src import MFM, Model, ModelInput
 
 MFM.init()
-render_face()
+model = Model()
+model_input = ModelInput(model)
+model.start()
