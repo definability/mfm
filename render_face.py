@@ -2,27 +2,15 @@ from OpenGL.GLUT import GLUT_KEY_LEFT, GLUT_KEY_RIGHT
 from OpenGL.GLUT import GLUT_KEY_DOWN, GLUT_KEY_UP
 
 from OpenGL.GLUT import glutSpecialUpFunc, glutSpecialFunc, glutKeyboardUpFunc
-from OpenGL.GLUT import glutKeyboardFunc, glutPostRedisplay, glutMainLoop
+from OpenGL.GLUT import glutKeyboardFunc
 
-from src import MFM, View
+from src import Model
 
 
 def render_face():
-    MFM.init()
-    model = {
-        'light': True,
-        'face': None,
-        'view': None
-    }
-    model['view'] = View((500, 500))
-    calculate(model)
+    model = Model()
 
-    rotations = {
-        'x': 0.,
-        'y': 0.,
-        'z': 0.
-    }
-
+    rotations = {'x': 0., 'y': 0., 'z': 0.}
     glutKeyboardFunc(lambda key, x, y:
                      keyboard(rotations, key, False, False, model))
     glutKeyboardUpFunc(lambda key, x, y:
@@ -32,7 +20,7 @@ def render_face():
     glutSpecialUpFunc(lambda key, x, y:
                       keyboard(rotations, key, True, True, model))
 
-    glutMainLoop()
+    model.start()
 
 
 def keyboard(rotations, key, release=False, special=True, model=None):
@@ -51,27 +39,14 @@ def keyboard(rotations, key, release=False, special=True, model=None):
 
     if key in directions[special]:
         axis, value = directions[special][key]
-        rotations[axis] = 0. if release else value
-        rotation = (rotations['x'], rotations['y'], rotations['z'])
-        model['view'].update(rotation=rotation)
+        model.rotate(axis, 0. if release else value)
     elif not special:
         if key == b'q':
-            return model['view'].close()
+            return model.close()
         if key == b'n' and not release:
-            model['light'] = not model['light']
+            model.toggle_texture()
         if key == b'r' and not release:
-            return calculate(model)
-        calculate(model, False)
+            return model.calculate()
+        model.calculate(False)
 
-    model['view'].redraw()
-
-
-def calculate(model, new_model=True):
-    if new_model:
-        model['face'] = MFM.get_face()
-
-    vertices = model['face'].get_vertices_c()
-    colors = model['face'].get_light_map_c() if model['light'] \
-        else model['face'].get_normal_map_c()
-
-    model['view'].update(vertices, colors)
+    model.redraw()
