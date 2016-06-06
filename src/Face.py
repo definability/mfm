@@ -5,7 +5,7 @@ from numpy import apply_along_axis, column_stack
 from numpy.linalg import norm
 import numpy
 
-c_cross = ctypes.cdll.LoadLibrary('./lib_cross.so')  # pylint: disable=C0103
+c_cross = ctypes.cdll.LoadLibrary('./lib_cross.so')
 
 ERROR_TEXT = {
     'VERTICES_SIZE': "Size of vertices array should be a multiple of three, "
