@@ -68,3 +68,19 @@ class FaceTest(TestCase):
         light_vec = array([1., 1., 2**(-.5), 0., 0.]) * (3**(-.5))
         light_map = column_stack([light_vec]*3)
         self.assertTrue(allclose(face.get_light_map(), light_map))
+
+
+    def test_get_light_map_with_constant(self):
+        vertices = array([[1, 0, 0], [0, 1, 0], [0, 0, 1],
+                          [1, 0, 1], [0, 1, 1]], dtype='f')
+        face = Face(vertices)
+
+        triangles = array([[0, 1, 2], [2, 3, 4]], dtype='uint16')
+        triangles_c = triangles.flatten().ctypes.get_as_parameter()
+        Face.set_triangles(triangles, triangles_c)
+
+        constant_light = 1
+        face.set_light([1, 0, 0], constant_light)
+        light_vec = array([1., 1., 2**(-.5), 0., 0.]) * (3**(-.5))
+        light_map = column_stack([light_vec]*3) + constant_light
+        self.assertTrue(allclose(face.get_light_map(), light_map))
