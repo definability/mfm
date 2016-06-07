@@ -2,7 +2,6 @@ import ctypes
 
 from numpy import array, cross, dot, zeros_like, mean, zeros
 from numpy import apply_along_axis, column_stack
-from numpy.linalg import norm
 import numpy
 
 c_cross = ctypes.cdll.LoadLibrary('./lib_cross.so')
@@ -32,16 +31,16 @@ class Face:
     __triangles = None
     __triangles_c = None
 
-    def __init__(self, vertices, lights=None):
+    def __init__(self, vertices, directed_light=None, constant_light=0):
         if vertices.size % 3 != 0:
             raise ValueError(ERROR_TEXT['VERTICES_SIZE'].format(vertices.size))
         self.__vertices = normalize(vertices)
         self.__vertices_c = self.__vertices.ctypes.get_as_parameter()
         self.__light_map = None
-        if lights is not None:
-            self.set_light(lights)
-        else:
-            self.__lights = None
+        self.__directed_light = None
+        self.__constant_light = 0
+        if directed_light is not None:
+            self.set_light(directed_light, constant_light)
         self.__normals = None
         self.__normal_map = None
 
@@ -63,10 +62,8 @@ class Face:
         if self.__light_map is not None:
             return self.__light_map
 
-        self.__light_map = dot(self.get_normals(), self.__light)
-        self.__light_map -= self.__light_map.min()
-        self.__light_map /= self.__light_map.max()
-        self.__light_map /= self.__light_map.max()
+        self.__light_map = dot(self.get_normals(), self.__directed_light) + \
+                           self.__constant_light
         self.__light_map = column_stack([self.__light_map.astype('f')]*3)
 
         return self.__light_map
@@ -98,11 +95,13 @@ class Face:
 
         return self.__normal_map
 
-    def set_light(self, light):
-        light = array(light)
-        if light.shape != (3,):
-            raise ValueError(ERROR_TEXT['LIGHT_DIRECTION'].format(light.shape))
-        self.__light = light / norm(light)
+    def set_light(self, directed_light, constant_light=0):
+        directed_light = array(directed_light)
+        if directed_light.shape != (3,):
+            raise ValueError(ERROR_TEXT['LIGHT_DIRECTION']
+                            .format(directed_light.shape))
+        self.__directed_light = directed_light
+        self.__constant_light = constant_light
         self.__light_map = None
 
     @staticmethod
