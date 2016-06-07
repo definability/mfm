@@ -65,6 +65,6 @@ class FaceTest(TestCase):
         Face.set_triangles(triangles, triangles_c)
 
         face.set_light([1, 0, 0])
-        light_vec = [1., 1., 2**(-.5), 0., 0.]
+        light_vec = array([1., 1., 2**(-.5), 0., 0.]) * (3**(-.5))
         light_map = column_stack([light_vec]*3)
         self.assertTrue(allclose(face.get_light_map(), light_map))
