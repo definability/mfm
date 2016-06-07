@@ -1,4 +1,4 @@
-from numpy import array, nonzero, ones_like
+from numpy import array, nonzero
 from numpy.linalg import lstsq, norm
 
 
@@ -7,7 +7,7 @@ class ModelFitter:
         self.__image = image
 
     def check(self, normals):
-        #indices = nonzero(norm(normals, axis=1))
+        # indices = nonzero(norm(normals, axis=1))
         indices = normals[:, 3] > 0.5
 
         N = normals[indices]
@@ -36,10 +36,10 @@ class ModelFitter:
             [n_xx, n_xy, n_xz, n_x   ],
             [n_xy, n_yy, n_yz, n_y   ],
             [n_xz, n_yz, n_zz, n_z   ],
-            [n_x,  n_y,  n_z,  len(N)],
+            [n_x,  n_y,  n_z,  len(N)]
         ])
         y = array([y_x, y_y, y_z, Y.sum()])
 
-        x, residuals, rank, s = lstsq(A, y)
+        x, _, _, _ = lstsq(A, y)
 
         return x
