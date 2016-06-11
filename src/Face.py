@@ -58,6 +58,12 @@ class Face:
     def get_triangles():
         return Face.__triangles
 
+    def get_directed_light(self):
+        return self.__directed_light
+
+    def get_constant_light(self):
+        return self.__constant_light
+
     def get_light_map(self):
         if self.__light_map is not None:
             return self.__light_map
