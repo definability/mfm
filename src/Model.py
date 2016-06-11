@@ -2,7 +2,7 @@ from enum import Enum
 
 from OpenGL.GLUT import glutMainLoop
 
-from src import MFM, View
+from src import MFM
 
 
 class Texture(Enum):
@@ -11,10 +11,10 @@ class Texture(Enum):
 
 
 class Model:
-    def __init__(self):
+    def __init__(self, view):
         self.__light = True
         self.__face = None
-        self.__view = View((500, 500))
+        self.__view = view
 
         self.__texture = Texture.light
 
