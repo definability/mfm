@@ -57,7 +57,7 @@ class ModelInput:
             self.__model.calculate()
             self.__model.redraw()
             return
-        elif key == b'q':
+        elif key == b'q' and not release:
             self.__model.close()
             return
         else:
