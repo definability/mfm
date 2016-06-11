@@ -16,6 +16,12 @@ class ModelInput:
         b'z': ('z', -1.),
         b'a': ('z', 1.)
     }
+    __light_keys = {
+        b'h': ('x', .1),
+        b'l': ('x', -.1),
+        b'j': ('y', .1),
+        b'k': ('y', -.1),
+    }
 
     def __init__(self, model):
         self.__model = model
@@ -35,6 +41,15 @@ class ModelInput:
     def __handle_special(self, key, release=False):
         if key in ModelInput.__keys:
             self.__rotate(ModelInput.__keys, key, release)
+        elif key in ModelInput.__light_keys and not release:
+            directed_light = {
+                'x': 0.,
+                'y': 0.,
+                'z': 0.
+            }
+            axis, value = ModelInput.__light_keys[key]
+            directed_light[axis] = value
+            self.__model.change_light(direction=directed_light)
         elif key == b'n' and not release:
             self.__model.toggle_texture()
             self.__model.calculate(False)
@@ -42,7 +57,7 @@ class ModelInput:
             self.__model.calculate()
             self.__model.redraw()
             return
-        elif key == b'q':
+        elif key == b'q' and not release:
             self.__model.close()
             return
         else:
