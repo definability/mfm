@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Ability to change directed light properties by keyboard.
 
 ## [0.0.8] - 2015-06-06
 ### Added

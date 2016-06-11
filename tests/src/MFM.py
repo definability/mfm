@@ -38,7 +38,7 @@ class MFMTest(TestCase):
 
     def test_get_face_light(self):
         face = MFM.get_face()
-        face.set_light([1, 0, 0])
-        light_vec = [1., 1., 2**(-.5), 0., 0.]
+        face.set_light([1, 0, 0], 0)
+        light_vec = array([1., 1., 2**(-.5), 0., 0.]) * (3**(-.5))
         light_map = column_stack([light_vec]*3)
         self.assertTrue(allclose(face.get_light_map(), light_map))

@@ -1,6 +1,7 @@
 from scipy.io import loadmat
 from numpy.random import rand, randn
-from numpy import ones, dot
+from numpy.linalg import norm
+from numpy import array, ones, dot, fabs
 
 from .Face import Face
 from .View import View
@@ -37,11 +38,16 @@ def __random_cos():
     return 2 * rand() - 1
 
 
-def get_face(coefficients=None, lights=None):
+def get_face(coefficients=None, directed_light=None, constant_light=None):
     if coefficients is None:
         coefficients = randn(__dimensions, 1)
-    if lights is None:
-        lights = (__random_cos(), __random_cos(), __random_cos())
+    if directed_light is None:
+        directed_light = -fabs(array([__random_cos(), __random_cos(),
+                                      __random_cos()]))
+        if norm(directed_light) > 0:
+            directed_light /= norm(directed_light)
+    if constant_light is None:
+        constant_light = __random_cos()
 
     n_seg = 1 if len(coefficients.shape) == 1 else coefficients.shape[1]
 
@@ -52,4 +58,4 @@ def get_face(coefficients=None, lights=None):
                    coefficients * pc_deviations)
     vertices = mean_shape + features
 
-    return Face(vertices.astype('f'), lights)
+    return Face(vertices.astype('f'), directed_light, constant_light)
