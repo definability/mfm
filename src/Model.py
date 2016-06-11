@@ -23,6 +23,11 @@ class Model:
             'y': 0.,
             'z': 0.
         }
+        self.__light = {
+            'x': 0.,
+            'y': 0.,
+            'z': 0.
+        }
 
         self.calculate()
 
@@ -49,6 +54,17 @@ class Model:
         rotation = (self.__rotations['x'], self.__rotations['y'],
                     self.__rotations['z'])
         self.__view.update(rotation=rotation)
+
+    def change_light(self, direction=None, intensity=None):
+        if direction is not None:
+            x, y, z = self.__face.get_directed_light()
+            self.__face.set_light(directed_light=(x + direction['x'],
+                                  y + direction['y'], z + direction['z']))
+        if intensity is not None:
+            constant_light = self.__face.get_constant_light()
+            constant_light += intensity
+            self.__face.set_light(constant_light=constant_light)
+        self.calculate(False)
 
     def toggle_texture(self):
         self.__texture = Texture.normal if self.__texture == Texture.light \
