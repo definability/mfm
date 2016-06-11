@@ -101,13 +101,16 @@ class Face:
 
         return self.__normal_map
 
-    def set_light(self, directed_light, constant_light=0):
-        directed_light = array(directed_light)
-        if directed_light.shape != (3,):
-            raise ValueError(ERROR_TEXT['LIGHT_DIRECTION']
-                            .format(directed_light.shape))
-        self.__directed_light = directed_light
-        self.__constant_light = constant_light
+    def set_light(self, directed_light=None, constant_light=None):
+        if directed_light is not None:
+            directed_light = array(directed_light)
+            if directed_light.shape != (3,):
+                raise ValueError(ERROR_TEXT['LIGHT_DIRECTION']
+                                .format(directed_light.shape))
+            self.__directed_light = directed_light
+        if constant_light is not None \
+                          and constant_light > -2 and constant_light < 2:
+            self.__constant_light = constant_light
         self.__light_map = None
 
     @staticmethod
