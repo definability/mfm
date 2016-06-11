@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Ability to change directed light properties by keyboard.
 
+### Changed
+- Model uses View, instead of constituting composite.
+
 ## [0.0.8] - 2015-06-06
 ### Added
 - ModelInput class.
