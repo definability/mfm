@@ -38,7 +38,7 @@ class Face:
         self.__vertices_c = self.__vertices.ctypes.get_as_parameter()
         self.__light_map = None
         self.__directed_light = None
-        self.__constant_light = 0
+        self.__constant_light = constant_light
         if directed_light is not None:
             self.set_light(directed_light, constant_light)
         self.__normals = None
