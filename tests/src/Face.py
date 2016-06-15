@@ -69,7 +69,6 @@ class FaceTest(TestCase):
         light_map = column_stack([light_vec]*3)
         self.assertTrue(allclose(face.get_light_map(), light_map))
 
-
     def test_get_light_map_with_constant(self):
         vertices = array([[1, 0, 0], [0, 1, 0], [0, 0, 1],
                           [1, 0, 1], [0, 1, 1]], dtype='f')
