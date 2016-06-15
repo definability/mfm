@@ -93,4 +93,7 @@ class Model:
             image.putdata(pixels)
             image.save(filename + '.png')
             image.close()
-            print(*self.__face.get_directed_light(), self.__face.get_constant_light())
+            with open(filename + '.light.npy', 'wb') as f:
+                light = list(self.__face.get_directed_light())
+                light.append(self.__face.get_constant_light())
+                save(f, light)
