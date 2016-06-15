@@ -108,8 +108,8 @@ class FaceTest(TestCase):
         triangles_c = triangles.flatten().ctypes.get_as_parameter()
         Face.set_triangles(triangles, triangles_c)
 
-        constant_light = 1
+        constant_light = .1
         face.set_light([-1, 0, 0], constant_light)
-        light_vec = array([1.] * 5)
+        light_vec = array([.1] * 5)
         light_map = column_stack([light_vec]*3)
         self.assertTrue(allclose(face.get_light_map(), light_map))
