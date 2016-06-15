@@ -7,8 +7,7 @@ class ModelFitter:
         self.__image = image
 
     def check(self, normals):
-        # indices = nonzero(norm(normals, axis=1))
-        indices = normals[:, 3] > 0.5
+        indices = nonzero(normals[:, 3])
 
         N = normals[indices]
         Y = self.__image[indices]
