@@ -1,5 +1,5 @@
 from unittest import TestCase
-from numpy import array, allclose, array_equal, column_stack
+from numpy import array, allclose, array_equal, column_stack, zeros, ones
 
 from src import Face
 
@@ -95,8 +95,7 @@ class FaceTest(TestCase):
 
         constant_light = 1
         face.set_light([1, 0, 0], constant_light)
-        light_vec = array([1.] * 5)
-        light_map = column_stack([light_vec]*3)
+        light_map = ones((5, 3))
         self.assertTrue(allclose(face.get_light_map(), light_map))
 
     def test_get_light_map_with_negative_dot_product(self):
@@ -110,6 +109,5 @@ class FaceTest(TestCase):
 
         constant_light = .1
         face.set_light([-1, 0, 0], constant_light)
-        light_vec = array([.1] * 5)
-        light_map = column_stack([light_vec]*3)
+        light_map = zeros((5, 3)) + constant_light
         self.assertTrue(allclose(face.get_light_map(), light_map))
