@@ -1,5 +1,5 @@
 from numpy import array, nonzero
-from numpy.linalg import lstsq, norm
+from numpy.linalg import lstsq, norm#, inv
 
 
 class ModelFitter:
@@ -40,5 +40,7 @@ class ModelFitter:
         y = array([y_x, y_y, y_z, Y.sum()])
 
         x, _, _, _ = lstsq(A, y)
+        # TODO: why this fails `test_check` test?
+        # x = inv(A).dot(y)
 
         return x
