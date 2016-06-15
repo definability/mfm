@@ -41,8 +41,12 @@ class Face:
         self.__constant_light = constant_light
         if directed_light is not None:
             self.set_light(directed_light, constant_light)
+
         self.__normals = None
         self.__normal_map = None
+
+        self.__normal_max = None
+        self.__normal_min = None
 
     def get_vertices(self):
         return self.__vertices
@@ -95,11 +99,20 @@ class Face:
             return self.__normal_map
 
         self.__normal_map = self.get_normals().copy()
-        self.__normal_map -= apply_along_axis(numpy.min, 0, self.__normal_map)
-        self.__normal_map /= apply_along_axis(numpy.max, 0, self.__normal_map)
+
+        self.__normal_min = apply_along_axis(numpy.min, 0, self.__normal_map)
+        self.__normal_map -= self.__normal_min
+
+        self.__normal_max = apply_along_axis(numpy.max, 0, self.__normal_map)
+        self.__normal_map /= self.__normal_max
+
         self.__normal_map = self.__normal_map.astype('f')
 
         return self.__normal_map
+
+    def normal_map_to_normal_vectors(self, normal_map):
+        print(normal_map.shape, (normal_map * self.__normal_max).shape)
+        return (normal_map * self.__normal_max) + self.__normal_min
 
     def set_light(self, directed_light=None, constant_light=None):
         if directed_light is not None:
