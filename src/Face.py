@@ -72,8 +72,10 @@ class Face:
         if self.__light_map is not None:
             return self.__light_map
 
-        self.__light_map = dot(self.get_normals(), self.__directed_light) + \
-                           self.__constant_light
+        self.__light_map = dot(self.get_normals(), self.__directed_light)
+        self.__light_map[self.__light_map < 0.] = 0.
+        self.__light_map += self.__constant_light
+        self.__light_map[self.__light_map > 1.] = 1.
         self.__light_map = column_stack([self.__light_map.astype('f')]*3)
 
         return self.__light_map
