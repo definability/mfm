@@ -47,6 +47,9 @@ class View:
 
         glutDisplayFunc(self.__display)
 
+    def get_size(self):
+        return self.__size
+
     def update(self, vertices=None, colors=None, rotation=None, position=None):
         self.__vertices = vertices if vertices is not None else self.__vertices
         self.__colors = colors if colors is not None else self.__colors
