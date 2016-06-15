@@ -81,8 +81,8 @@ class FaceTest(TestCase):
 
         constant_light = 1
         face.set_light([1, 0, 0], constant_light)
-        light_vec = array([1., 1., 2**(-.5), 0., 0.]) * (3**(-.5))
-        light_map = column_stack([light_vec]*3) + constant_light
+        light_vec = array([1.] * 5)
+        light_map = column_stack([light_vec]*3)
         self.assertTrue(allclose(face.get_light_map(), light_map))
 
     def test_get_light_map_with_negative_dot_product(self):
