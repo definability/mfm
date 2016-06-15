@@ -3,8 +3,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.0.9] - 2015-06-15
 ### Added
 - Ability to change directed light properties by keyboard.
+- Fitter class with ability to find best fitting light conditions.
 
 ### Changed
 - Model uses View, instead of constituting composite.
@@ -57,7 +60,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.0.8...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.0.9...HEAD
+[0.0.9]: https://github.com/char-lie/mfm/compare/v0.0.8...v0.0.9
 [0.0.8]: https://github.com/char-lie/mfm/compare/v0.0.7...v0.0.8
 [0.0.7]: https://github.com/char-lie/mfm/compare/v0.0.6...v0.0.7
 [0.0.6]: https://github.com/char-lie/mfm/compare/v0.0.5...v0.0.6
