@@ -6,7 +6,7 @@ class ModelFitter:
     def __init__(self, image):
         self.__image = image
 
-    def check(self, normals):
+    def estimate_light(self, normals):
         indices = nonzero(normals[:, 3])
 
         N = normals[indices]
