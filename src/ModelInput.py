@@ -1,3 +1,6 @@
+from time import mktime
+from datetime import datetime
+
 from OpenGL.GLUT import GLUT_KEY_LEFT, GLUT_KEY_RIGHT
 from OpenGL.GLUT import GLUT_KEY_DOWN, GLUT_KEY_UP
 
@@ -60,6 +63,10 @@ class ModelInput:
         elif key == b'q' and not release:
             self.__model.close()
             return
+        elif key == b's' and not release:
+            t = datetime.now()
+            timestamp = int(mktime(t.timetuple()) * 1E6 + t.microsecond)
+            self.__model.save_image(str(timestamp))
         else:
             return
         self.__model.redraw()
