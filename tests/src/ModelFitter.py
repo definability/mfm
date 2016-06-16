@@ -10,7 +10,7 @@ class ModelFitterTest(TestCase):
     def test_constructor(self):
         self.assertIsInstance(ModelFitter(array([])), ModelFitter)
 
-    def test_check(self):
+    def test_estimate_light(self):
         N = array([[1, 0, 1, 1],
                    [0, 1, 1, 1],
                    [1, 2, 2, 1]])
@@ -18,10 +18,10 @@ class ModelFitterTest(TestCase):
         image = N.dot(light)
 
         fit = ModelFitter(image)
-        x = fit.check(N)
+        x = fit.estimate_light(N)
         self.assertTrue(allclose(N.dot(x), N.dot(light)))
 
-    def test_check_face(self):
+    def test_estimate_light_face(self):
         real_light = [0.337397462814, -0.496287279542,
                      -0.560942790202, -0.050649723592442575]
         normals_filename = get_datafile_path('test.npy')
@@ -34,7 +34,7 @@ class ModelFitterTest(TestCase):
         image.close()
 
         fit = ModelFitter(shadows)
-        x = fit.check(normals)
+        x = fit.estimate_light(normals)
 
         result = get_image(normals, x)
         real_result = get_image(normals, real_light)
