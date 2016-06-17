@@ -40,7 +40,7 @@ class ModelFitter:
         y = array([y_x, y_y, y_z, Y.sum()])
 
         x, _, _, _ = lstsq(A, y)
-        # TODO: why this fails `test_check` test?
+        # TODO: why does this fail `test_estimate_light` test?
         # x = inv(A).dot(y)
 
         return x
