@@ -41,6 +41,7 @@ def __random_cos():
 def get_face(coefficients=None, directed_light=None, constant_light=None):
     if coefficients is None:
         coefficients = randn(__dimensions, 1)
+    coefficients = coefficients.reshape((coefficients.size, 1))
     if directed_light is None:
         directed_light = -fabs(array([__random_cos(), __random_cos(),
                                       __random_cos()]))
