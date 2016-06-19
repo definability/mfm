@@ -106,6 +106,9 @@ class Model:
     def close(self):
         self.__view.close()
 
+    def optimize(self):
+        self.__fitter.start()
+
     def save_image(self, filename):
         if self.__texture == Texture.normal:
             img = array(self.__view.get_image())
