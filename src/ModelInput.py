@@ -68,6 +68,9 @@ class ModelInput:
             timestamp = int(mktime(t.timetuple()) * 1E6 + t.microsecond)
             self.__model.save_image(str(timestamp))
             return
+        elif key == b'o' and not release:
+            self.__model.optimize()
+            return
         else:
             return
         self.__model.redraw()
