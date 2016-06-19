@@ -46,6 +46,7 @@ class View:
         glClearColor(1., 1., 1., 0.)
 
         glutDisplayFunc(self.__display)
+        self.__callback = None
 
     def get_size(self):
         return self.__size
@@ -56,7 +57,9 @@ class View:
         self.__rotation = rotation if rotation is not None else self.__rotation
         self.__position = position if position is not None else self.__position
 
-    def redraw(self):
+    def redraw(self, callback=None):
+        # print('Set callback to', callback)
+        self.__callback = callback
         glutPostRedisplay()
 
     def get_image(self):
@@ -84,7 +87,10 @@ class View:
         glDrawElements(GL_TRIANGLES, View.__triangles_size,
                        GL_UNSIGNED_SHORT, View.__triangles)
 
+        # print('swap buffers')
         glutSwapBuffers()
+        if self.__callback is not None:
+            self.__callback()
 
     def __init_display(self):
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
