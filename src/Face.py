@@ -113,7 +113,6 @@ class Face:
         return self.__normal_map
 
     def normal_map_to_normal_vectors(self, normal_map):
-        print(normal_map.shape, (normal_map * self.__normal_max).shape)
         return (normal_map * self.__normal_max) + self.__normal_min
 
     def set_light(self, directed_light=None, constant_light=None):
