@@ -17,6 +17,9 @@ class Model:
         self.__light = True
         self.__face = None
         self.__view = view
+        self.__fitter = None
+        self.__on_draw_callbacks = []
+        self.__now_processing = False
 
         self.__texture = Texture.light
 
@@ -33,15 +36,43 @@ class Model:
 
         self.calculate()
 
-    def start(self):
+    def start(self, fitter):
+        self.__fitter = fitter
         glutMainLoop()
 
-    def redraw(self):
-        self.__view.redraw()
+    def redraw(self, callback=None):
+        # print('redrawing')
+        self.__view.redraw(callback)
 
-    def calculate(self, new_model=True):
+    def request_normals(self, coefficients, callback):
+        if self.__texture == Texture.light:
+            self.toggle_texture()
+
+        if len(self.__on_draw_callbacks) == 0 and not self.__now_processing:
+            self.__now_processing = True
+            self.calculate(True, coefficients)
+            self.redraw(lambda: self.__on_redraw(callback))
+        else:
+            self.__on_draw_callbacks.append((coefficients, callback))
+
+    def __on_redraw(self, callback):
+        # print('redraw callback')
+        img = array(self.__view.get_image())
+        img = img.reshape(img.size//4, 4)
+        data = column_stack((
+                self.__face.normal_map_to_normal_vectors(img[:, :3]),
+                img[:, 3]))
+        callback(data)
+        if len(self.__on_draw_callbacks) > 0:
+            coefficients, callback = self.__on_draw_callbacks.pop()
+            self.calculate(True, coefficients)
+            self.redraw(lambda: self.__on_redraw(callback))
+        else:
+            self.__now_processing = False
+
+    def calculate(self, new_model=True, coefficients=None):
         if new_model:
-            self.__face = MFM.get_face()
+            self.__face = MFM.get_face(coefficients)
 
         vertices = self.__face.get_vertices_c()
         if self.__texture == Texture.light:
