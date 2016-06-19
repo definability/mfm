@@ -67,6 +67,7 @@ class ModelInput:
             t = datetime.now()
             timestamp = int(mktime(t.timetuple()) * 1E6 + t.microsecond)
             self.__model.save_image(str(timestamp))
+            return
         else:
             return
         self.__model.redraw()
