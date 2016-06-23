@@ -1,11 +1,13 @@
+import ctypes
 from scipy.io import loadmat
 from numpy.random import rand, randn
 from numpy.linalg import norm
-from numpy import array, ones, dot, fabs
+from numpy import array, ones, dot, fabs, zeros, floor
 
 from .Face import Face
 from .View import View
 
+c_face = ctypes.cdll.LoadLibrary('./lib_face.so')
 
 DEFAULT_MODEL_PATH = '01_MorphableModel.mat'
 
@@ -43,7 +45,6 @@ def __random_cos():
 def get_face(coefficients=None, directed_light=None, constant_light=None):
     if coefficients is None:
         coefficients = randn(__dimensions, 1)
-    coefficients = coefficients.reshape((coefficients.size, 1))
     if directed_light is None:
         directed_light = -fabs(array([__random_cos(), __random_cos(),
                                       __random_cos()]))
@@ -52,13 +53,35 @@ def get_face(coefficients=None, directed_light=None, constant_light=None):
     if constant_light is None:
         constant_light = __random_cos()
 
-    n_seg = 1 if len(coefficients.shape) == 1 else coefficients.shape[1]
+    if len(coefficients.shape) == 1:
+        mean_shape = __model['shapeMU']
+        pc_deviations = __model['shapeEV']
+        points = __principal_components.shape[0]
+        vertices = zeros((points, 1), dtype='f')
 
-    mean_shape = __model['shapeMU'] * ones([1, n_seg])
-    pc_deviations = __model['shapeEV'][0:__dimensions] * ones([1, n_seg])
+        coefficients_f = coefficients.astype('f')
 
-    features = dot(__principal_components[:, 0:__dimensions],
-                   coefficients * pc_deviations)
-    vertices = mean_shape + features
+        c_face.get_face(
+               mean_shape.ctypes.get_as_parameter(),
+               __principal_components_flattened.ctypes.get_as_parameter(),
+               pc_deviations.ctypes.get_as_parameter(),
+               coefficients_f.ctypes.get_as_parameter(),
+               vertices.ctypes.get_as_parameter(),
+               __dimensions,
+               points)
 
-    return Face(vertices.astype('f'), directed_light, constant_light)
+        return Face(vertices, directed_light, constant_light)
+    else:
+        coefficients = coefficients.reshape((coefficients.size, 1))
+        n_seg = coefficients.shape[1]
+
+        mean_shape = __model['shapeMU'] * ones([1, n_seg])
+        pc_deviations = __model['shapeEV'][0:__dimensions] * ones([1, n_seg])
+
+        features = dot(__principal_components[:, 0:__dimensions],
+                       coefficients * pc_deviations)
+
+        features = __principal_components.dot(coefficients * pc_deviations)
+        vertices = mean_shape + features
+
+        return Face(vertices.astype('f'), directed_light, constant_light)
