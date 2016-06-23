@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.0.10] - 2015-06-23
+### Added
+- Nelder-Mead method for model form fitting.
+
 ### Changed
 - Name of light estimate method in `ModelFitter`.
 
@@ -62,7 +67,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.0.9...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.0.10...HEAD
+[0.0.10]: https://github.com/char-lie/mfm/compare/v0.0.9...v0.0.10
 [0.0.9]: https://github.com/char-lie/mfm/compare/v0.0.8...v0.0.9
 [0.0.8]: https://github.com/char-lie/mfm/compare/v0.0.7...v0.0.8
 [0.0.7]: https://github.com/char-lie/mfm/compare/v0.0.6...v0.0.7
