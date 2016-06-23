@@ -91,7 +91,7 @@ class ModelFitter:
 
     def receive_normals(self, normals, index=None):
         light = self.estimate_light(normals)
-        error = ((normals.dot(light) - self.__image) ** 2).sum()
+        error = ((normals.dot(light) - self.__image)[nonzero(normals[:, 3])] ** 2).sum()
         self.__normals = normals
         self.__light = light
         # print('Received normals for step', self.__step, 'with error', error)
