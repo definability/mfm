@@ -18,12 +18,14 @@ __triangles_c = None
 
 __principal_components = None
 __principal_components_flattened = None
+__ev_normalized = None
 __dimensions = None
 
 
 def init(path=None):
     global __model, __triangles, __triangles_flattened, __dimensions
     global __principal_components, __principal_components_flattened
+    global __ev_normalized
 
     __model = loadmat(path if path is not None else DEFAULT_MODEL_PATH)
     __triangles = __model['tl'] - 1
@@ -34,6 +36,8 @@ def init(path=None):
     __principal_components_flattened = __principal_components.flatten()
     __dimensions = __principal_components.shape[1]
 
+    __ev_normalized = __model['shapeEV'].flatten() / __model['shapeEV'].min()
+
     Face.set_triangles(__triangles, __triangles_c)
     View.set_triangles(__triangles_c, __triangles.size)
 
@@ -41,6 +45,9 @@ def init(path=None):
 def __random_cos():
     return 2 * rand() - 1
 
+def get_multipliers(scale=1):
+    for m in floor(scale * __ev_normalized).astype('i'):
+        yield m
 
 def get_face(coefficients=None, directed_light=None, constant_light=None):
     if coefficients is None:
