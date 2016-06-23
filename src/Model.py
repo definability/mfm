@@ -64,7 +64,7 @@ class Model:
                 img[:, 3]))
         callback(data)
         if len(self.__on_draw_callbacks) > 0:
-            coefficients, callback = self.__on_draw_callbacks.pop()
+            coefficients, callback = self.__on_draw_callbacks.pop(0)
             self.calculate(True, coefficients)
             self.redraw(lambda: self.__on_redraw(callback))
         else:
