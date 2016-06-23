@@ -15,12 +15,13 @@ __triangles_flattened = None
 __triangles_c = None
 
 __principal_components = None
+__principal_components_flattened = None
 __dimensions = None
 
 
 def init(path=None):
-    global __model, __triangles, __triangles_flattened
-    global __principal_components, __dimensions
+    global __model, __triangles, __triangles_flattened, __dimensions
+    global __principal_components, __principal_components_flattened
 
     __model = loadmat(path if path is not None else DEFAULT_MODEL_PATH)
     __triangles = __model['tl'] - 1
@@ -28,6 +29,7 @@ def init(path=None):
     __triangles_c = __triangles_flattened.ctypes.get_as_parameter()
 
     __principal_components = __model['shapePC']
+    __principal_components_flattened = __principal_components.flatten()
     __dimensions = __principal_components.shape[1]
 
     Face.set_triangles(__triangles, __triangles_c)
