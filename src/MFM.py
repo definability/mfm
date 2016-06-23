@@ -51,7 +51,7 @@ def get_multipliers(scale=1):
 
 def get_face(coefficients=None, directed_light=None, constant_light=None):
     if coefficients is None:
-        coefficients = randn(__dimensions, 1)
+        coefficients = randn(__dimensions)
     if directed_light is None:
         directed_light = -fabs(array([__random_cos(), __random_cos(),
                                       __random_cos()]))
