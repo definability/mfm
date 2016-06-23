@@ -22,11 +22,11 @@ class ModelFitterTest(TestCase):
         self.assertTrue(allclose(N.dot(x), N.dot(light)))
 
     def test_estimate_light_face(self):
-        real_light = [0.337397462814, -0.496287279542,
-                     -0.560942790202, -0.050649723592442575]
         normals_filename = get_datafile_path('test.npy')
         model_filename = get_datafile_path('test.png')
+        light_filename = get_datafile_path('test.light.npy')
 
+        real_light = load(light_filename)
         normals = load(normals_filename)
 
         image = Image.open(model_filename).convert('L')
