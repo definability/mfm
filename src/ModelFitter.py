@@ -168,6 +168,8 @@ class ModelFitter:
 
     def reflection(self):
         self.__sort_parameters()
+        if self.__finished():
+            return 'finish'
         if self.reflection_error < self.__errors[0]:
             return 'expansion'
         elif self.reflection_error >= self.__errors[-1]:
