@@ -7,9 +7,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.0.10] - 2015-06-23
 ### Added
 - Nelder-Mead method for model form fitting.
+- Controls to launch fitting procedure.
 
 ### Changed
 - Name of light estimate method in `ModelFitter`.
+- Improved performance of Face generation.
 
 ## [0.0.9] - 2015-06-15
 ### Added
