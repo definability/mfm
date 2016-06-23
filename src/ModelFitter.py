@@ -105,7 +105,7 @@ class ModelFitter:
             self.end_error = error
             if None not in self.__errors:
                 self.__sort_parameters()
-                getattr(self, 'calculate_' + self.__step())()
+                getattr(self, 'calculate_' + getattr(self, self.__step)())()
         elif self.__step == 'shrink':
             # print('{} items left'.format(sum(1 if e is None else 0 for e in self.__errors)))
             self.__errors[index] = error
