@@ -3,6 +3,14 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.0.11] - 2015-06-24
+### Added
+- Separate class for Nelder-Mead fitting.
+
+### Changed
+- Made `ModelFitter` class abstract.
+
 ### Fixed
 - MFM uses C function for random Face generation.
 
@@ -71,7 +79,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.0.10...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.0.11...HEAD
+[0.0.11]: https://github.com/char-lie/mfm/compare/v0.0.10...v0.0.11
 [0.0.10]: https://github.com/char-lie/mfm/compare/v0.0.9...v0.0.10
 [0.0.9]: https://github.com/char-lie/mfm/compare/v0.0.8...v0.0.9
 [0.0.8]: https://github.com/char-lie/mfm/compare/v0.0.7...v0.0.8
