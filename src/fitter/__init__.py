@@ -1,3 +1,4 @@
 from .ModelFitter import ModelFitter
+from .NelderMeadFitter import NelderMeadFitter
 
-__all__ = ['ModelFitter']
+__all__ = ['ModelFitter', 'NelderMeadFitter']
