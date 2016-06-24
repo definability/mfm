@@ -7,7 +7,7 @@ void get_face(float* mean_shape, float* principal_components,
         j = 0;
         do {
             face[i] += principal_components[i * dimensions + j]
-                     * coefficients[j] * pc_deviations[j];
+                       * coefficients[j] * pc_deviations[j];
         } while(++j < dimensions);
     } while(++i < vertices);
 }

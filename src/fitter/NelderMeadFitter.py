@@ -3,16 +3,14 @@ from numpy import array, nonzero, mean, zeros, ones, argsort, column_stack
 from numpy.random import randn
 from numpy.linalg import lstsq, norm  # , inv
 
+from .ModelFitter import ModelFitter
 
-class ModelFitter:
+
+class NelderMeadFitter(ModelFitter):
     def __init__(self, image, dimensions=199, model=None):
-        self.__image = array(image)
-        self.__model = model
-        self.__dimensions = dimensions
-
         self.__step = None
-        self.__parameters = [None] * (self.__dimensions)
-        self.__errors = [None] * (self.__dimensions)
+        self.__parameters = [None] * (dimensions)
+        self.__errors = [None] * (dimensions)
         self.__normals = None
 
         self.__centroid = None
@@ -30,68 +28,26 @@ class ModelFitter:
         self.__rho = .5
         self.__sigma = .5
 
-    def estimate_light(self, normals):
-        indices = nonzero(normals[:, 3])
-
-        N = normals[indices]
-        Y = self.__image[indices]
-
-        N_x = N[:, 0]
-        N_y = N[:, 1]
-        N_z = N[:, 2]
-
-        y_x = Y.dot(N_x)
-        y_y = Y.dot(N_y)
-        y_z = Y.dot(N_z)
-
-        n_x = N_x.sum()
-        n_y = N_y.sum()
-        n_z = N_z.sum()
-
-        n_xx = N_x.dot(N_x)
-        n_xy = N_x.dot(N_y)
-        n_xz = N_x.dot(N_z)
-        n_yy = N_y.dot(N_y)
-        n_yz = N_y.dot(N_z)
-        n_zz = N_z.dot(N_z)
-
-        A = array([
-            [n_xx, n_xy, n_xz, n_x],
-            [n_xy, n_yy, n_yz, n_y],
-            [n_xz, n_yz, n_zz, n_z],
-            [n_x,  n_y,  n_z, len(N)]
-        ])
-        y = array([y_x, y_y, y_z, Y.sum()])
-
-        x, _, _, _ = lstsq(A, y)
-        # TODO: why does this fail `test_estimate_light` test?
-        # x = inv(A).dot(y)
-
-        return x
+        super(NelderMeadFitter, self).__init__(image, dimensions, model)
 
     def start(self):
         self.__initiate_parameters()
 
-    def __request_normals(self, parameters, index=None):
-        # # print('requested normals')
-        self.__model.request_normals(parameters,
-            lambda normals: self.receive_normals(normals, index))
-
     def __initiate_parameters(self):
         self.__step = 'start'
-        for i in range(self.__dimensions):
-            # print('Initial step {} of {}'.format(i, self.__dimensions))
-            self.__parameters[i] = randn(self.__dimensions) * 1
-            # self.__parameters[i] = zeros(self.__dimensions)
+        for i in range(self._dimensions):
+            # print('Initial step {} of {}'.format(i, self._dimensions))
+            self.__parameters[i] = randn(self._dimensions) * 1
+            # self.__parameters[i] = zeros(self._dimensions)
             # self.__parameters[i][:i] = 1.
-            self.__request_normals(self.__parameters[i], i)
-        # self.__end = ones(self.__dimensions)
-        self.__end = randn(self.__dimensions)
-        self.__request_normals(self.__end, self.__dimensions)
+            self.request_normals(self.__parameters[i], i)
+        # self.__end = ones(self._dimensions)
+        self.__end = randn(self._dimensions)
+        self.request_normals(self.__end, self._dimensions)
 
     def receive_normals(self, normals, index=None):
         light = self.estimate_light(normals)
-        error = ((normals.dot(light) - self.__image)[nonzero(normals[:, 3])] ** 2).sum()
+        error = self.get_image_deviation(normals.dot(light), normals)
         self.__normals = normals
         self.__light = light
         # print('Received normals for step', self.__step, 'with error', error)
@@ -100,7 +56,7 @@ class ModelFitter:
             setattr(self, self.__step + '_error', error)
             getattr(self, 'calculate_' + getattr(self, self.__step)())()
 
-        elif self.__step == 'shrink' and index == self.__dimensions:
+        elif self.__step == 'shrink' and index == self._dimensions:
             # print('{} items left'.format(sum(1 if e is None else 0 for e in self.__errors)))
             self.end_error = error
             if None not in self.__errors:
@@ -113,7 +69,7 @@ class ModelFitter:
                 self.__sort_parameters()
                 getattr(self, 'calculate_' + getattr(self, self.__step)())()
 
-        elif self.__step == 'start' and index == self.__dimensions:
+        elif self.__step == 'start' and index == self._dimensions:
             self.end_error = error
             if None not in self.__errors:
                 # print('Started reflection')
@@ -141,14 +97,14 @@ class ModelFitter:
         errors = []
 
         for i in indices[:-1]:
-            if i == self.__dimensions:
+            if i == self._dimensions:
                 parameters.append(self.__end)
                 errors.append(self.end_error)
             else:
                 parameters.append(self.__parameters[i])
                 errors.append(self.__errors[i])
 
-        if indices[-1] != self.__dimensions:
+        if indices[-1] != self._dimensions:
             self.end_error = self.__errors[indices[-1]]
             self.__end = self.__parameters[indices[-1]]
 
@@ -164,7 +120,7 @@ class ModelFitter:
         self.calculate_centroid()
         self.__reflection = self.__centroid + self.__alpha * \
             (self.__centroid - self.__end)
-        self.__request_normals(self.__reflection)
+        self.request_normals(self.__reflection)
 
     def reflection(self):
         self.__sort_parameters()
@@ -184,7 +140,7 @@ class ModelFitter:
         self.__step = 'expansion'
         self.__expansion = self.__centroid + self.__gamma * \
             (self.__reflection - self.__centroid)
-        self.__request_normals(self.__expansion)
+        self.request_normals(self.__expansion)
 
     def expansion(self):
         if self.expansion_error < self.reflection_error:
@@ -199,7 +155,7 @@ class ModelFitter:
         self.__step = 'contraction'
         self.__contraction = self.__centroid + self.__rho * \
             (self.__parameters[-1] - self.__centroid)
-        self.__request_normals(self.__contraction)
+        self.request_normals(self.__contraction)
 
     def contraction(self):
         if self.contraction_error < self.end_error:
@@ -218,9 +174,9 @@ class ModelFitter:
             (self.__end - self.__parameters[0])
         self.end_error = None
 
-        for i in range(1, self.__dimensions):
-            self.__request_normals(self.__parameters[i], i)
-        self.__request_normals(self.__end, self.__dimensions)
+        for i in range(1, self._dimensions):
+            self.request_normals(self.__parameters[i], i)
+        self.request_normals(self.__end, self._dimensions)
 
     def shrink(self):
         if self.__finished():
@@ -255,3 +211,4 @@ class ModelFitter:
             s += norm(self.__parameters[i] - self.__parameters[i-1])
         # print('Perimeter is', s)
         return s < 50.
+

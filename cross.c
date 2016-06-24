@@ -74,8 +74,8 @@ void normalize(float* normals, int amount) {
         normal_z = i*COMPONENTS_COUNT + Z_OFFSET;
 
         norm = sqrt(normals[normal_x] * normals[normal_x]
-                  + normals[normal_y] * normals[normal_y]
-                  + normals[normal_z] * normals[normal_z]);
+                    + normals[normal_y] * normals[normal_y]
+                    + normals[normal_z] * normals[normal_z]);
         normals[normal_x] /= norm;
         normals[normal_y] /= norm;
         normals[normal_z] /= norm;
@@ -85,7 +85,7 @@ void normalize(float* normals, int amount) {
 void get_normals(float* vertices, uint16_t* triangles, float* normal_map,
                  int vertices_count, int triangles_count) {
     float* normal_vectors = (float*)malloc(COMPONENTS_COUNT *
-                            sizeof(float) * triangles_count);
+                                           sizeof(float) * triangles_count);
     assert(normal_vectors);
     cross(vertices, triangles, normal_vectors, triangles_count);
     normals(normal_vectors, triangles, normal_map, triangles_count);
