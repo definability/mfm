@@ -3,6 +3,6 @@ from .Face import Face
 from .View import View
 from .Model import Model
 from .ModelInput import ModelInput
-from .ModelFitter import ModelFitter
+from . import fitter
 
-__all__ = ['MFM', 'Face', 'View', 'Model', 'ModelInput', 'ModelFitter']
+__all__ = ['MFM', 'Face', 'View', 'Model', 'ModelInput', 'fitter']
