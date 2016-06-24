@@ -2,7 +2,7 @@ from os import remove
 
 from unittest import TestCase
 from scipy.io import savemat
-from numpy import array, allclose, column_stack, zeros
+from numpy import array, allclose, column_stack, zeros, ones
 
 from src import MFM, Face
 
@@ -19,7 +19,7 @@ class MFMTest(TestCase):
         triangles = array([[0, 1, 2], [2, 3, 4]], dtype='uint16')
 
         principal_components = zeros((vertices.size, 199))
-        deviations = zeros((199, 1))
+        deviations = ones((199, 1))
 
         savemat(DATA_FILE, {
             'shapeMU': vertices.reshape((vertices.size, 1)),
