@@ -1,7 +1,8 @@
 from PIL import Image
 from numpy import array
 
-from src import MFM, Model, ModelInput, View, ModelFitter
+from src import MFM, Model, ModelInput, View
+from src.fitter import ModelFitter
 from data import get_datafile_path
 
 MFM.init()

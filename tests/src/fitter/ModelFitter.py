@@ -2,7 +2,7 @@ from unittest import TestCase
 from numpy import array, allclose, load
 from PIL import Image
 
-from src import ModelFitter
+from src.fitter import ModelFitter
 from data import get_datafile_path
 
 
