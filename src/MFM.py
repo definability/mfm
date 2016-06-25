@@ -46,8 +46,7 @@ def __random_cos():
     return 2 * rand() - 1
 
 def get_multipliers(scale=1):
-    for m in floor(scale * __ev_normalized).astype('i'):
-        yield m
+    return floor(scale * __ev_normalized**.5).astype('i')
 
 def get_face(coefficients=None, directed_light=None, constant_light=None):
     if coefficients is None:
