@@ -48,6 +48,23 @@ def __random_cos():
 def get_multipliers(scale=1):
     return floor(scale * __ev_normalized**.5).astype('i')
 
+def change_coefficient(face, index, coefficient):
+    vertices = face.get_original_vertices().copy()
+    points = __principal_components.shape[0]
+    pc_deviations = __model['shapeEV']
+    coefficients = face.get_coefficients().copy()
+    coefficient, coefficients[index] = coefficients[index], coefficient
+    c_face.get_row(
+           __principal_components_flattened.ctypes.get_as_parameter(),
+           pc_deviations.ctypes.get_as_parameter(),
+           ctypes.c_float(coefficients[index] - coefficient),
+           index,
+           vertices.ctypes.get_as_parameter(),
+           __dimensions,
+           points)
+    return Face(vertices, face.get_directed_light(), face.get_constant_light(),
+                coefficients=coefficients)
+
 def get_face(coefficients=None, directed_light=None, constant_light=None):
     if coefficients is None:
         coefficients = randn(__dimensions)
@@ -76,7 +93,8 @@ def get_face(coefficients=None, directed_light=None, constant_light=None):
                __dimensions,
                points)
 
-        return Face(vertices, directed_light, constant_light)
+        return Face(vertices, directed_light, constant_light,
+                    coefficients=coefficients_f)
     else:
         coefficients = coefficients.reshape((coefficients.size, 1))
         n_seg = coefficients.shape[1]
@@ -90,4 +108,5 @@ def get_face(coefficients=None, directed_light=None, constant_light=None):
         features = __principal_components.dot(coefficients * pc_deviations)
         vertices = mean_shape + features
 
-        return Face(vertices.astype('f'), directed_light, constant_light)
+        return Face(vertices.astype('f'), directed_light, constant_light,
+                    coefficients=coefficients)
