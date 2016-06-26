@@ -6,7 +6,7 @@ from .ModelFitter import ModelFitter
 
 class GibbsSamplerFitter(ModelFitter):
     def __init__(self, image, dimensions=199, model=None, steps=None,
-                 max_loops=1):
+                 max_loops=1, determined_loops=0):
         self.__steps = ones(dimensions, dtype='i') if steps is None else steps
         self.__current_step = None
         self.__parameters = zeros(dimensions, dtype='f')
@@ -14,6 +14,7 @@ class GibbsSamplerFitter(ModelFitter):
         self.__errors = None
         self.__values = None
         self.__max_loops = max_loops
+        self.__determined_loops = determined_loops
 
         super(GibbsSamplerFitter, self).__init__(image, dimensions, model)
 
@@ -59,7 +60,7 @@ class GibbsSamplerFitter(ModelFitter):
 
         errors = array(self.__errors)
         max_error = errors.max()
-        if self.__loop >= 0:
+        if self.__loop >= self.__determined_loops:
             X = exp(- errors / max_error).sum()
             v = rand()
             best_index = -1
