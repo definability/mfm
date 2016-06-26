@@ -4,6 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.0.12] - 2015-06-26
+### Added
+- Gibbs Sampler Fitter class.
+- Ability to change one coefficient of face.
+
 ## [0.0.11] - 2015-06-24
 ### Added
 - Separate class for Nelder-Mead fitting.
@@ -79,7 +84,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.0.11...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.0.12...HEAD
+[0.0.12]: https://github.com/char-lie/mfm/compare/v0.0.11...v0.0.12
 [0.0.11]: https://github.com/char-lie/mfm/compare/v0.0.10...v0.0.11
 [0.0.10]: https://github.com/char-lie/mfm/compare/v0.0.9...v0.0.10
 [0.0.9]: https://github.com/char-lie/mfm/compare/v0.0.8...v0.0.9
