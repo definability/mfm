@@ -31,9 +31,11 @@ class Face:
     __triangles = None
     __triangles_c = None
 
-    def __init__(self, vertices, directed_light=None, constant_light=0):
+    def __init__(self, vertices, directed_light=None, constant_light=0,
+                 coefficients=None):
         if vertices.size % 3 != 0:
             raise ValueError(ERROR_TEXT['VERTICES_SIZE'].format(vertices.size))
+        self.__original_vertices = vertices.copy()
         self.__vertices = normalize(vertices)
         self.__vertices_c = self.__vertices.ctypes.get_as_parameter()
         self.__light_map = None
@@ -41,12 +43,19 @@ class Face:
         self.__constant_light = constant_light
         if directed_light is not None:
             self.set_light(directed_light, constant_light)
+        self.__coefficients = coefficients
 
         self.__normals = None
         self.__normal_map = None
 
         self.__normal_max = None
         self.__normal_min = None
+
+    def get_coefficients(self):
+        return self.__coefficients
+
+    def get_original_vertices(self):
+        return self.__original_vertices
 
     def get_vertices(self):
         return self.__vertices
