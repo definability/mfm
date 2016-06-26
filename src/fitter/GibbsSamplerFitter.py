@@ -1,5 +1,5 @@
 from PIL import Image
-from numpy import ones, zeros, linspace, argmin, nonzero, column_stack
+from numpy import ones, zeros, linspace, argmin, nonzero, column_stack, exp, array
 from numpy.random import rand, randint
 
 from .ModelFitter import ModelFitter
@@ -18,8 +18,8 @@ class GibbsSamplerFitter(ModelFitter):
         super(GibbsSamplerFitter, self).__init__(image, dimensions, model)
 
     def start(self):
-        # self.__get_parameter(randint(0, self._dimensions))
         self.__loop = 0
+        self.request_normals(zeros(self._dimensions, dtype='f'), 'init')
         self.__get_parameter(0)
 
     def __get_parameter(self, i):
@@ -33,14 +33,20 @@ class GibbsSamplerFitter(ModelFitter):
         self.__errors = [None] * self.__values.size
         for i, value in enumerate(self.__values):
             self.__values[i] = value
-            parameters = self.__parameters.copy()
-            parameters[self.__current_step] = value
-            self.request_normals(parameters, i)
+            # parameters = self.__parameters.copy()
+            # parameters[self.__current_step] = value
+            # self.request_normals(parameters, i)
+            self.request_normals((self.__current_step, value), i)
 
     def receive_normals(self, normals, index=None):
+        if index == 'init':
+            return
+        elif index == 'pre':
+            self.__get_parameter(self.__current_step + 1)
+            return
+
         light = self.estimate_light(normals)
         shadows = normals.dot(light)
-        # shadows[nonzero(normals)[0]] = abs(rand(nonzero(normals)[0].size))
 
         if index is None:
             self.finish(normals, shadows)
@@ -51,19 +57,40 @@ class GibbsSamplerFitter(ModelFitter):
         if None in self.__errors:
             return
 
-        best_index = argmin(self.__errors)
+        errors = array(self.__errors)
+        max_error = errors.max()
+        if self.__loop >= 0:
+            X = exp(- errors / max_error).sum()
+            v = rand()
+            best_index = -1
+            t = 0
+            for i, error in enumerate(errors):
+                e = exp(error / max_error) / X
+                t += e
+                if v <= e:
+                    best_index = i
+                    break
+                else:
+                    v -= e
+            if best_index == -1:
+                best_index = len(self.__errors) - 1
+        else:
+            best_index = argmin(self.__errors)
+
         self.__parameters[self.__current_step] = self.__values[best_index]
-        print('{}.{}: Error of the best is {}'.format(
-            self.__loop, self.__current_step, self.__errors[best_index]))
+        print('{}.{}: Error of the best is {} ({})'.format(
+            self.__loop, self.__current_step, self.__errors[best_index],
+            min(self.__errors)))
 
         if self.__current_step + 1 == self._dimensions and self.__loop == 2:
             self.request_normals(self.__parameters)
             return
         elif self.__current_step + 1 == self._dimensions:
-            self.__current_step = -1
+            self.__current_step = 0
             self.__loop += 1
 
-        self.__get_parameter(self.__current_step + 1)
+        self.request_normals((self.__current_step, self.__values[best_index]),
+                             'pre')
 
     def finish(self, normals, shadows):
         img = shadows[::-1]
