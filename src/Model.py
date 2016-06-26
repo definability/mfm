@@ -71,8 +71,11 @@ class Model:
             self.__now_processing = False
 
     def calculate(self, new_model=True, coefficients=None):
-        if new_model:
+        if new_model and type(coefficients) is not tuple:
             self.__face = MFM.get_face(coefficients)
+        elif new_model:
+            self.__face = MFM.change_coefficient(
+                    self.__face, coefficients[0], coefficients[1])
 
         vertices = self.__face.get_vertices_c()
         if self.__texture == Texture.light:
