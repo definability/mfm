@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Gibbs Sampler Fitter class.
 
 ## [0.0.11] - 2015-06-24
 ### Added
