@@ -83,7 +83,8 @@ class GibbsSamplerFitter(ModelFitter):
             self.__loop, self.__current_step, self.__errors[best_index],
             min(self.__errors)))
 
-        if self.__current_step + 1 == self._dimensions and self.__loop == 2:
+        if self.__current_step + 1 == self._dimensions \
+                and self.__loop + 1 >= self.__max_loops:
             self.request_normals(self.__parameters)
             return
         elif self.__current_step + 1 == self._dimensions:
