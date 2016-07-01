@@ -5,12 +5,25 @@ from numpy.linalg import lstsq, norm  # , inv
 
 
 class ModelFitter:
+    """Abstract class for Face fitting procedure.
+
+    Should call Face rendering and wait for response.
+    """
     def __init__(self, image, dimensions=199, model=None):
+        """Initializes fitter for given image.
+
+        Fits provided number of dimensions of given model to the image.
+        """
         self.__image = array(image)
         self.__model = model
         self._dimensions = dimensions
 
     def estimate_light(self, normals):
+        """Estimates light parameters to the image with given normal vectors.
+
+        Light parameters contain vector of directed light
+        and intensity of ambient light.
+        """
         indices = nonzero(normals[:, 3])
 
         N = normals[indices]
@@ -50,15 +63,30 @@ class ModelFitter:
         return x
 
     def start(self):
+        """Start fitting procedure.
+
+        Should be called by host.
+        """
         raise NotImplementedError()
 
     def request_normals(self, parameters, index=None):
+        """Requests normals from Model with given parameters.
+
+        Parameter `index` is a label for the request.
+        Will be provided with callback for Fitter to identify
+        request, which provoked this response.
+        """
         self.__model.request_normals(parameters,
             lambda normals: self.receive_normals(normals, index))
 
     def receive_normals(self, normals, index=None):
+        """Callback for host on render.
+
+        Provides normal vectors and label, with which Face was requested.
+        """
         raise NotImplementedError()
 
     def get_image_deviation(self, image, normals):
+        """Cost function for fitting result."""
         diff = image - self.__image
         return (diff[nonzero(normals[:, 3])] ** 2).sum()
