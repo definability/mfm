@@ -90,6 +90,9 @@ class GibbsSamplerFitter(ModelFitter):
         elif self.__current_step + 1 == self._dimensions:
             self.__current_step = 0
             self.__loop += 1
+            self.request_normals((self._dimensions - 1,
+                                  self.__values[best_index]), 'pre')
+            return
 
         self.request_normals((self.__current_step, self.__values[best_index]),
                              'pre')
