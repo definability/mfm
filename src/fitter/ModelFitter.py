@@ -89,4 +89,5 @@ class ModelFitter:
     def get_image_deviation(self, image, normals):
         """Cost function for fitting result."""
         diff = image - self.__image
-        return (diff[nonzero(normals[:, 3])] ** 2).sum()
+        indices = nonzero(normals[:, 3])
+        return (diff[indices] ** 2).mean()
