@@ -88,8 +88,7 @@ class Model:
         img = array(self.__view.get_image())
         img = img.reshape(img.size//4, 4)
         data = column_stack((
-                self.__face.normal_map_to_normal_vectors(img[:, :3]),
-                img[:, 3]))
+            self.__face.normal_map_to_normal_vectors(img[:, :3]), img[:, 3]))
         callback(data)
         if len(self.__on_draw_callbacks) > 0:
             coefficients, callback = self.__on_draw_callbacks.pop(0)
@@ -111,7 +110,7 @@ class Model:
             self.__face = MFM.get_face(coefficients)
         elif new_model:
             self.__face = MFM.change_coefficient(
-                    self.__face, coefficients[0], coefficients[1])
+                self.__face, coefficients[0], coefficients[1])
 
         vertices = self.__face.get_vertices_c()
         if self.__texture == Texture.light:
@@ -173,8 +172,8 @@ class Model:
             img = array(self.__view.get_image())
             img = img.reshape(img.size//4, 4)
             data = column_stack((
-                    self.__face.normal_map_to_normal_vectors(img[:, :3]),
-                    img[:, 3]))
+                self.__face.normal_map_to_normal_vectors(img[:, :3]),
+                img[:, 3]))
             with open(filename + '.npy', 'wb') as f:
                 save(f, data[::-1])
         elif self.__texture == Texture.light:

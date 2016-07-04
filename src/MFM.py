@@ -71,13 +71,10 @@ def change_coefficient(face, index, coefficient):
     coefficients = face.get_coefficients().copy()
     coefficient, coefficients[index] = coefficients[index], coefficient
     c_face.get_row(
-           __principal_components_flattened.ctypes.get_as_parameter(),
-           pc_deviations.ctypes.get_as_parameter(),
-           ctypes.c_float(coefficients[index] - coefficient),
-           index,
-           vertices.ctypes.get_as_parameter(),
-           __dimensions,
-           points)
+        __principal_components_flattened.ctypes.get_as_parameter(),
+        pc_deviations.ctypes.get_as_parameter(),
+        ctypes.c_float(coefficients[index] - coefficient), index,
+        vertices.ctypes.get_as_parameter(), __dimensions, points)
     return Face(vertices, face.get_directed_light(), face.get_constant_light(),
                 coefficients=coefficients)
 
@@ -114,13 +111,11 @@ def get_face(coefficients=None, directed_light=None, constant_light=None):
         coefficients_f = coefficients.astype('f')
 
         c_face.get_face(
-               mean_shape.ctypes.get_as_parameter(),
-               __principal_components_flattened.ctypes.get_as_parameter(),
-               pc_deviations.ctypes.get_as_parameter(),
-               coefficients_f.ctypes.get_as_parameter(),
-               vertices.ctypes.get_as_parameter(),
-               __dimensions,
-               points)
+           mean_shape.ctypes.get_as_parameter(),
+           __principal_components_flattened.ctypes.get_as_parameter(),
+           pc_deviations.ctypes.get_as_parameter(),
+           coefficients_f.ctypes.get_as_parameter(),
+           vertices.ctypes.get_as_parameter(), __dimensions, points)
 
         return Face(vertices, directed_light, constant_light,
                     coefficients=coefficients_f)

@@ -177,7 +177,7 @@ class Face:
             directed_light = array(directed_light)
             if directed_light.shape != (3,):
                 raise ValueError(ERROR_TEXT['LIGHT_DIRECTION']
-                                .format(directed_light.shape))
+                                 .format(directed_light.shape))
             self.__directed_light = directed_light
         if constant_light is not None \
                           and constant_light > -2 and constant_light < 2:
