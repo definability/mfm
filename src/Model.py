@@ -137,8 +137,9 @@ class Model:
         """
         if direction is not None:
             x, y, z = self.__face.get_directed_light()
-            self.__face.set_light(directed_light=(x + direction['x'],
-                                  y + direction['y'], z + direction['z']))
+            self.__face.set_light(
+                directed_light=(x + direction['x'], y + direction['y'],
+                                z + direction['z']))
         if intensity is not None:
             constant_light = self.__face.get_constant_light()
             constant_light += intensity
@@ -181,7 +182,7 @@ class Model:
             image = Image.new('RGBA', size)
             data = (self.__view.get_image() * 255).astype('i')
             pixels = [(data[i*4+0], data[i*4+1], data[i*4+2], data[i*4+3])
-                       for i in range(size[0]*size[1]-1, -1, -1)]
+                      for i in range(size[0]*size[1]-1, -1, -1)]
             image.putdata(pixels)
             image.save(filename + '.png')
             image.close()
