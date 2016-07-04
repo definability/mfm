@@ -1,7 +1,7 @@
 from PIL import Image
-from numpy import array, nonzero, mean, zeros, ones, argsort, column_stack
+from numpy import nonzero, mean, zeros, argsort  # , column_stack
 from numpy.random import randn
-from numpy.linalg import lstsq, norm  # , inv
+from numpy.linalg import norm
 
 from .ModelFitter import ModelFitter
 
@@ -12,6 +12,7 @@ class NelderMeadFitter(ModelFitter):
         self.__parameters = [None] * (dimensions)
         self.__errors = [None] * (dimensions)
         self.__normals = None
+        self.__light = None
 
         self.__centroid = None
         self.__reflection = None
@@ -193,11 +194,7 @@ class NelderMeadFitter(ModelFitter):
         img = self.__normals.dot(self.__light)[::-1]
         alpha = zeros(len(self.__normals[:, 3]))
         alpha[nonzero(self.__normals[:, 3])[0]] = 1.
-        # print('Results', img, nonzero(self.__normals[:, 3])[0])
-        data = (column_stack((img, img, img, alpha)) * 255).astype('i')
-        # pixels = [(data[i*4+0], data[i*4+1], data[i*4+2], data[i*4+3])
-        #            for i in range(500*500-1, -1, -1)]
-        # pixels = list(zip(data))
+        # data = (column_stack((img, img, img, alpha)) * 255).astype('i')
         image = Image.new('L', (500, 500))
         image.putdata((img*255).astype('i'))
         image.save('img.png')

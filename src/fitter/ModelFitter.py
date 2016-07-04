@@ -1,7 +1,5 @@
-from PIL import Image
-from numpy import array, nonzero, mean, zeros, ones, argsort, column_stack
-from numpy.random import randn
-from numpy.linalg import lstsq, norm  # , inv
+from numpy import array, nonzero
+from numpy.linalg import lstsq  # , inv
 
 
 class ModelFitter:
@@ -76,8 +74,8 @@ class ModelFitter:
         Will be provided with callback for Fitter to identify
         request, which provoked this response.
         """
-        self.__model.request_normals(parameters,
-            lambda normals: self.receive_normals(normals, index))
+        callback = lambda normals: self.receive_normals(normals, index)
+        self.__model.request_normals(parameters, callback)
 
     def receive_normals(self, normals, index=None):
         """Callback for host on render.
