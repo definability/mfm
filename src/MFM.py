@@ -23,6 +23,11 @@ __dimensions = None
 
 
 def init(path=None):
+    """Initialize Morphable Face Model singleton.
+
+    Loads information from MatLAB file, chaches triangles, principal components
+    and other immutable values used by any Face.
+    """
     global __model, __triangles, __triangles_flattened, __dimensions
     global __principal_components, __principal_components_flattened
     global __ev_normalized
@@ -43,12 +48,23 @@ def init(path=None):
 
 
 def __random_cos():
+    """Generate random real number from [-1; 1]."""
     return 2 * rand() - 1
 
 def get_multipliers(scale=1):
+    """Get eigenvalues.
+
+    Values will be normalized to the smallest one
+    and multiplied by given number.
+    """
     return floor(scale * __ev_normalized**.5).astype('i')
 
 def change_coefficient(face, index, coefficient):
+    """Change `index` coefficient of eigenvector for `face`.
+
+    Works much faster (~10x), than entire Face update,
+    because changes only one (of 199 by default) components.
+    """
     vertices = face.get_original_vertices().copy()
     points = __principal_components.shape[0]
     pc_deviations = __model['shapeEV']
@@ -66,6 +82,19 @@ def change_coefficient(face, index, coefficient):
                 coefficients=coefficients)
 
 def get_face(coefficients=None, directed_light=None, constant_light=None):
+    """Produce new face.
+
+    Usage:
+    - if coefficients not provided, random Face will be generated.
+    - if light parameters not provided, random will be chosen.
+
+    If `coefficients` is 1D Array, will work faster,
+    because C function will be called.
+
+    Coefficients will be multiplied by eigenvalues,
+    so it's okay to generate random variables with standard normal distribution,
+    because they will be normalized.
+    """
     if coefficients is None:
         coefficients = randn(__dimensions)
     if directed_light is None:
