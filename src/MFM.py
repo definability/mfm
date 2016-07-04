@@ -111,11 +111,11 @@ def get_face(coefficients=None, directed_light=None, constant_light=None):
         coefficients_f = coefficients.astype('f')
 
         c_face.get_face(
-           mean_shape.ctypes.get_as_parameter(),
-           __principal_components_flattened.ctypes.get_as_parameter(),
-           pc_deviations.ctypes.get_as_parameter(),
-           coefficients_f.ctypes.get_as_parameter(),
-           vertices.ctypes.get_as_parameter(), __dimensions, points)
+            mean_shape.ctypes.get_as_parameter(),
+            __principal_components_flattened.ctypes.get_as_parameter(),
+            pc_deviations.ctypes.get_as_parameter(),
+            coefficients_f.ctypes.get_as_parameter(),
+            vertices.ctypes.get_as_parameter(), __dimensions, points)
 
         return Face(vertices, directed_light, constant_light,
                     coefficients=coefficients_f)
