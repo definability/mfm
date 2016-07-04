@@ -1,5 +1,6 @@
 from PIL import Image
-from numpy import ones, zeros, linspace, argmin, nonzero, column_stack, exp, array
+from numpy import ones, zeros, linspace, argmin, nonzero, exp, array
+# from numpy import column_stack
 from numpy.random import rand, randint
 
 from .ModelFitter import ModelFitter
@@ -13,6 +14,7 @@ class GibbsSamplerFitter(ModelFitter):
 
         self.__errors = None
         self.__values = None
+        self.__loop = 0
         self.__max_loops = max_loops
         self.__determined_loops = determined_loops
 
@@ -101,10 +103,7 @@ class GibbsSamplerFitter(ModelFitter):
         img = shadows[::-1]
         alpha = zeros(len(normals[:, 3]))
         alpha[nonzero(normals[:, 3])[0]] = 1.
-        data = (column_stack((
-                img, img, img,
-                alpha
-                )) * 255).astype('i')
+        # data = (column_stack((img, img, img, alpha)) * 255).astype('i')
         image = Image.new('L', (500, 500))
         image.putdata((img*255).astype('i'))
         image.save('img.png')
