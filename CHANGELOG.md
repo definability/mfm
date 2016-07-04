@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.0.13] - 2015-07-04
 ### Added
 - Docstrings for main classes.
 ### Fixed
@@ -90,7 +92,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.0.12...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.0.13...HEAD
+[0.0.13]: https://github.com/char-lie/mfm/compare/v0.0.12...v0.0.13
 [0.0.12]: https://github.com/char-lie/mfm/compare/v0.0.11...v0.0.12
 [0.0.11]: https://github.com/char-lie/mfm/compare/v0.0.10...v0.0.11
 [0.0.10]: https://github.com/char-lie/mfm/compare/v0.0.9...v0.0.10
