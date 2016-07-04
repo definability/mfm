@@ -8,12 +8,27 @@ from src import MFM
 
 
 class Texture(Enum):
+    """Enumerate of Face textures.
+
+    Face can be displayed in two modes:
+    - shadow map;
+    - normal map.
+    """
     light = 0
     normal = 1
 
 
 class Model:
+    """Main processor of the application.
+
+    Makes calculations for Faces, works with Fitters and requests
+    View to render.
+    """
     def __init__(self, view):
+        """Create model with given View.
+
+        Creates initial light and rotation conditions and renders first Face.
+        """
         self.__light = True
         self.__face = None
         self.__view = view
@@ -37,14 +52,27 @@ class Model:
         self.calculate()
 
     def start(self, fitter):
+        """Start main application loop."""
         self.__fitter = fitter
         glutMainLoop()
 
     def redraw(self, callback=None):
+        """Trigger rendering procedure."""
         # print('redrawing')
         self.__view.redraw(callback)
 
     def request_normals(self, coefficients, callback):
+        """Send request for normal vectors with coefficients.
+
+        Adds callback with given coefficients to queue and starts
+        calculation and rendering procedure.
+
+        Handy for fitting procedure:
+        - Fitter requests normal vectors with provided Face parameters
+        and sends callback function;
+        - Model renders Face with given parameters and sends achived
+        normal vectors via callback.
+        """
         if self.__texture == Texture.light:
             self.toggle_texture()
 
@@ -71,6 +99,14 @@ class Model:
             self.__now_processing = False
 
     def calculate(self, new_model=True, coefficients=None):
+        """Generates new face or changes light of old face.
+
+        If `new_model` is `True`
+        - if `coefficients` is a tuple of numbers, new Face will be generated
+        on the base of old one, but coefficient `coefficients[0]`
+        will be changed to `coefficients[1]`;
+        - in other case new random Face will be generated.
+        """
         if new_model and type(coefficients) is not tuple:
             self.__face = MFM.get_face(coefficients)
         elif new_model:
@@ -86,12 +122,20 @@ class Model:
         self.__view.update(vertices, colors)
 
     def rotate(self, axis, value):
+        """Rotate camera of the viewport.
+
+        Adds (not sets) rotation value for given axis.
+        """
         self.__rotations[axis] = value
         rotation = (self.__rotations['x'], self.__rotations['y'],
                     self.__rotations['z'])
         self.__view.update(rotation=rotation)
 
     def change_light(self, direction=None, intensity=None):
+        """Change light parameters.
+
+        Set vector for directed light and intensity for ambient light.
+        """
         if direction is not None:
             x, y, z = self.__face.get_directed_light()
             self.__face.set_light(directed_light=(x + direction['x'],
@@ -103,16 +147,28 @@ class Model:
         self.calculate(False)
 
     def toggle_texture(self):
+        """Toggle Face texture between shadow and normal map."""
         self.__texture = Texture.normal if self.__texture == Texture.light \
                     else Texture.light
 
     def close(self):
+        """Close the viewport"""
         self.__view.close()
 
     def optimize(self):
+        """Start the fitting procedure."""
         self.__fitter.start()
 
     def save_image(self, filename):
+        """Render current viewport state to file.
+
+        If normal map used, result will be saved to NumPy file.
+        File will contain matrix, where each cell will match image pixel
+        and contain normal vector.
+
+        If shadow map used, result will be simply rendered.
+        Also light conditions will be saved to NumPy file.
+        """
         if self.__texture == Texture.normal:
             img = array(self.__view.get_image())
             img = img.reshape(img.size//4, 4)
