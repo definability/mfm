@@ -194,10 +194,7 @@ class NelderMeadFitter(ModelFitter):
         alpha = zeros(len(self.__normals[:, 3]))
         alpha[nonzero(self.__normals[:, 3])[0]] = 1.
         # print('Results', img, nonzero(self.__normals[:, 3])[0])
-        data = (column_stack((
-                img, img, img,
-                alpha
-                )) * 255).astype('i')
+        data = (column_stack((img, img, img, alpha)) * 255).astype('i')
         # pixels = [(data[i*4+0], data[i*4+1], data[i*4+2], data[i*4+3])
         #            for i in range(500*500-1, -1, -1)]
         # pixels = list(zip(data))

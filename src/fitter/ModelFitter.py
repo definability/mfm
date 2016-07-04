@@ -52,12 +52,12 @@ class ModelFitter:
             [n_xx, n_xy, n_xz, n_x],
             [n_xy, n_yy, n_yz, n_y],
             [n_xz, n_yz, n_zz, n_z],
-            [n_x,  n_y,  n_z, len(N)]
+            [n_x, n_y, n_z, len(N)]
         ])
         y = array([y_x, y_y, y_z, Y.sum()])
 
         x, _, _, _ = lstsq(A, y)
-        # TODO: why does this fail `test_estimate_light` test?
+        # Fails `test_estimate_light` test, because matrix cannot be inverted.
         # x = inv(A).dot(y)
 
         return x

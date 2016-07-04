@@ -127,8 +127,9 @@ class View:
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
 
-        SIDE = .5
-        glOrtho(-SIDE, SIDE, -SIDE, SIDE, -SIDE, SIDE)
+        SIDE_LENGTH = .5
+        glOrtho(-SIDE_LENGTH, SIDE_LENGTH, -SIDE_LENGTH, SIDE_LENGTH,
+                -SIDE_LENGTH, SIDE_LENGTH)
 
     def __enable_depth_test(self):
         """Enable depth test and faces culling.
