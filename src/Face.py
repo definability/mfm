@@ -1,7 +1,6 @@
 import ctypes
 
-from numpy import array, cross, dot, zeros_like, mean, zeros
-from numpy import apply_along_axis, column_stack
+from numpy import array, dot, zeros_like, mean, apply_along_axis, column_stack
 import numpy
 
 c_cross = ctypes.cdll.LoadLibrary('./lib_cross.so')
