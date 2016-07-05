@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.0.14] - 2015-07-05
+### Added
+- Brute Force Fitter class.
+
 ## [0.0.13] - 2015-07-04
 ### Added
 - Docstrings for main classes.
@@ -92,7 +96,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.0.13...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.0.14...HEAD
+[0.0.14]: https://github.com/char-lie/mfm/compare/v0.0.13...v0.0.14
 [0.0.13]: https://github.com/char-lie/mfm/compare/v0.0.12...v0.0.13
 [0.0.12]: https://github.com/char-lie/mfm/compare/v0.0.11...v0.0.12
 [0.0.11]: https://github.com/char-lie/mfm/compare/v0.0.10...v0.0.11
