@@ -17,7 +17,7 @@ install:
   - source activate testenv
   - pip install -U -r requirements.txt
 
-  - cd lib
+  - cd libs
   - make
   - cd -
 script: coverage run --source=src -m tests
