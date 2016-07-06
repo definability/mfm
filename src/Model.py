@@ -149,7 +149,7 @@ class Model:
     def toggle_texture(self):
         """Toggle Face texture between shadow and normal map."""
         self.__texture = Texture.normal if self.__texture == Texture.light \
-                    else Texture.light
+            else Texture.light
 
     def close(self):
         """Close the viewport"""

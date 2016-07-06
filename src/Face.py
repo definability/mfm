@@ -179,7 +179,7 @@ class Face:
                                  .format(directed_light.shape))
             self.__directed_light = directed_light
         if constant_light is not None \
-                          and constant_light > -2 and constant_light < 2:
+                and constant_light > -2 and constant_light < 2:
             self.__constant_light = constant_light
         self.__light_map = None
 
