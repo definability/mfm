@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Using [flake8](http://flake8.pycqa.org/) package for code validation.
 
 ## [0.0.14] - 2015-07-05
 ### Added
