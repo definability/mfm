@@ -44,12 +44,14 @@ class ModelFitterTest(TestCase):
 
         self.assertLessEqual(data.sum(), real_data.sum())
 
+
 def get_image(normals, light):
     result = normals.dot(light)
     # TODO: results should be cut to these borders
     # result[result < 0.] = 0.
     # result[result > 1.] = 1.
     return result
+
 
 def get_difference(result, shadows, normals):
     difference = (result - shadows)**2

@@ -74,8 +74,8 @@ class ModelFitter:
         Will be provided with callback for Fitter to identify
         request, which provoked this response.
         """
-        callback = lambda normals: self.receive_normals(normals, index)
-        self.__model.request_normals(parameters, callback)
+        self.__model.request_normals(
+            parameters, lambda normals: self.receive_normals(normals, index))
 
     def receive_normals(self, normals, index=None):
         """Callback for host on render.

@@ -2,6 +2,7 @@ from numpy import ones, zeros
 
 from .ModelFitter import ModelFitter
 
+
 class BruteForceFitter(ModelFitter):
     def __init__(self, image, dimensions=199, model=None, steps=None,
                  max_level=3):

@@ -58,13 +58,15 @@ class NelderMeadFitter(ModelFitter):
             getattr(self, 'calculate_' + getattr(self, self.__step)())()
 
         elif self.__step == 'shrink' and index == self._dimensions:
-            # print('{} items left'.format(sum(1 if e is None else 0 for e in self.__errors)))
+            # print('{} items left'.format(
+            #     sum(1 if e is None else 0 for e in self.__errors)))
             self.end_error = error
             if None not in self.__errors:
                 self.__sort_parameters()
                 getattr(self, 'calculate_' + getattr(self, self.__step)())()
         elif self.__step == 'shrink':
-            # print('{} items left'.format(sum(1 if e is None else 0 for e in self.__errors)))
+            # print('{} items left'.format(
+            #     sum(1 if e is None else 0 for e in self.__errors)))
             self.__errors[index] = error
             if None not in self.__errors and self.end_error is not None:
                 self.__sort_parameters()
@@ -77,7 +79,8 @@ class NelderMeadFitter(ModelFitter):
                 self.__sort_parameters()
                 self.calculate_reflection()
             else:
-                # print('{} items left'.format(sum(1 if e is None else 0 for e in self.__errors)))
+                # print('{} items left'.format(
+                #     sum(1 if e is None else 0 for e in self.__errors)))
                 pass
         elif self.__step == 'start':
             self.__errors[index] = error
@@ -86,7 +89,8 @@ class NelderMeadFitter(ModelFitter):
                 self.__sort_parameters()
                 self.calculate_reflection()
             elif None in self.__errors:
-                # print('{} items left'.format(sum(1 if e is None else 0 for e in self.__errors)))
+                # print('{} items left'.format(
+                #     sum(1 if e is None else 0 for e in self.__errors)))
                 pass
             else:
                 # print('One item left')
@@ -132,7 +136,8 @@ class NelderMeadFitter(ModelFitter):
         elif self.reflection_error >= self.__errors[-1]:
             return 'contraction'
         else:
-            # print('R, E1, En:', self.reflection_error, self.__errors[0], self.__errors[-1])
+            # print('R, E1, En:', self.reflection_error,
+            #       self.__errors[0], self.__errors[-1])
             self.__end = self.__reflection
             self.end_error = self.reflection_error
             return 'reflection'
@@ -205,4 +210,3 @@ class NelderMeadFitter(ModelFitter):
             s += norm(self.__parameters[i] - self.__parameters[i-1])
         # print('Perimeter is', s)
         return s < 50.
-

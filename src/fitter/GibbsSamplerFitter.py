@@ -1,9 +1,10 @@
 from PIL import Image
 from numpy import ones, zeros, linspace, argmin, nonzero, exp, array
 # from numpy import column_stack
-from numpy.random import rand, randint
+from numpy.random import rand
 
 from .ModelFitter import ModelFitter
+
 
 class GibbsSamplerFitter(ModelFitter):
     def __init__(self, image, dimensions=199, model=None, steps=None,

@@ -51,6 +51,7 @@ def __random_cos():
     """Generate random real number from [-1; 1]."""
     return 2 * rand() - 1
 
+
 def get_multipliers(scale=1):
     """Get eigenvalues.
 
@@ -58,6 +59,7 @@ def get_multipliers(scale=1):
     and multiplied by given number.
     """
     return floor(scale * __ev_normalized**.5).astype('i')
+
 
 def change_coefficient(face, index, coefficient):
     """Change `index` coefficient of eigenvector for `face`.
@@ -78,6 +80,7 @@ def change_coefficient(face, index, coefficient):
     return Face(vertices, face.get_directed_light(), face.get_constant_light(),
                 coefficients=coefficients)
 
+
 def get_face(coefficients=None, directed_light=None, constant_light=None):
     """Produce new face.
 
@@ -89,8 +92,8 @@ def get_face(coefficients=None, directed_light=None, constant_light=None):
     because C function will be called.
 
     Coefficients will be multiplied by eigenvalues,
-    so it's okay to generate random variables with standard normal distribution,
-    because they will be normalized.
+    so it's okay to generate random variables with
+    standard normal distribution, because they will be normalized.
     """
     if coefficients is None:
         coefficients = randn(__dimensions)
