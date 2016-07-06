@@ -3,7 +3,7 @@ import ctypes
 from numpy import array, dot, zeros_like, mean, apply_along_axis, column_stack
 import numpy
 
-c_cross = ctypes.cdll.LoadLibrary('./lib_cross.so')
+c_cross = ctypes.cdll.LoadLibrary('./libs/lib_cross.so')
 
 ERROR_TEXT = {
     'VERTICES_SIZE': "Size of vertices array should be a multiple of three, "
