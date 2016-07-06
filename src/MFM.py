@@ -7,7 +7,7 @@ from numpy import array, ones, dot, fabs, zeros, floor
 from .Face import Face
 from .View import View
 
-c_face = ctypes.cdll.LoadLibrary('./lib_face.so')
+c_face = ctypes.cdll.LoadLibrary('./libs/lib_face.so')
 
 DEFAULT_MODEL_PATH = '01_MorphableModel.mat'
 
