@@ -2,8 +2,7 @@ import ctypes
 
 from numpy import array, dot, zeros_like, mean, apply_along_axis, column_stack
 import numpy
-
-c_cross = ctypes.cdll.LoadLibrary('./libs/lib_cross.so')
+from .cross import cross as get_normals
 
 ERROR_TEXT = {
     'VERTICES_SIZE': "Size of vertices array should be a multiple of three, "
@@ -133,9 +132,7 @@ class Face:
             return self.__normals
 
         self.__normals = zeros_like(self.__vertices)
-        c_cross.get_normals(self.__vertices_c, self.__triangles_c,
-                            self.__normals.ctypes.get_as_parameter(),
-                            len(self.__vertices), len(self.__triangles))
+        get_normals(self.__vertices, self.__triangles, self.__normals)
         return self.__normals
 
     def get_normal_map(self):
