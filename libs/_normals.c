@@ -3,7 +3,7 @@
 #include <Python.h>
 #include <numpy/arrayobject.h>
 
-#include "cross.h"
+#include "normals.h"
 
 struct ModuleState {
     PyObject *error;
@@ -16,7 +16,7 @@ struct ModuleState {
 static struct ModuleState _state;
 #endif
 
-static PyObject* _cross (PyObject *self, PyObject *args) {
+static PyObject* _normals (PyObject *self, PyObject *args) {
     PyObject *o_vertices=NULL, *o_triangles=NULL;
     PyArrayObject *a_vertices=NULL, *a_triangles=NULL, *a_result=NULL;
 
@@ -52,53 +52,55 @@ static PyObject* _cross (PyObject *self, PyObject *args) {
     return PyArray_Return(a_result);
 }
 
-static PyMethodDef cross_methods[] = {
-    { "cross", _cross,
+static PyMethodDef normals_methods[] = {
+    { "get_normals", _normals,
       METH_VARARGS,
-      "Cross"},
+      "Get normalized normal vectors for each vertex.\n\n"
+      "Normal vector of each vertex is average normal vector\n"
+      "of triangles connected by this vertex."},
     {NULL, NULL, 0, NULL}
 };
 
 #if PY_MAJOR_VERSION >= 3
 
-static int cross_traverse(PyObject *m, visitproc visit, void *arg) {
+static int normals_traverse(PyObject *m, visitproc visit, void *arg) {
     Py_VISIT(GET_STATE(m)->error);
     return 0;
 }
 
-static int cross_clear(PyObject *m) {
+static int normals_clear(PyObject *m) {
     Py_CLEAR(GET_STATE(m)->error);
     return 0;
 }
 
 #define INITERROR return NULL
 
-static struct PyModuleDef cross_module = {
+static struct PyModuleDef normals_module = {
     PyModuleDef_HEAD_INIT,
-    "cross",
-    "Cross module",
+    "normals",
+    "Normal vectors processing.",
     sizeof(struct ModuleState),
-    cross_methods,
+    normals_methods,
     NULL,
-    cross_traverse,
-    cross_clear,
+    normals_traverse,
+    normals_clear,
     NULL
 };
 
-PyMODINIT_FUNC PyInit_cross(void)
+PyMODINIT_FUNC PyInit_normals(void)
 
 #else
 #define INITERROR return
 
-void initcross(void)
+void initnormals(void)
 #endif
 {
     PyObject *module;
 
 #if PY_MAJOR_VERSION >= 3
-    module = PyModule_Create(&cross_module);
+    module = PyModule_Create(&normals_module);
 #else
-    module = Py_InitModule("cross", cross_methods);
+    module = Py_InitModule("normals", normals_methods);
 #endif
     import_array();
     if (module == NULL) {
@@ -107,7 +109,7 @@ void initcross(void)
 
     struct ModuleState *st = GET_STATE(module);
 
-    st->error = PyErr_NewException("cross.Error", NULL, NULL);
+    st->error = PyErr_NewException("normals.Error", NULL, NULL);
     if (st->error == NULL) {
         Py_DECREF(module);
         INITERROR;

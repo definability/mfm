@@ -2,7 +2,8 @@ import ctypes
 
 from numpy import array, dot, zeros_like, mean, apply_along_axis, column_stack
 import numpy
-from .cross import cross as get_normals
+
+from .normals import get_normals
 
 ERROR_TEXT = {
     'VERTICES_SIZE': "Size of vertices array should be a multiple of three, "
