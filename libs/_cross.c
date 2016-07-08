@@ -10,9 +10,9 @@ struct ModuleState {
 };
 
 #if PY_MAJOR_VERSION >= 3
-#define GETSTATE(module) ((struct ModuleState*)PyModule_GetState(module))
+#define GET_STATE(module) ((struct ModuleState*)PyModule_GetState(module))
 #else
-#define GETSTATE(module) (&_state)
+#define GET_STATE(module) (&_state)
 static struct ModuleState _state;
 #endif
 
@@ -21,14 +21,23 @@ static PyObject* _cross (PyObject *self, PyObject *args) {
     PyArrayObject *a_vertices=NULL, *a_triangles=NULL, *a_result=NULL;
 
     if (!PyArg_ParseTuple(args, "OOO!", &o_vertices, &o_triangles,
-                          &PyArray_Type, &o_result)) return NULL;
+                          &PyArray_Type, &o_result)) {
+        return NULL;
+    }
 
-    a_vertices = (PyArrayObject*)PyArray_FROM_OTF(o_vertices, NPY_FLOAT, NPY_ARRAY_IN_ARRAY);
-    if (a_vertices == NULL) return NULL;
-    a_triangles = (PyArrayObject*)PyArray_FROM_OTF(o_triangles, NPY_UINT16, NPY_ARRAY_IN_ARRAY);
-    if (a_triangles == NULL) goto fail;
-    a_result = (PyArrayObject*)PyArray_FROM_OTF(o_result, NPY_FLOAT, NPY_ARRAY_INOUT_ARRAY);
-    if (a_result == NULL) goto fail;
+    a_vertices = (PyArrayObject*)PyArray_FROM_OTF(
+        o_vertices, NPY_FLOAT, NPY_ARRAY_IN_ARRAY);
+    a_triangles = (PyArrayObject*)PyArray_FROM_OTF(
+        o_triangles, NPY_UINT16, NPY_ARRAY_IN_ARRAY);
+    a_result = (PyArrayObject*)PyArray_FROM_OTF(
+        o_result, NPY_FLOAT, NPY_ARRAY_INOUT_ARRAY);
+
+    if (!a_result || !a_triangles || !a_vertices) {
+        Py_XDECREF(a_vertices);
+        Py_XDECREF(a_triangles);
+        PyArray_XDECREF_ERR(a_result);
+        return NULL;
+    }
 
     get_normals(PyArray_DATA(a_vertices),
                 PyArray_DATA(a_triangles),
@@ -41,12 +50,6 @@ static PyObject* _cross (PyObject *self, PyObject *args) {
     Py_DECREF(a_result);
     Py_INCREF(Py_None);
     return Py_None;
-
- fail:
-    Py_XDECREF(a_vertices);
-    Py_XDECREF(a_triangles);
-    PyArray_XDECREF_ERR(a_result);
-    return NULL;
 }
 
 static PyMethodDef cross_methods[] = {
@@ -59,12 +62,12 @@ static PyMethodDef cross_methods[] = {
 #if PY_MAJOR_VERSION >= 3
 
 static int cross_traverse(PyObject *m, visitproc visit, void *arg) {
-    Py_VISIT(GETSTATE(m)->error);
+    Py_VISIT(GET_STATE(m)->error);
     return 0;
 }
 
 static int cross_clear(PyObject *m) {
-    Py_CLEAR(GETSTATE(m)->error);
+    Py_CLEAR(GET_STATE(m)->error);
     return 0;
 }
 
@@ -72,10 +75,9 @@ static int cross_clear(PyObject *m) {
 
 static struct PyModuleDef cross_module = {
     PyModuleDef_HEAD_INIT,
-    "cross",   /* name of module */
-    "Cross module", /* module documentation, may be NULL */
-    sizeof(struct ModuleState),       /* size of per-interpreter state of the module,
-                or -1 if the module keeps state in global variables. */
+    "cross",
+    "Cross module",
+    sizeof(struct ModuleState),
     cross_methods,
     NULL,
     cross_traverse,
@@ -102,7 +104,7 @@ void initcross(void)
     if (module == NULL)
         INITERROR;
 
-    struct ModuleState *st = GETSTATE(module);
+    struct ModuleState *st = GET_STATE(module);
 
     st->error = PyErr_NewException("cross.Error", NULL, NULL);
     if (st->error == NULL) {
