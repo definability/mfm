@@ -131,8 +131,7 @@ class Face:
         if self.__normals is not None:
             return self.__normals
 
-        self.__normals = zeros_like(self.__vertices)
-        get_normals(self.__vertices, self.__triangles, self.__normals)
+        self.__normals = get_normals(self.__vertices, self.__triangles)
         return self.__normals
 
     def get_normal_map(self):
