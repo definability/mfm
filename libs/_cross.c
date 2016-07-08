@@ -17,11 +17,10 @@ static struct ModuleState _state;
 #endif
 
 static PyObject* _cross (PyObject *self, PyObject *args) {
-    PyObject *o_vertices=NULL, *o_triangles=NULL, *o_result=NULL;
+    PyObject *o_vertices=NULL, *o_triangles=NULL;
     PyArrayObject *a_vertices=NULL, *a_triangles=NULL, *a_result=NULL;
 
-    if (!PyArg_ParseTuple(args, "OOO!", &o_vertices, &o_triangles,
-                          &PyArray_Type, &o_result)) {
+    if (!PyArg_ParseTuple(args, "OO", &o_vertices, &o_triangles)) {
         return NULL;
     }
 
@@ -29,13 +28,16 @@ static PyObject* _cross (PyObject *self, PyObject *args) {
         o_vertices, NPY_FLOAT, NPY_ARRAY_IN_ARRAY);
     a_triangles = (PyArrayObject*)PyArray_FROM_OTF(
         o_triangles, NPY_UINT16, NPY_ARRAY_IN_ARRAY);
-    a_result = (PyArrayObject*)PyArray_FROM_OTF(
-        o_result, NPY_FLOAT, NPY_ARRAY_INOUT_ARRAY);
+
+    a_result = (PyArrayObject*)PyArray_NewLikeArray(
+        a_vertices, NPY_KEEPORDER, NULL, 1);
+    memset((void*)PyArray_DATA(a_result), 0,
+           PyArray_SIZE(a_result) * sizeof(float));
 
     if (!a_result || !a_triangles || !a_vertices) {
         Py_XDECREF(a_vertices);
         Py_XDECREF(a_triangles);
-        PyArray_XDECREF_ERR(a_result);
+        Py_XDECREF(a_result);
         return NULL;
     }
 
@@ -47,9 +49,7 @@ static PyObject* _cross (PyObject *self, PyObject *args) {
 
     Py_DECREF(a_vertices);
     Py_DECREF(a_triangles);
-    Py_DECREF(a_result);
-    Py_INCREF(Py_None);
-    return Py_None;
+    return PyArray_Return(a_result);
 }
 
 static PyMethodDef cross_methods[] = {
