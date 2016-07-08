@@ -101,8 +101,9 @@ void initcross(void)
     module = Py_InitModule("cross", cross_methods);
 #endif
     import_array();
-    if (module == NULL)
+    if (module == NULL) {
         INITERROR;
+    }
 
     struct ModuleState *st = GET_STATE(module);
 
