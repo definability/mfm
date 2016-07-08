@@ -1,3 +1,5 @@
+#include "face.h"
+
 void get_face(float* mean_shape, float* principal_components,
               float* pc_deviations, float* coefficients,
               float* face, int dimensions, int vertices) {
