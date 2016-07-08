@@ -3,7 +3,7 @@
 #include <math.h>
 #include <assert.h>
 
-#include "cross.h"
+#include "normals.h"
 
 #define COMPONENTS_COUNT 3
 
