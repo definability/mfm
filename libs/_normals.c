@@ -17,40 +17,33 @@ static struct ModuleState _state;
 #endif
 
 static PyObject* _normals (PyObject *self, PyObject *args) {
-    PyObject *o_vertices=NULL, *o_triangles=NULL;
-    PyArrayObject *a_vertices=NULL, *a_triangles=NULL, *a_result=NULL;
+    PyArrayObject *vertices=NULL, *triangles=NULL, *result=NULL;
 
-    if (!PyArg_ParseTuple(args, "OO", &o_vertices, &o_triangles)) {
+    if (!PyArg_ParseTuple(args, "O!O!",
+                          &PyArray_Type, &vertices,
+                          &PyArray_Type, &triangles)) {
         return NULL;
     }
 
-    a_vertices = (PyArrayObject*)PyArray_FROM_OTF(
-        o_vertices, NPY_FLOAT, NPY_ARRAY_IN_ARRAY);
-    a_triangles = (PyArrayObject*)PyArray_FROM_OTF(
-        o_triangles, NPY_UINT16, NPY_ARRAY_IN_ARRAY);
+    result = (PyArrayObject*)PyArray_NewLikeArray(
+        vertices, NPY_KEEPORDER, NULL, 1);
 
-    a_result = (PyArrayObject*)PyArray_NewLikeArray(
-        a_vertices, NPY_KEEPORDER, NULL, 1);
-    PyArray_FILLWBYTE(a_result, 0);
-    // memset((void*)PyArray_DATA(a_result), 0,
-    //        PyArray_SIZE(a_result) * sizeof(float));
-
-    if (!a_result || !a_triangles || !a_vertices) {
-        Py_XDECREF(a_vertices);
-        Py_XDECREF(a_triangles);
-        Py_XDECREF(a_result);
+    if (!result) {
         return NULL;
     }
 
-    get_normals(PyArray_DATA(a_vertices),
-                PyArray_DATA(a_triangles),
-                PyArray_DATA(a_result),
-                PyArray_SIZE(a_vertices) / 3,
-                PyArray_SIZE(a_triangles) / 3);
+    PyArray_FILLWBYTE(result, 0);
+    // memset((void*)PyArray_DATA(result), 0,
+    //        PyArray_SIZE(result) * sizeof(float));
 
-    Py_DECREF(a_vertices);
-    Py_DECREF(a_triangles);
-    return PyArray_Return(a_result);
+
+    get_normals(PyArray_DATA(vertices),
+                PyArray_DATA(triangles),
+                PyArray_DATA(result),
+                PyArray_SIZE(vertices) / 3,
+                PyArray_SIZE(triangles) / 3);
+
+    return PyArray_Return(result);
 }
 
 static PyMethodDef normals_methods[] = {
