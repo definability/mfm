@@ -22,10 +22,10 @@ static PyObject* _calculate_face(PyObject *self, PyObject *args) {
                   *result=NULL;
 
     if (!PyArg_ParseTuple(args, "O!O!O!O!",
-                &PyArray_Type, &mean_shape,
-                &PyArray_Type, &principal_components,
-                &PyArray_Type, &pc_deviations,
-                &PyArray_Type, &coefficients)) {
+                          &PyArray_Type, &mean_shape,
+                          &PyArray_Type, &principal_components,
+                          &PyArray_Type, &pc_deviations,
+                          &PyArray_Type, &coefficients)) {
         return NULL;
     }
 
