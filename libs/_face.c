@@ -46,12 +46,41 @@ static PyObject* _get_face(PyObject *self, PyObject *args) {
     return PyArray_Return(result);
 }
 
+static PyObject* _get_row(PyObject *self, PyObject *args) {
+    PyArrayObject *principal_components=NULL, *pc_deviations=NULL,
+                  *face=NULL;
+    Py_ssize_t row;
+    float coefficient_difference;
+
+    if (!PyArg_ParseTuple(args, "O!O!fnO!",
+                &PyArray_Type, &principal_components,
+                &PyArray_Type, &pc_deviations,
+                &coefficient_difference,
+                &row,
+                &PyArray_Type, &face)) {
+        return NULL;
+    }
+
+    get_row(
+         PyArray_DATA(principal_components),
+         PyArray_DATA(pc_deviations),
+         coefficient_difference,
+         row,
+         PyArray_DATA(face),
+         PyArray_SIZE(pc_deviations),
+         PyArray_SIZE(face));
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
 static PyMethodDef face_methods[] = {
     { "get_face", _get_face,
       METH_VARARGS,
-      "Get normalized normal vectors for each vertex.\n\n"
-      "Normal vector of each vertex is average normal vector\n"
-      "of triangles connected by this vertex."},
+      ""},
+    { "get_row", _get_row,
+      METH_VARARGS,
+      ""},
     {NULL, NULL, 0, NULL}
 };
 
