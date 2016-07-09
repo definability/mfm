@@ -7,6 +7,7 @@ from numpy import array, ones, dot, fabs, zeros, floor
 from .Face import Face
 from .View import View
 from .face import get_face as c_get_face
+from .face import get_row as c_get_row
 
 c_face = ctypes.cdll.LoadLibrary('./libs/lib_face.so')
 
@@ -73,14 +74,12 @@ def change_coefficient(face, index, coefficient):
     because changes only one (of 199 by default) components.
     """
     vertices = face.get_original_vertices().copy()
-    points = __principal_components.shape[0]
+
     coefficients = face.get_coefficients().copy()
     coefficient, coefficients[index] = coefficients[index], coefficient
-    c_face.get_row(
-        __principal_components_flattened.ctypes.get_as_parameter(),
-        __pc_deviations.ctypes.get_as_parameter(),
-        ctypes.c_float(coefficients[index] - coefficient), index,
-        vertices.ctypes.get_as_parameter(), __dimensions, points)
+
+    c_get_row(__principal_components_flattened, __pc_deviations,
+              coefficients[index] - coefficient, index, vertices)
     return Face(vertices, face.get_directed_light(), face.get_constant_light(),
                 coefficients=coefficients)
 
