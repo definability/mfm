@@ -28,6 +28,7 @@ def normalize(vertices):
 class Face:
 
     __triangles = None
+    __triangles_flattened = None
     __triangles_c = None
 
     def __init__(self, vertices, directed_light=None, constant_light=0,
@@ -41,6 +42,7 @@ class Face:
         """
         if vertices.size % 3 != 0:
             raise ValueError(ERROR_TEXT['VERTICES_SIZE'].format(vertices.size))
+        vertices = vertices.astype('f')
         self.__original_vertices = vertices.copy()
         self.__vertices = normalize(vertices)
         self.__vertices_c = self.__vertices.ctypes.get_as_parameter()
@@ -132,7 +134,8 @@ class Face:
         if self.__normals is not None:
             return self.__normals
 
-        self.__normals = get_normals(self.__vertices, self.__triangles)
+        self.__normals = get_normals(self.__vertices,
+                                     self.__triangles_flattened)
         return self.__normals
 
     def get_normal_map(self):
@@ -194,5 +197,6 @@ class Face:
                 raise ValueError(ERROR_TEXT['TRIANGLES_VERTICES']
                                  .format(triangles.shape[1]))
             Face.__triangles = triangles
+            Face.__triangles_flattened = triangles.flatten()
         if triangles_c is not None:
             Face.__triangles_c = triangles_c
