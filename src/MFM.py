@@ -6,6 +6,7 @@ from numpy import array, ones, dot, fabs, zeros, floor
 
 from .Face import Face
 from .View import View
+from .face import get_face as c_get_face
 
 c_face = ctypes.cdll.LoadLibrary('./libs/lib_face.so')
 
@@ -110,20 +111,8 @@ def get_face(coefficients=None, directed_light=None, constant_light=None):
         constant_light = __random_cos()
 
     if len(coefficients.shape) == 1:
-        mean_shape = __model['shapeMU']
-        pc_deviations = __model['shapeEV']
-        points = __principal_components.shape[0]
-        vertices = zeros((points, 1), dtype='f')
-
-        coefficients_f = coefficients.astype('f')
-
-        c_face.get_face(
-            mean_shape.ctypes.get_as_parameter(),
-            __principal_components_flattened.ctypes.get_as_parameter(),
-            pc_deviations.ctypes.get_as_parameter(),
-            coefficients_f.ctypes.get_as_parameter(),
-            vertices.ctypes.get_as_parameter(), __dimensions, points)
-
+        vertices = c_get_face(__mean_shape, __principal_components_flattened,
+                              __pc_deviations, coefficients.astype('f'))
         return Face(vertices, directed_light, constant_light,
                     coefficients=coefficients)
     else:
