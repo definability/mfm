@@ -16,7 +16,7 @@ struct ModuleState {
 static struct ModuleState _state;
 #endif
 
-static PyObject* _get_face(PyObject *self, PyObject *args) {
+static PyObject* _calculate_face(PyObject *self, PyObject *args) {
     PyArrayObject *mean_shape=NULL, *principal_components=NULL,
                   *pc_deviations=NULL, *coefficients=NULL,
                   *result=NULL;
@@ -34,19 +34,19 @@ static PyObject* _get_face(PyObject *self, PyObject *args) {
     dims[1] = 1;
     result = (PyArrayObject*)PyArray_ZEROS(2, dims, NPY_FLOAT, 0);
 
-    get_face(
-         PyArray_DATA(mean_shape),
-         PyArray_DATA(principal_components),
-         PyArray_DATA(pc_deviations),
-         PyArray_DATA(coefficients),
-         PyArray_DATA(result),
-         PyArray_SIZE(coefficients),
-         PyArray_SIZE(mean_shape));
+    calculate_face(
+        PyArray_DATA(mean_shape),
+        PyArray_DATA(principal_components),
+        PyArray_DATA(pc_deviations),
+        PyArray_DATA(coefficients),
+        PyArray_DATA(result),
+        PyArray_SIZE(coefficients),
+        PyArray_SIZE(mean_shape));
 
     return PyArray_Return(result);
 }
 
-static PyObject* _get_row(PyObject *self, PyObject *args) {
+static PyObject* _calculate_row(PyObject *self, PyObject *args) {
     PyArrayObject *principal_components=NULL, *pc_deviations=NULL,
                   *face=NULL;
     Py_ssize_t row;
@@ -61,7 +61,7 @@ static PyObject* _get_row(PyObject *self, PyObject *args) {
         return NULL;
     }
 
-    get_row(
+    calculate_row(
          PyArray_DATA(principal_components),
          PyArray_DATA(pc_deviations),
          coefficient_difference,
@@ -75,10 +75,10 @@ static PyObject* _get_row(PyObject *self, PyObject *args) {
 }
 
 static PyMethodDef face_methods[] = {
-    { "get_face", _get_face,
+    { "calculate_face", _calculate_face,
       METH_VARARGS,
       "Get array of vertices for Face."},
-    { "get_row", _get_row,
+    { "calculate_row", _calculate_row,
       METH_VARARGS,
       "Change coefficient of one principal component in Face."},
     {NULL, NULL, 0, NULL}

@@ -6,10 +6,7 @@ from numpy import array, ones, dot, fabs, zeros, floor
 
 from .Face import Face
 from .View import View
-from .face import get_face as c_get_face
-from .face import get_row as c_get_row
-
-c_face = ctypes.cdll.LoadLibrary('./libs/lib_face.so')
+from .face import *
 
 DEFAULT_MODEL_PATH = '01_MorphableModel.mat'
 
@@ -78,8 +75,8 @@ def change_coefficient(face, index, coefficient):
     coefficients = face.get_coefficients().copy()
     coefficient, coefficients[index] = coefficients[index], coefficient
 
-    c_get_row(__principal_components_flattened, __pc_deviations,
-              coefficients[index] - coefficient, index, vertices)
+    calculate_row(__principal_components_flattened, __pc_deviations,
+                  coefficients[index] - coefficient, index, vertices)
     return Face(vertices, face.get_directed_light(), face.get_constant_light(),
                 coefficients=coefficients)
 
@@ -109,8 +106,9 @@ def get_face(coefficients=None, directed_light=None, constant_light=None):
         constant_light = __random_cos()
 
     if len(coefficients.shape) == 1:
-        vertices = c_get_face(__mean_shape, __principal_components_flattened,
-                              __pc_deviations, coefficients.astype('f'))
+        vertices = calculate_face(
+            __mean_shape, __principal_components_flattened, __pc_deviations,
+            coefficients.astype('f'))
         return Face(vertices, directed_light, constant_light,
                     coefficients=coefficients)
     else:
