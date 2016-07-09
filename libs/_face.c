@@ -77,10 +77,10 @@ static PyObject* _get_row(PyObject *self, PyObject *args) {
 static PyMethodDef face_methods[] = {
     { "get_face", _get_face,
       METH_VARARGS,
-      ""},
+      "Get array of vertices for Face."},
     { "get_row", _get_row,
       METH_VARARGS,
-      ""},
+      "Change coefficient of one principal component in Face."},
     {NULL, NULL, 0, NULL}
 };
 
