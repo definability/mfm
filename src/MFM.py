@@ -74,7 +74,6 @@ def change_coefficient(face, index, coefficient):
     """
     vertices = face.get_original_vertices().copy()
     points = __principal_components.shape[0]
-    __pc_deviations = __model['shapeEV']
     coefficients = face.get_coefficients().copy()
     coefficient, coefficients[index] = coefficients[index], coefficient
     c_face.get_row(
