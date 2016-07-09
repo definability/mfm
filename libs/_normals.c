@@ -31,8 +31,9 @@ static PyObject* _normals (PyObject *self, PyObject *args) {
 
     a_result = (PyArrayObject*)PyArray_NewLikeArray(
         a_vertices, NPY_KEEPORDER, NULL, 1);
-    memset((void*)PyArray_DATA(a_result), 0,
-           PyArray_SIZE(a_result) * sizeof(float));
+    PyArray_FILLWBYTE(a_result, 0);
+    // memset((void*)PyArray_DATA(a_result), 0,
+    //        PyArray_SIZE(a_result) * sizeof(float));
 
     if (!a_result || !a_triangles || !a_vertices) {
         Py_XDECREF(a_vertices);
