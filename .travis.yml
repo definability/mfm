@@ -13,10 +13,7 @@ install:
   - sudo apt-get install -y python-opengl
   - export CONDA_PACKAGES="numpy scipy"
   - conda create --yes -n testenv python=$TRAVIS_PYTHON_VERSION $CONDA_PACKAGES
-
   - source activate testenv
-  - pip install -U -r requirements.txt
-  - python setup.py build_ext --inplace
-script: coverage run --source=src -m tests
+script: coverage run --source=src setup.py test
 after_success: coveralls
 
