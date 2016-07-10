@@ -6,7 +6,7 @@ from numpy import array, ones, dot, fabs, zeros, floor
 
 from .Face import Face
 from .View import View
-from .face import *
+from .face import init_face_calculator, calculate_face, calculate_row
 
 DEFAULT_MODEL_PATH = '01_MorphableModel.mat'
 
@@ -46,6 +46,8 @@ def init(path=None):
     __mean_shape = __model['shapeMU'].astype('f')
     __pc_deviations = __model['shapeEV'].astype('f')
 
+    init_face_calculator(__mean_shape, __principal_components_flattened,
+                         __pc_deviations)
     Face.set_triangles(__triangles, __triangles_c)
     View.set_triangles(__triangles_c, __triangles.size)
 
@@ -106,9 +108,7 @@ def get_face(coefficients=None, directed_light=None, constant_light=None):
         constant_light = __random_cos()
 
     if len(coefficients.shape) == 1:
-        vertices = calculate_face(
-            __mean_shape, __principal_components_flattened, __pc_deviations,
-            coefficients.astype('f'))
+        vertices = calculate_face(coefficients.astype('f'))
         return Face(vertices, directed_light, constant_light,
                     coefficients=coefficients)
     else:
