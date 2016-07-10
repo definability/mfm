@@ -17,10 +17,6 @@ install:
   - source activate testenv
   - pip install -U -r requirements.txt
   - python setup.py build_ext --inplace
-
-  - cd libs
-  - make
-  - cd -
 script: coverage run --source=src -m tests
 after_success: coveralls
 
