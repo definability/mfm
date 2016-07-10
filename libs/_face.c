@@ -9,6 +9,13 @@ struct ModuleState {
     PyObject *error;
 };
 
+static float* principal_components = NULL;
+static float* pc_deviations = NULL;
+static float* mean_shape = NULL;
+
+static size_t dimensions = 0;
+static size_t vertices = 0;
+
 #if PY_MAJOR_VERSION >= 3
 #define GET_STATE(module) ((struct ModuleState*)PyModule_GetState(module))
 #else
@@ -16,32 +23,47 @@ struct ModuleState {
 static struct ModuleState _state;
 #endif
 
-static PyObject* _calculate_face(PyObject *self, PyObject *args) {
-    PyArrayObject *mean_shape=NULL, *principal_components=NULL,
-                  *pc_deviations=NULL, *coefficients=NULL,
-                  *result=NULL;
+static PyObject* _init(PyObject *self, PyObject *args) {
+    PyArrayObject *ao_mean_shape=NULL, *ao_principal_components=NULL,
+                  *ao_pc_deviations=NULL;
 
-    if (!PyArg_ParseTuple(args, "O!O!O!O!",
-                          &PyArray_Type, &mean_shape,
-                          &PyArray_Type, &principal_components,
-                          &PyArray_Type, &pc_deviations,
-                          &PyArray_Type, &coefficients)) {
+    if (!PyArg_ParseTuple(args, "O!O!O!",
+                          &PyArray_Type, &ao_mean_shape,
+                          &PyArray_Type, &ao_principal_components,
+                          &PyArray_Type, &ao_pc_deviations)) {
+        return NULL;
+    }
+
+    principal_components = PyArray_DATA(ao_principal_components);
+    pc_deviations = PyArray_DATA(ao_pc_deviations);
+    mean_shape = PyArray_DATA(ao_mean_shape);
+    dimensions = PyArray_SIZE(ao_pc_deviations);
+    vertices = PyArray_SIZE(ao_mean_shape);
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+static PyObject* _calculate_face(PyObject *self, PyObject *args) {
+    PyArrayObject *coefficients=NULL, *result=NULL;
+
+    if (!PyArg_ParseTuple(args, "O!", &PyArray_Type, &coefficients)) {
         return NULL;
     }
 
     npy_intp* dims = malloc(sizeof(npy_intp)*2);
-    dims[0] = PyArray_SIZE(mean_shape);
+    dims[0] = vertices;
     dims[1] = 1;
     result = (PyArrayObject*)PyArray_ZEROS(2, dims, NPY_FLOAT, 0);
 
     calculate_face(
-        PyArray_DATA(mean_shape),
-        PyArray_DATA(principal_components),
-        PyArray_DATA(pc_deviations),
+        mean_shape,
+        principal_components,
+        pc_deviations,
         PyArray_DATA(coefficients),
         PyArray_DATA(result),
-        PyArray_SIZE(coefficients),
-        PyArray_SIZE(mean_shape));
+        dimensions,
+        vertices);
 
     return PyArray_Return(result);
 }
@@ -75,6 +97,9 @@ static PyObject* _calculate_row(PyObject *self, PyObject *args) {
 }
 
 static PyMethodDef face_methods[] = {
+    { "init_face_calculator", _init,
+      METH_VARARGS,
+      "Cache needed data."},
     { "calculate_face", _calculate_face,
       METH_VARARGS,
       "Get array of vertices for Face."},
