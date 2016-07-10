@@ -6,8 +6,7 @@ from numpy import array, ones, dot, fabs, zeros, floor
 
 from .Face import Face
 from .View import View
-
-c_face = ctypes.cdll.LoadLibrary('./libs/lib_face.so')
+from .face import init_face_calculator, calculate_face, calculate_row
 
 DEFAULT_MODEL_PATH = '01_MorphableModel.mat'
 
@@ -20,6 +19,8 @@ __principal_components = None
 __principal_components_flattened = None
 __ev_normalized = None
 __dimensions = None
+__mean_shape = None
+__pc_deviations = None
 
 
 def init(path=None):
@@ -30,19 +31,23 @@ def init(path=None):
     """
     global __model, __triangles, __triangles_flattened, __dimensions
     global __principal_components, __principal_components_flattened
-    global __ev_normalized
+    global __ev_normalized, __mean_shape, __pc_deviations
 
     __model = loadmat(path if path is not None else DEFAULT_MODEL_PATH)
     __triangles = __model['tl'] - 1
     __triangles_flattened = (__model['tl'] - 1).flatten()
     __triangles_c = __triangles_flattened.ctypes.get_as_parameter()
 
-    __principal_components = __model['shapePC']
+    __principal_components = __model['shapePC'].astype('f')
     __principal_components_flattened = __principal_components.flatten()
     __dimensions = __principal_components.shape[1]
 
     __ev_normalized = __model['shapeEV'].flatten() / __model['shapeEV'].min()
+    __mean_shape = __model['shapeMU'].astype('f')
+    __pc_deviations = __model['shapeEV'].astype('f')
 
+    init_face_calculator(__mean_shape, __principal_components_flattened,
+                         __pc_deviations)
     Face.set_triangles(__triangles, __triangles_c)
     View.set_triangles(__triangles_c, __triangles.size)
 
@@ -68,15 +73,12 @@ def change_coefficient(face, index, coefficient):
     because changes only one (of 199 by default) components.
     """
     vertices = face.get_original_vertices().copy()
-    points = __principal_components.shape[0]
-    pc_deviations = __model['shapeEV']
+
     coefficients = face.get_coefficients().copy()
     coefficient, coefficients[index] = coefficients[index], coefficient
-    c_face.get_row(
-        __principal_components_flattened.ctypes.get_as_parameter(),
-        pc_deviations.ctypes.get_as_parameter(),
-        ctypes.c_float(coefficients[index] - coefficient), index,
-        vertices.ctypes.get_as_parameter(), __dimensions, points)
+
+    calculate_row(__principal_components_flattened, __pc_deviations,
+                  coefficients[index] - coefficient, index, vertices)
     return Face(vertices, face.get_directed_light(), face.get_constant_light(),
                 coefficients=coefficients)
 
@@ -106,28 +108,15 @@ def get_face(coefficients=None, directed_light=None, constant_light=None):
         constant_light = __random_cos()
 
     if len(coefficients.shape) == 1:
-        mean_shape = __model['shapeMU']
-        pc_deviations = __model['shapeEV']
-        points = __principal_components.shape[0]
-        vertices = zeros((points, 1), dtype='f')
-
-        coefficients_f = coefficients.astype('f')
-
-        c_face.get_face(
-            mean_shape.ctypes.get_as_parameter(),
-            __principal_components_flattened.ctypes.get_as_parameter(),
-            pc_deviations.ctypes.get_as_parameter(),
-            coefficients_f.ctypes.get_as_parameter(),
-            vertices.ctypes.get_as_parameter(), __dimensions, points)
-
+        vertices = calculate_face(coefficients.astype('f'))
         return Face(vertices, directed_light, constant_light,
-                    coefficients=coefficients_f)
+                    coefficients=coefficients)
     else:
         coefficients = coefficients.reshape((coefficients.size, 1))
         n_seg = coefficients.shape[1]
 
-        mean_shape = __model['shapeMU'] * ones([1, n_seg])
-        pc_deviations = __model['shapeEV'][0:__dimensions] * ones([1, n_seg])
+        mean_shape = __mean_shape * ones([1, n_seg])
+        pc_deviations = __pc_deviations[0:__dimensions] * ones([1, n_seg])
 
         features = dot(__principal_components[:, 0:__dimensions],
                        coefficients * pc_deviations)
