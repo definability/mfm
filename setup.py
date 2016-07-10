@@ -39,7 +39,7 @@ setup(
              [join('tests', p) for p in find_packages('tests')] + \
              ['data'],
     install_requires=[
-        'argparse==1.2.1',
+        'argparse==1.1.0',
         'cairocffi==0.7.2',
         'enum34==1.1.6',
         'Pillow==3.2.0',
