@@ -3,6 +3,8 @@
 #include <math.h>
 #include <assert.h>
 
+#include "normals.h"
+
 #define COMPONENTS_COUNT 3
 
 #define X_OFFSET 0
