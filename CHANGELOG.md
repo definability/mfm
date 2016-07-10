@@ -18,6 +18,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.0.13] - 2015-07-04
 ### Added
 - Docstrings for main classes.
+
 ### Fixed
 - Gibbs Sampler Fitter loops count control.
 - Gibbs Sampler Fitter loops endings.
