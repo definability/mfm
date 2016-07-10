@@ -14,6 +14,8 @@ install:
   - export CONDA_PACKAGES="numpy scipy"
   - conda create --yes -n testenv python=$TRAVIS_PYTHON_VERSION $CONDA_PACKAGES
   - source activate testenv
-script: coverage run --source=src setup.py test
-after_success: coveralls
+script: python setup.py test
+after_success:
+  - coverage run --source=src setup.py test
+  - coveralls
 
