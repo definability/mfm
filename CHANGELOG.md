@@ -5,7 +5,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Changed
 - Using [flake8](http://flake8.pycqa.org/) package for code validation.
-- Restructored project.
+- Restructured project.
+- Using [setuptools](https://setuptools.readthedocs.io/en/latest/)
+    to build and test the application.
 
 ## [0.0.14] - 2015-07-05
 ### Added
