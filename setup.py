@@ -45,14 +45,14 @@ setup(
         'Pillow==3.2.0',
         'PyOpenGL==3.1.0',
     ],
+    tests_require=[
+        'coverage==4.0',
+        'coveralls==1.1',
+    ],
     extras_require={
         'dev': [
             'flake8==2.6.2',
             'pylint==1.5.5'
-        ],
-        'test': [
-            'coverage==4.0',
-            'coveralls==1.1'
         ]
     },
     test_suite='tests'
