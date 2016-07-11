@@ -1,3 +1,6 @@
+#!/bin/bash
+set -e
+
 OPERATION=$(tr [a-z] [A-Z] <<< ${1:-patch})
 
 VERSION=$(python setup.py --version)
@@ -26,3 +29,5 @@ git commit -m "Version ${NEW_VERSION}"
 git tag "v${NEW_VERSION}"
 git push
 git push --tags
+
+exit 0
