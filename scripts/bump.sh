@@ -25,9 +25,7 @@ NEW_VERSION=$(sed "s/${VERSION_REGEX}/${BUMPER}/ge" <<< ${VERSION})
 
 TIMESTAMP=$(date +%Y-%m-%d)
 CHANGELOG_ENTRY="## [${NEW_VERSION}] - ${TIMESTAMP}"
-sed -i "/^## \[Unreleased\]$/a\
-
-${CHANGELOG_ENTRY}" CHANGELOG.md
+sed -i "s/^\(## \[Unreleased\]\)$/\1\n\n${CHANGELOG_ENTRY}/g" CHANGELOG.md
 
 CHANGELOG_HEAD_LINK="^\[Unreleased\]\(.*\)v${VERSION}...HEAD$"
 CHANGELOG_NEW_HEAD_LINK="[Unreleased]\1v${NEW_VERSION}...HEAD"
