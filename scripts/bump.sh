@@ -11,3 +11,7 @@ MAJOR='echo "$((\1+1)).0.0"'
 eval BUMPER='$'$OPERATION
 
 NEW_VERSION=$(sed "s/${REGEX}/${BUMPER}/ge" <<< ${VERSION})
+
+TIMESTAMP=$(date +%Y-%m-%d)
+CHANGELOG_ENTRY="## [${NEW_VERSION}] - ${TIMESTAMP}"
+sed -i "/^## \[Unreleased\]$/a\ \n${CHANGELOG_ENTRY}" CHANGELOG.md
