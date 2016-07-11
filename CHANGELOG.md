@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.0.17] - 2016-07-11
 ### Changed
 - Made bump script to not depend on Python packages.
 
@@ -110,7 +112,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.0.16...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.0.17...HEAD
+[0.0.17]: https://github.com/char-lie/mfm/compare/v0.0.16...v0.0.17
 [0.0.16]: https://github.com/char-lie/mfm/compare/v0.0.15...v0.0.16
 [0.0.15]: https://github.com/char-lie/mfm/compare/v0.0.14...v0.0.15
 [0.0.14]: https://github.com/char-lie/mfm/compare/v0.0.13...v0.0.14
