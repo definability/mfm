@@ -3,7 +3,7 @@ set -e
 
 OPERATION=$(tr [a-z] [A-Z] <<< ${1:-patch})
 
-if [ OPERATION == 'PUSH' ]
+if [ ${OPERATION} == 'PUSH' ]
 then
     git add CHANGELOG.md setup.py
     git commit -m "Version ${NEW_VERSION}"
