@@ -20,3 +20,9 @@ CHANGELOG_LINK="${CHANGELOG_NEW_HEAD_LINK}\n${CHANGELOG_NEW_COMPARISON}"
 sed -i "s/${CHANGELOG_HEAD_LINK}/${CHANGELOG_LINK}/g" CHANGELOG.md
 
 sed -i "s/version='${VERSION}'/version='${NEW_VERSION}'/g" setup.py
+
+git add CHANGELOG.md setup.py
+git commit -m "Version ${NEW_VERSION}"
+git tag "v${NEW_VERSION}"
+git push
+git push --tags
