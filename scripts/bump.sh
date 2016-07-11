@@ -25,7 +25,7 @@ NEW_VERSION=$(sed "s/${VERSION_REGEX}/${BUMPER}/ge" <<< ${VERSION})
 
 TIMESTAMP=$(date +%Y-%m-%d)
 CHANGELOG_ENTRY="## [${NEW_VERSION}] - ${TIMESTAMP}"
-sed "/^## \[Unreleased\]$/a\
+sed -i "/^## \[Unreleased\]$/a\
 
 ${CHANGELOG_ENTRY}" CHANGELOG.md
 
