@@ -29,7 +29,8 @@ class StochasticGradientDescentFitter(ModelFitter):
         if index == 'start_iteration':
             light = self.estimate_light(normals)
             shadows = normals.dot(light)
-            print('{:0<3}: Error is {}'.format(self.__loop, self.get_image_deviation(shadows, normals)))
+            # print('{:0<3}: Error is {}'.format(
+            #     self.__loop, self.get_image_deviation(shadows, normals)))
             index = 'start'
             if self.__loop > self.__max_loops:
                 self.__finish(normals, shadows)
@@ -46,8 +47,8 @@ class StochasticGradientDescentFitter(ModelFitter):
         self.__loop += 1
         self.__current_step = -1
         self.__coefficients -= self.__step * self.__derivatives
-        print(self.__derivatives)
-        print(self.__coefficients)
+        # print(self.__derivatives)
+        # print(self.__coefficients)
         self.request_normals(self.__coefficients, 'start_iteration')
 
     def __get_derivative(self, param, step, normals):
@@ -59,8 +60,7 @@ class StochasticGradientDescentFitter(ModelFitter):
             value = self.__coefficients[param] + self.__dx
             self.request_normals((param, value), 'derivative')
         elif step == 'derivative':
-            # print('{}.{}'.format(self.__loop, param))
-            print('.' if param % 10 else '*', end='', flush=True)
+            # print('.' if param % 10 else '*', end='', flush=True)
             light = self.estimate_light(normals)
             shadows = normals.dot(light)
             self.__derivatives[param] = self.__derivative(
@@ -79,4 +79,4 @@ class StochasticGradientDescentFitter(ModelFitter):
         image = Image.new('L', (500, 500))
         image.putdata((img*255).astype('i'))
         image.save('img.png')
-        print('Finished')
+        # print('Finished')
