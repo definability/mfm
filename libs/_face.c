@@ -56,13 +56,14 @@ static PyObject* _calculate_face(PyObject *self, PyObject *args) {
     dims[1] = 1;
     result = (PyArrayObject*)PyArray_ZEROS(2, dims, NPY_FLOAT, 0);
 
+    size_t coefficients_size = PyArray_SIZE(coefficients);
     calculate_face(
         mean_shape,
         principal_components,
         pc_deviations,
         PyArray_DATA(coefficients),
         PyArray_DATA(result),
-        dimensions,
+        dimensions < coefficients_size ? dimensions : coefficients_size,
         vertices);
 
     return PyArray_Return(result);
