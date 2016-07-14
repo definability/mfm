@@ -4,7 +4,8 @@ from numpy import zeros, nonzero
 from .ModelFitter import ModelFitter
 
 
-class StochasticGradientDescentFitter(ModelFitter):
+class BGDFitter(ModelFitter):
+    """Batch gradient descent."""
     def __init__(self, image, dimensions=199, model=None,
             dx=.01, step=.1, max_loops=1):
 
@@ -17,8 +18,7 @@ class StochasticGradientDescentFitter(ModelFitter):
         self.__loop = 0
         self.__max_loops = max_loops
 
-        super(StochasticGradientDescentFitter, self).__init__(
-            image, dimensions, model)
+        super(BGDFitter, self).__init__(image, dimensions, model)
 
     def start(self):
         self.__coefficients = zeros(self._dimensions, dtype='f')
