@@ -1,9 +1,12 @@
+#include <stdlib.h>
+#include <stdint.h>
+
 #include "face.h"
 
 void calculate_face(float* mean_shape, float* principal_components,
                     float* pc_deviations, float* coefficients,
-                    float* face, int dimensions, int vertices) {
-    int i = 0, j;
+                    float* face, size_t dimensions, size_t vertices) {
+    size_t i = 0, j;
     do {
         face[i] = mean_shape[i];
         j = 0;
@@ -15,9 +18,9 @@ void calculate_face(float* mean_shape, float* principal_components,
 }
 
 void calculate_row(float* principal_components, float* pc_deviations,
-                   float coefficient_difference, int row,
-                   float* face, int dimensions, int vertices) {
-    int i = 0;
+                   float coefficient_difference, size_t row,
+                   float* face, size_t dimensions, size_t vertices) {
+    size_t i = 0;
     do {
         face[i] += principal_components[i * dimensions + row]
                    * coefficient_difference * pc_deviations[row];
