@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.0.18] - 2016-07-14
 ### Added
-- Implemented Batch Gradient Descent Fitter.
+- Batch Gradient Descent Fitter.
 
 ### Changed
 - Added ability to not use all PC coefficients for `Face` calculation.
