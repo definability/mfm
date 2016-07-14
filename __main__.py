@@ -2,7 +2,7 @@ from PIL import Image
 from numpy import array
 
 from src import MFM, Model, ModelInput, View
-from src.fitter import StochasticGradientDescentFitter as Fitter
+from src.fitter import BGDFitter as Fitter
 from data import get_datafile_path
 
 MFM.init()
