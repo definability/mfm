@@ -7,7 +7,7 @@ from .ModelFitter import ModelFitter
 class BGDFitter(ModelFitter):
     """Batch gradient descent."""
     def __init__(self, image, dimensions=199, model=None,
-            dx=.01, step=.1, max_loops=1):
+                 dx=.1, step=100., max_loops=10):
 
         self.__dx = dx
         self.__step = step
