@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- Loops count in BGD Fitter.
 
 ## [0.0.19] - 2016-07-18
 ### Changed
