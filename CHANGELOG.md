@@ -7,6 +7,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Default parameters for BGD Fitter.
 - Type of counters in C modules changed to size\_t.
 
+### Fixed
+- Ability to specify not all coefficients for Face calculation.
+
 ## [0.0.18] - 2016-07-14
 ### Added
 - Batch Gradient Descent Fitter.
