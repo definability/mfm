@@ -21,9 +21,8 @@ void calculate_face(float* mean_shape, float* principal_components,
 void calculate_row(float* principal_components, float* pc_deviations,
                    float coefficient_difference, size_t row,
                    float* face, size_t dimensions, size_t vertices) {
-    size_t i = 0;
-    do {
-        face[i] += principal_components[i * dimensions + row]
-                   * coefficient_difference * pc_deviations[row];
-    } while(++i < vertices);
+    while (vertices --> 0) {
+        face[vertices] += principal_components[vertices * dimensions + row]
+                          * coefficient_difference * pc_deviations[row];
+    }
 }
