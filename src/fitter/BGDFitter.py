@@ -29,7 +29,7 @@ class BGDFitter(ModelFitter):
         if index == 'start_iteration':
             light = self.estimate_light(normals)
             shadows = normals.dot(light)
-            # print('{:0<3}: Error is {}'.format(
+            # print('{:0>3}: Error is {}'.format(
             #     self.__loop, self.get_image_deviation(shadows, normals)))
             index = 'start'
             if self.__loop >= self.__max_loops:
