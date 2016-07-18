@@ -32,7 +32,7 @@ class BGDFitter(ModelFitter):
             # print('{:0<3}: Error is {}'.format(
             #     self.__loop, self.get_image_deviation(shadows, normals)))
             index = 'start'
-            if self.__loop > self.__max_loops:
+            if self.__loop >= self.__max_loops:
                 self.__finish(normals, shadows)
                 return
         if index == 'start' and self.__current_step >= self._dimensions - 1:
