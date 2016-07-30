@@ -7,21 +7,24 @@ from .ModelFitter import ModelFitter
 class BGDFitter(ModelFitter):
     """Batch gradient descent."""
     def __init__(self, image, dimensions=199, model=None,
-                 dx=.1, step=100., max_loops=10):
+                 dx=.1, step=100., max_loops=10, callback=None,
+                 initial=None):
 
         self.__dx = dx
         self.__step = step
         self.__coefficients = None
         self.__derivatives = None
         self.__current_step = 0
+        self.__callback = callback
 
         self.__loop = 0
         self.__max_loops = max_loops
 
-        super(BGDFitter, self).__init__(image, dimensions, model)
+        super(BGDFitter, self).__init__(image, dimensions, model, initial)
 
     def start(self):
-        self.__coefficients = zeros(self._dimensions, dtype='f')
+        self.__coefficients = self._initial.copy()
+
         self.__derivatives = zeros(self._dimensions, dtype='f')
         self.__next_iteration()
 
