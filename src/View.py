@@ -4,13 +4,12 @@ from OpenGL.GL import GL_LESS, GL_TRUE, GL_DEPTH_TEST, GL_STENCIL_TEST
 from OpenGL.GL import GL_COLOR_ARRAY, GL_VERTEX_ARRAY, GL_TRIANGLES
 from OpenGL.GL import GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT
 from OpenGL.GL import GL_UNSIGNED_SHORT, GL_FLOAT, GL_MODELVIEW
-from OpenGL.GL import GL_CULL_FACE, GL_FRONT
+from OpenGL.GL import GL_CULL_FACE, GL_FRONT, GL_MODELVIEW_MATRIX
 
 from OpenGL.GL import glMatrixMode, glLoadIdentity, glOrtho, glRotatef
 from OpenGL.GL import glDepthMask, glDepthFunc, glCullFace
-from OpenGL.GL import glVertexPointer, glColorPointer
 from OpenGL.GL import glEnable, glClearColor, glEnableClientState, glClear
-from OpenGL.GL import glDrawElements
+from OpenGL.GL import glDrawElements, glGetFloatv
 
 from OpenGL.GL import glReadBuffer, glReadPixels, GL_BACK, GL_RGBA
 
@@ -20,7 +19,9 @@ from OpenGL.GLUT import glutInitWindowSize, glutSwapBuffers, glutPostRedisplay
 from OpenGL.GLUT import glutCreateWindow, glutInit, glutInitWindowPosition
 from OpenGL.GLUT import glutInitDisplayMode, glutLeaveMainLoop, glutDisplayFunc
 
-from numpy import zeros
+from numpy import zeros, array
+
+from shaders import ShadersHelper
 
 
 class View:
@@ -46,6 +47,8 @@ class View:
         glEnableClientState(GL_VERTEX_ARRAY)
 
         glClearColor(1., 1., 1., 0.)
+
+        self.__sh = ShadersHelper('face.vert', 'face.frag', 2)
 
         glutDisplayFunc(self.__display)
         self.__callback = None
@@ -99,16 +102,24 @@ class View:
 
     def __display(self):
         """Render the model by existent vertices, colors and triangles."""
+        glRotatef(1., *self.__rotation)
+        rotation_matrix = array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
+
+        self.__sh.add_attribute(0, self.__vertices, 'vin_position')
+        self.__sh.add_attribute(1, self.__colors, 'vin_color')
+        self.__sh.bind_buffer()
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        glRotatef(1., *self.__rotation)
+        self.__sh.use_shaders()
 
-        glVertexPointer(3, GL_FLOAT, 0, self.__vertices)
-        glColorPointer(3, GL_FLOAT, 0, self.__colors)
+        self.__sh.bind_uniform_matrix(rotation_matrix, 'rotation_matrix')
+
         glDrawElements(GL_TRIANGLES, View.__triangles_size,
                        GL_UNSIGNED_SHORT, View.__triangles)
 
-        # print('swap buffers')
+        self.__sh.clear()
+
         glutSwapBuffers()
         if self.__callback is not None:
             self.__callback()
