@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.2.0] - 2016-07-31
 ### Changed
 - Using shaders for face rendering.
 
@@ -141,7 +143,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/char-lie/mfm/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/char-lie/mfm/compare/v0.0.19...v0.1.0
 [0.0.19]: https://github.com/char-lie/mfm/compare/v0.0.18...v0.0.19
 [0.0.18]: https://github.com/char-lie/mfm/compare/v0.0.17...v0.0.18
