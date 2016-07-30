@@ -73,10 +73,13 @@ class BGDFitter(ModelFitter):
         return (y1 - y0) / self.__dx
 
     def __finish(self, normals, shadows):
-        img = shadows[::-1]
-        alpha = zeros(len(normals[:, 3]))
-        alpha[nonzero(normals[:, 3])[0]] = 1.
+        img = shadows
+        img[normals[:, 3] == 0.] = 1.
+        img = img[::-1]
         image = Image.new('L', (500, 500))
         image.putdata((img*255).astype('i'))
-        image.save('img.png')
+        image.save('img.png'.format(self.__loop))
+        image.close()
+        if self.__callback is not None:
+            self.__callback(self.__coefficients)
         # print('Finished')
