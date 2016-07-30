@@ -13,9 +13,12 @@ class BGDFitter(ModelFitter):
         self.__dx = dx
         self.__step = step
         self.__coefficients = None
-        self.__derivatives = None
         self.__current_step = 0
         self.__callback = callback
+
+        self.__derivatives = None
+        self.__left_derivatives = None
+        self.__right_derivatives = None
 
         self.__loop = 0
         self.__max_loops = max_loops
@@ -26,6 +29,9 @@ class BGDFitter(ModelFitter):
         self.__coefficients = self._initial.copy()
 
         self.__derivatives = zeros(self._dimensions, dtype='f')
+        self.__left_derivatives = zeros(self._dimensions, dtype='f')
+        self.__right_derivatives = zeros(self._dimensions, dtype='f')
+
         self.__next_iteration()
 
     def receive_normals(self, normals, index=None):
@@ -61,16 +67,30 @@ class BGDFitter(ModelFitter):
             self.__derivatives[param] = self.get_image_deviation(shadows,
                                                                  normals)
             value = self.__coefficients[param] + self.__dx
-            self.request_normals((param, value), 'derivative')
-        elif step == 'derivative':
+            self.request_normals((param, value), 'right_derivative')
+        elif 'derivative' in step:
             # print('.' if param % 10 else '*', end='', flush=True)
             light = self.estimate_light(normals)
             shadows = normals.dot(light)
-            self.__derivatives[param] = self.__derivative(
-                self.__derivatives[param],
-                self.get_image_deviation(shadows, normals))
+
             value = self.__coefficients[param]
-            self.request_normals((param, value), 'start')
+
+            if 'right' in step:
+                value -= self.__dx
+                action = 'left_derivative'
+                self.__right_derivatives[param] = self.__derivative(
+                    self.__derivatives[param],
+                    self.get_image_deviation(shadows, normals))
+            elif 'left' in step:
+                action = 'start'
+                self.__left_derivatives[param] = self.__derivative(
+                    self.get_image_deviation(shadows, normals),
+                    self.__derivatives[param])
+                self.__derivatives[param] = (
+                    0.5 * (self.__left_derivatives[param]
+                           + self.__right_derivatives[param]))
+
+            self.request_normals((param, value), action)
 
     def __derivative(self, y0, y1):
         return (y1 - y0) / self.__dx
