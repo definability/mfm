@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Using shaders for face rendering.
 
 ## [0.1.0] - 2016-07-31
 ### Added
