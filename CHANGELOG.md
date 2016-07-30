@@ -3,8 +3,16 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Ability to set initial values of coefficients for Fitters.
+
+### Changed
+- Calculating derivatives from two sides in BGD Fitter.
+
 ### Fixed
 - Loops count in BGD Fitter.
+- Saving result in Nelder-Mead Fitter.
+- Saving result in BGD Fitter.
 
 ## [0.0.19] - 2016-07-18
 ### Changed
