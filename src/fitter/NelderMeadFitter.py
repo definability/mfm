@@ -7,12 +7,14 @@ from .ModelFitter import ModelFitter
 
 
 class NelderMeadFitter(ModelFitter):
-    def __init__(self, image, dimensions=199, model=None):
+    def __init__(self, image, dimensions=199, model=None, initial=None,
+                 offset=1.):
         self.__step = None
         self.__parameters = [None] * (dimensions)
         self.__errors = [None] * (dimensions)
         self.__normals = None
         self.__light = None
+        self.__offset = offset
 
         self.__centroid = None
         self.__reflection = None
@@ -29,7 +31,8 @@ class NelderMeadFitter(ModelFitter):
         self.__rho = .5
         self.__sigma = .5
 
-        super(NelderMeadFitter, self).__init__(image, dimensions, model)
+        super(NelderMeadFitter, self).__init__(image, dimensions, model,
+                                               initial)
 
     def start(self):
         self.__initiate_parameters()
@@ -38,12 +41,15 @@ class NelderMeadFitter(ModelFitter):
         self.__step = 'start'
         for i in range(self._dimensions):
             # print('Initial step {} of {}'.format(i, self._dimensions))
-            self.__parameters[i] = randn(self._dimensions) * 1
+            # self.__parameters[i] = randn(self._dimensions) * 1
             # self.__parameters[i] = zeros(self._dimensions)
-            # self.__parameters[i][:i] = 1.
+            # self.__parameters[i][:i] = self.__offset
+            self.__parameters[i] = self._initial.copy()
+            self.__parameters[i][:i] += self.__offset
             self.request_normals(self.__parameters[i], i)
         # self.__end = ones(self._dimensions)
-        self.__end = randn(self._dimensions)
+        # self.__end = randn(self._dimensions)
+        self.__end = self._initial + self.__offset
         self.request_normals(self.__end, self._dimensions)
 
     def receive_normals(self, normals, index=None):
