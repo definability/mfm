@@ -197,9 +197,6 @@ class NelderMeadFitter(ModelFitter):
         # print(self.__light)
 
         img = self.__normals.dot(self.__light)[::-1]
-        alpha = zeros(len(self.__normals[:, 3]))
-        alpha[nonzero(self.__normals[:, 3])[0]] = 1.
-        # data = (column_stack((img, img, img, alpha)) * 255).astype('i')
         image = Image.new('L', (500, 500))
         image.putdata((img*255).astype('i'))
         image.save('img.png')
