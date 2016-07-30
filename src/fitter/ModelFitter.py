@@ -1,4 +1,4 @@
-from numpy import array, nonzero
+from numpy import array, nonzero, zeros
 from numpy.linalg import lstsq  # , inv
 
 
@@ -7,7 +7,7 @@ class ModelFitter:
 
     Should call Face rendering and wait for response.
     """
-    def __init__(self, image, dimensions=199, model=None):
+    def __init__(self, image, dimensions=199, model=None, initial=None):
         """Initializes fitter for given image.
 
         Fits provided number of dimensions of given model to the image.
@@ -15,6 +15,10 @@ class ModelFitter:
         self.__image = array(image)
         self.__model = model
         self._dimensions = dimensions
+
+        self._initial = initial
+        if self._initial is None:
+            self._initial = zeros(self._dimensions, dtype='f')
 
     def estimate_light(self, normals):
         """Estimates light parameters to the image with given normal vectors.
