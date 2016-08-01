@@ -131,7 +131,7 @@ class View:
         rotation_matrix = array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
 
         self.__sh.add_attribute(0, self.__vertices, 'vin_position')
-        self.__sh.add_attribute(1, self.__colors, 'vin_color')
+        self.__sh.add_attribute(1, self.__normals, 'vin_normal')
         self.__sh.bind_buffer()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -139,6 +139,7 @@ class View:
         self.__sh.use_shaders()
 
         self.__sh.bind_uniform_matrix(rotation_matrix, 'rotation_matrix')
+        self.__sh.bind_uniform_matrix(self.__light, 'vin_light')
 
         glDrawElements(GL_TRIANGLES, View.__triangles_size,
                        GL_UNSIGNED_SHORT, View.__triangles)
