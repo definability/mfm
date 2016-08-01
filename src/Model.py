@@ -113,13 +113,23 @@ class Model:
             self.__face = MFM.change_coefficient(
                 self.__face, coefficients[0], coefficients[1])
 
-        vertices = self.__face.get_vertices_c()
-        if self.__texture == Texture.light:
-            colors = self.__face.get_light_map_c()
-        else:
-            colors = self.__face.get_normal_map_c()
+        self.__view.vertices = self.__face.get_vertices()
 
-        self.__view.update(vertices, colors)
+        normals = self.__view.normals = self.__face.get_normals()
+
+        normal_min = apply_along_axis(numpy.min, 0, normals)
+        normal_max = apply_along_axis(numpy.max, 0, normals)
+
+        self.__face.normal_min = normal_min
+        self.__face.normal_max = normal_max
+
+        if self.__texture is Texture.normal:
+            self.__view.light = concatenate((
+                concatenate((normal_min, [-1])),
+                concatenate((normal_max - normal_min, [1])),
+                [0] * 4))
+        elif self.__texture is Texture.light:
+            self.__view.light = concatenate((self.__face.light, [0] * 8))
 
     def rotate(self, axis, value):
         """Rotate camera of the viewport.
