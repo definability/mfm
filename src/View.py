@@ -95,6 +95,22 @@ class View:
     def vertices(self, vertices):
         self.__vertices = vertices
 
+    @property
+    def rotation(self):
+        return self.__rotation
+
+    @rotation.setter
+    def rotation(self, rotation):
+        self.__rotation = rotation
+
+    @property
+    def colors(self):
+        return self.__colors
+
+    @colors.setter
+    def colors(self, colors):
+        self.__colors = colors
+
     def redraw(self, callback=None):
         """Trigger redisplay and trigger callback after render."""
         # print('Set callback to', callback)
