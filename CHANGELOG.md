@@ -13,7 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - `normals`;
   - `vertices`;
   - `colors`;
-  - `rotation`;
+  - `rotation`.
 
 ### Changed
 - Vertex shader calculates normal map or shadow depending on input.
