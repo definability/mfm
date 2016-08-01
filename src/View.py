@@ -71,6 +71,30 @@ class View:
         self.__rotation = rotation if rotation is not None else self.__rotation
         self.__position = position if position is not None else self.__position
 
+    @property
+    def light(self):
+        return self.__light
+
+    @light.setter
+    def light(self, light):
+        self.__light = light
+
+    @property
+    def normals(self):
+        return self.__normals
+
+    @normals.setter
+    def normals(self, normals):
+        self.__normals = normals
+
+    @property
+    def vertices(self):
+        return self.__vertices
+
+    @vertices.setter
+    def vertices(self, vertices):
+        self.__vertices = vertices
+
     def redraw(self, callback=None):
         """Trigger redisplay and trigger callback after render."""
         # print('Set callback to', callback)
