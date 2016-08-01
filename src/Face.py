@@ -138,6 +138,22 @@ class Face:
                                      self.__triangles_flattened)
         return self.__normals
 
+    @property
+    def normal_min(self):
+        return self.__normal_min
+
+    @normal_min.setter
+    def normal_min(self, normal_min):
+        self.__normal_min = normal_min
+
+    @property
+    def normal_max(self):
+        return self.__normal_max
+
+    @normal_max.setter
+    def normal_max(self, normal_max):
+        self.__normal_max = normal_max
+
     def get_normal_map(self):
         """Get normal map for each vertex.
 
