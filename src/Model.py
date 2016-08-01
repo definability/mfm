@@ -139,7 +139,7 @@ class Model:
         self.__rotations[axis] = value
         rotation = (self.__rotations['x'], self.__rotations['y'],
                     self.__rotations['z'])
-        self.__view.update(rotation=rotation)
+        self.__view.rotation = rotation
 
     def change_light(self, direction=None, intensity=None):
         """Change light parameters.
