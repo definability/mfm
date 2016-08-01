@@ -1,6 +1,7 @@
 import ctypes
 
 from numpy import array, dot, zeros_like, mean, apply_along_axis, column_stack
+from numpy import concatenate
 import numpy
 
 from .normals import get_normals
@@ -137,6 +138,30 @@ class Face:
         self.__normals = get_normals(self.__vertices,
                                      self.__triangles_flattened)
         return self.__normals
+
+    @property
+    def directed_light(self):
+        return self.__directed_light
+
+    @directed_light.setter
+    def directed_light(self, directed_light):
+        directed_light = array(directed_light)
+        if directed_light.shape != (3,):
+            raise ValueError(ERROR_TEXT['LIGHT_DIRECTION']
+                             .format(directed_light.shape))
+        self.__directed_light = directed_light
+
+    @property
+    def ambient_light(self):
+        return self.__constant_light
+
+    @ambient_light.setter
+    def ambient_light(self, ambient_light):
+        self.__constant_light = ambient_light
+
+    @property
+    def light(self):
+        return concatenate((self.directed_light, [self.ambient_light]))
 
     @property
     def normal_min(self):
