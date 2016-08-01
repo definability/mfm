@@ -1,4 +1,5 @@
 import sys
+from warnings import warn
 
 from OpenGL.GL import GL_LESS, GL_TRUE, GL_DEPTH_TEST, GL_STENCIL_TEST
 from OpenGL.GL import GL_COLOR_ARRAY, GL_VERTEX_ARRAY, GL_TRIANGLES
@@ -36,6 +37,7 @@ class View:
 
         self.__vertices = None
         self.__colors = None
+        self.__normals = None
         self.__rotation = (0., 0., 0.)
         self.__position = (0., 0., 0.)
 
@@ -65,10 +67,51 @@ class View:
 
         When you replace the vertices, it means that you change shape.
         """
+        warn('Use properties instead', DeprecationWarning)
         self.__vertices = vertices if vertices is not None else self.__vertices
         self.__colors = colors if colors is not None else self.__colors
         self.__rotation = rotation if rotation is not None else self.__rotation
         self.__position = position if position is not None else self.__position
+
+    @property
+    def light(self):
+        return self.__light
+
+    @light.setter
+    def light(self, light):
+        self.__light = light
+
+    @property
+    def normals(self):
+        return self.__normals
+
+    @normals.setter
+    def normals(self, normals):
+        self.__normals = normals
+
+    @property
+    def vertices(self):
+        return self.__vertices
+
+    @vertices.setter
+    def vertices(self, vertices):
+        self.__vertices = vertices
+
+    @property
+    def rotation(self):
+        return self.__rotation
+
+    @rotation.setter
+    def rotation(self, rotation):
+        self.__rotation = rotation
+
+    @property
+    def colors(self):
+        return self.__colors
+
+    @colors.setter
+    def colors(self, colors):
+        self.__colors = colors
 
     def redraw(self, callback=None):
         """Trigger redisplay and trigger callback after render."""
@@ -106,7 +149,7 @@ class View:
         rotation_matrix = array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
 
         self.__sh.add_attribute(0, self.__vertices, 'vin_position')
-        self.__sh.add_attribute(1, self.__colors, 'vin_color')
+        self.__sh.add_attribute(1, self.__normals, 'vin_normal')
         self.__sh.bind_buffer()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -114,6 +157,7 @@ class View:
         self.__sh.use_shaders()
 
         self.__sh.bind_uniform_matrix(rotation_matrix, 'rotation_matrix')
+        self.__sh.bind_uniform_matrix(self.__light, 'vin_light')
 
         glDrawElements(GL_TRIANGLES, View.__triangles_size,
                        GL_UNSIGNED_SHORT, View.__triangles)

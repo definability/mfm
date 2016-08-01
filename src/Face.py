@@ -1,6 +1,7 @@
-import ctypes
+from warnings import warn
 
 from numpy import array, dot, zeros_like, mean, apply_along_axis, column_stack
+from numpy import concatenate
 import numpy
 
 from .normals import get_normals
@@ -76,6 +77,7 @@ class Face:
 
     def get_vertices_c(self):
         """Get C array of normalized vertices."""
+        warn('Shaders don\'t need C array', DeprecationWarning)
         return self.__vertices_c
 
     @staticmethod
@@ -90,10 +92,12 @@ class Face:
 
     def get_directed_light(self):
         """Get directed light vector."""
+        warn('Use property instead', DeprecationWarning)
         return self.__directed_light
 
     def get_constant_light(self):
         """Get ambient light intencity."""
+        warn('Use property ambient_light instead', DeprecationWarning)
         return self.__constant_light
 
     def get_light_map(self):
@@ -105,6 +109,7 @@ class Face:
 
         Result contains array of 3-arrays for each of RGB channel.
         """
+        warn('Shadows are calculated by shaders', DeprecationWarning)
         if self.__light_map is not None:
             return self.__light_map
 
@@ -118,10 +123,12 @@ class Face:
 
     def get_light_map_c(self):
         """Get C array with light map."""
+        warn('Shadows are calculated by shaders', DeprecationWarning)
         return self.get_light_map().ctypes.get_as_parameter()
 
     def get_normal_map_c(self):
         """Get C array with normal vectors map."""
+        warn('Normal maps are drawn by shaders', DeprecationWarning)
         return self.get_normal_map().ctypes.get_as_parameter()
 
     def get_normals(self):
@@ -138,12 +145,53 @@ class Face:
                                      self.__triangles_flattened)
         return self.__normals
 
+    @property
+    def directed_light(self):
+        return self.__directed_light
+
+    @directed_light.setter
+    def directed_light(self, directed_light):
+        directed_light = array(directed_light)
+        if directed_light.shape != (3,):
+            raise ValueError(ERROR_TEXT['LIGHT_DIRECTION']
+                             .format(directed_light.shape))
+        self.__directed_light = directed_light
+
+    @property
+    def ambient_light(self):
+        return self.__constant_light
+
+    @ambient_light.setter
+    def ambient_light(self, ambient_light):
+        self.__constant_light = ambient_light
+
+    @property
+    def light(self):
+        return concatenate((self.directed_light, [self.ambient_light]))
+
+    @property
+    def normal_min(self):
+        return self.__normal_min
+
+    @normal_min.setter
+    def normal_min(self, normal_min):
+        self.__normal_min = normal_min
+
+    @property
+    def normal_max(self):
+        return self.__normal_max
+
+    @normal_max.setter
+    def normal_max(self, normal_max):
+        self.__normal_max = normal_max
+
     def get_normal_map(self):
         """Get normal map for each vertex.
 
         Normal map contains componentwise normalized to [0; 1]
         normal vectors of each vertex to be represented as colors.
         """
+        warn('Normal maps are drawn by shaders', DeprecationWarning)
         if self.__normal_map is not None:
             return self.__normal_map
 
@@ -172,6 +220,7 @@ class Face:
 
     def set_light(self, directed_light=None, constant_light=None):
         """Change light conditions of the Face."""
+        warn('Use properties instead', DeprecationWarning)
         if directed_light is not None:
             directed_light = array(directed_light)
             if directed_light.shape != (3,):
