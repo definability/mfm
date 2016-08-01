@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.2.1] - 2016-08-01
 ### Added
 - Face properties with setters and getters
   - `directed_light`;
@@ -174,7 +176,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/char-lie/mfm/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/char-lie/mfm/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/char-lie/mfm/compare/v0.0.19...v0.1.0
 [0.0.19]: https://github.com/char-lie/mfm/compare/v0.0.18...v0.0.19
