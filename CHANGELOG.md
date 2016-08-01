@@ -3,6 +3,37 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Face properties with setters and getters
+  - `directed_light`;
+  - `ambient_light`;
+  - `light`;
+- View properties with setters and getters
+  - `light`;
+  - `normals`;
+  - `vertices`;
+  - `colors`;
+  - `rotation`;
+
+### Changed
+- Vertex shader calculates normal map or shadow depending on input.
+
+### Deprecated
+- Usage of normal maps: shadows will be calculated in shaders
+  and normal map will be redundant for shadow calculations via
+  least squares method;
+- Face
+  - `get_vertices_c` not needed;
+  - `get_directed_light` has shortcut property `directed_light`;
+  - `get_constant_light` has shortcut property `ambient_light`;
+  - `get_light_map` not needed;
+  - `get_light_map_c` not needed;
+  - `get_normal_map_c` not needed;
+  - `get_normal_map` not needed;
+  - `set_light` has shortcut properties `directed_light` and `ambient_light`;
+- View
+  - `update` has shortcut properties `light`, `normals`, `vertices`,
+    `colors` and `rotation`.
 
 ## [0.2.0] - 2016-07-31
 ### Changed
