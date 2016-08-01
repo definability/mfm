@@ -2,7 +2,8 @@ from enum import Enum
 
 from OpenGL.GLUT import glutMainLoop
 from PIL import Image
-from numpy import save, array, column_stack
+from numpy import save, array, column_stack, concatenate, apply_along_axis
+import numpy
 
 from src import MFM
 
