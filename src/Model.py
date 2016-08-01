@@ -1,4 +1,5 @@
 from enum import Enum
+from warnings import warn
 
 from OpenGL.GLUT import glutMainLoop
 from PIL import Image
@@ -159,8 +160,11 @@ class Model:
 
     def toggle_texture(self):
         """Toggle Face texture between shadow and normal map."""
-        self.__texture = Texture.normal if self.__texture == Texture.light \
-            else Texture.light
+        if self.__texture == Texture.light:
+            warn('Normal map texture is deprecated', DeprecationWarning)
+            self.__texture = Texture.normal
+        else:
+            self.__texture = Texture.light
 
     def close(self):
         """Close the viewport"""
