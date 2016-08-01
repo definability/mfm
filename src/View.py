@@ -1,4 +1,5 @@
 import sys
+from warnings import warn
 
 from OpenGL.GL import GL_LESS, GL_TRUE, GL_DEPTH_TEST, GL_STENCIL_TEST
 from OpenGL.GL import GL_COLOR_ARRAY, GL_VERTEX_ARRAY, GL_TRIANGLES
@@ -66,6 +67,7 @@ class View:
 
         When you replace the vertices, it means that you change shape.
         """
+        warn('Use properties instead', DeprecationWarning)
         self.__vertices = vertices if vertices is not None else self.__vertices
         self.__colors = colors if colors is not None else self.__colors
         self.__rotation = rotation if rotation is not None else self.__rotation
