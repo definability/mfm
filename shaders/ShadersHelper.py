@@ -68,6 +68,7 @@ class ShadersHelper:
     def bind_uniform_matrix(self, data, name):
         """Bind uniform matrix parameter."""
         location = glGetUniformLocation(self.__program, name)
+        assert location >= 0
         glUniformMatrix4fv(location, 1, GL_FALSE, data.flatten())
 
     def bind_buffer(self):
