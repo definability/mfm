@@ -6,7 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Ability to set following static fields to `View`
   - principal components via `set_principal_components`;
-  - deviations of principal components via `set_deviations`.
+  - deviations of principal components via `set_deviations`;
+  - average face via `set_mean_face`.
 
 ### Changed
 - `get_face` method has `coefficients_only` parameter to set
