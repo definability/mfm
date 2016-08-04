@@ -19,6 +19,7 @@ ERROR_TEXT = {
 
 
 def normalize(vertices):
+    warn('Shaders will zoom it', DeprecationWarning)
     vertices = vertices.reshape(vertices.size // 3, 3)
     vertices = vertices - vertices.min()
     vertices /= vertices.max()
@@ -33,7 +34,7 @@ class Face:
     __triangles_c = None
 
     def __init__(self, vertices, directed_light=None, constant_light=0,
-                 coefficients=None):
+                 coefficients=None, need_normalize=True):
         """Create new Face.
 
         Vertices are connected by triangles.
@@ -45,7 +46,10 @@ class Face:
             raise ValueError(ERROR_TEXT['VERTICES_SIZE'].format(vertices.size))
         vertices = vertices.astype('f')
         self.__original_vertices = vertices.copy()
-        self.__vertices = normalize(vertices)
+        if need_normalize:
+            self.__vertices = normalize(vertices)
+        else:
+            self.__vertices = vertices.reshape(vertices.size // 3, 3)
         self.__vertices_c = self.__vertices.ctypes.get_as_parameter()
         self.__light_map = None
         self.__directed_light = None
@@ -69,10 +73,12 @@ class Face:
 
         Handy for creation of new Face based on this one.
         """
+        warn('Will be calculated by shaders', DeprecationWarning)
         return self.__original_vertices
 
     def get_vertices(self):
         """Get normalized vertices."""
+        warn('Will be calculated by shaders', DeprecationWarning)
         return self.__vertices
 
     def get_vertices_c(self):
@@ -138,6 +144,7 @@ class Face:
         Normal vector of each vertex is normalized to |n| = 1.0
         sum of normal vectors of triangles, which contain this point.
         """
+        warn('Normal maps are calculated by shaders', DeprecationWarning)
         if self.__normals is not None:
             return self.__normals
 
@@ -216,6 +223,7 @@ class Face:
         This method accepts normal map of the Face
         and performs denormalization.
         """
+        warn('Normal maps will not be used', DeprecationWarning)
         return (normal_map * self.__normal_max) + self.__normal_min
 
     def set_light(self, directed_light=None, constant_light=None):
