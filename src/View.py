@@ -30,6 +30,8 @@ class View:
 
     __triangles = None
     __triangles_size = None
+    __principal_components = None
+    __deviations = None
 
     def __init__(self, size):
         """Initialize viewport with initial Face rotation and position."""
@@ -142,6 +144,14 @@ class View:
         """
         View.__triangles = triangles
         View.__triangles_size = triangles_size
+
+    @staticmethod
+    def set_principal_components(principal_components):
+        View.__principal_components = principal_components
+
+    @staticmethod
+    def set_deviations(deviations):
+        View.__deviations = deviations
 
     def __display(self):
         """Render the model by existent vertices, colors and triangles."""

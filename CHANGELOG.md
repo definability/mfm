@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Ability to set following static fields to `View`
+  - principal components via `set_principal_components`;
+  - deviations of principal components via `set_deviations`.
+
 ### Changed
 - `get_face` method has `coefficients_only` parameter to set
     whether it's needed to calculate the face.
