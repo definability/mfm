@@ -51,6 +51,9 @@ def init(path=None):
                          __pc_deviations)
     Face.set_triangles(__triangles, __triangles_c)
     View.set_triangles(__triangles_c, __triangles.size)
+    View.set_principal_components(__principal_components)
+    View.set_deviations(__pc_deviations)
+    View.set_mean_face(__mean_shape)
 
 
 def __random_cos():
