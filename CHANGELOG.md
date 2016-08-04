@@ -3,6 +3,26 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- `get_face` method has `coefficients_only` parameter to set
+    whether it's needed to calculate the face.
+
+### Deprecated
+- `C` modules are deprecated because shaders will do all work
+  - `face`;
+    - `calculate_face`;
+    - `calculate_row`;
+  - `normals`;
+    - `get_normals`.
+- Face
+  - `normal_map_to_normal_vectors` will not be needed
+    because of new shadows model;
+  - `normalize` will not be needed because shaders will zoom out the model;
+  - `get_original_vertices` will not be neede;
+    beause will be calculated by shaders;
+  - `get_vertices` will not be needed
+    beause will be calculated by shaders;
+  - `get_triangles_c` because `OpenGL` doesn't need C array of triangles.
 
 ## [0.2.1] - 2016-08-01
 ### Added

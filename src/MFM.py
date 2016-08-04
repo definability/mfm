@@ -1,3 +1,4 @@
+from warnings import warn
 import ctypes
 from scipy.io import loadmat
 from numpy.random import rand, randn
@@ -83,7 +84,8 @@ def change_coefficient(face, index, coefficient):
                 coefficients=coefficients)
 
 
-def get_face(coefficients=None, directed_light=None, constant_light=None):
+def get_face(coefficients=None, directed_light=None, constant_light=None,
+             coefficients_only=False):
     """Produce new face.
 
     Usage:
@@ -107,6 +109,13 @@ def get_face(coefficients=None, directed_light=None, constant_light=None):
     if constant_light is None:
         constant_light = __random_cos()
 
+    if coefficients_only:
+        vertices = __mean_shape
+        return Face(vertices, directed_light, constant_light,
+                    coefficients=coefficients, need_normalize=False)
+
+
+    warn('Shaders calculate the shape', DeprecationWarning)
     if len(coefficients.shape) == 1:
         vertices = calculate_face(coefficients.astype('f'))
         return Face(vertices, directed_light, constant_light,
