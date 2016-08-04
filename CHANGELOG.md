@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.2.2] - 2016-08-04
 ### Added
 - Ability to set following static fields to `View`
   - principal components via `set_principal_components`;
@@ -204,7 +206,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.2.2...HEAD
+[0.2.2]: https://github.com/char-lie/mfm/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/char-lie/mfm/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/char-lie/mfm/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/char-lie/mfm/compare/v0.0.19...v0.1.0
