@@ -10,7 +10,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - `get_face` method has `coefficients_only` parameter to set
-    whether it's needed to calculate the face.
+    whether it's needed to calculate the face;
+- Assertion in `ShadersHelper` if uniform matrix binding failed.
 
 ### Deprecated
 - `C` modules are deprecated because shaders will do all work
