@@ -89,6 +89,7 @@ class Face:
     @staticmethod
     def get_triangles_c():
         """Get C array of indices of vertices connected in triangles."""
+        warn('Shaders don\'t need C array', DeprecationWarning)
         return Face.__triangles_c
 
     @staticmethod
