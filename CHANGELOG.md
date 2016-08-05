@@ -11,6 +11,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
     instead of array of coefficients `initial`.
 - `Model`
   - `request_image` method for requesting rendered face by Face instance.
+- `ShadersHelper`
+  - `bind_uniform_floats` method for binding uniform array of `float`.
 
 ### Deprecated
 - `ModelFitter`
