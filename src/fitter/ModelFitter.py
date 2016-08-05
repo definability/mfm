@@ -7,7 +7,8 @@ class ModelFitter:
 
     Should call Face rendering and wait for response.
     """
-    def __init__(self, image, dimensions=199, model=None, initial=None):
+    def __init__(self, image, dimensions=199, model=None, initial=None,
+                 initial_face):
         """Initializes fitter for given image.
 
         Fits provided number of dimensions of given model to the image.
@@ -19,6 +20,10 @@ class ModelFitter:
         self._initial = initial
         if self._initial is None:
             self._initial = zeros(self._dimensions, dtype='f')
+        else:
+            warn('Use initial_face instead of initial coefficients',
+                 DeprecationWarning)
+        self._initial_face = initial_face
 
     def estimate_light(self, normals):
         """Estimates light parameters to the image with given normal vectors.
