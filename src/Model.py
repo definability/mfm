@@ -75,6 +75,8 @@ class Model:
         - Model renders Face with given parameters and sends achived
         normal vectors via callback.
         """
+        warn('Normal map is deprecated. Use request_image instead',
+             DeprecationWarning)
         if self.__texture == Texture.light:
             self.toggle_texture()
 
@@ -129,6 +131,7 @@ class Model:
         will be changed to `coefficients[1]`;
         - in other case new random Face will be generated.
         """
+        warn('Shaders will make all calculations', DeprecationWarning)
         if new_model and type(coefficients) is not tuple:
             self.__face = MFM.get_face(coefficients)
         elif new_model:
@@ -168,6 +171,7 @@ class Model:
 
         Set vector for directed light and intensity for ambient light.
         """
+        warn('Shaders will make all calculations', DeprecationWarning)
         if direction is not None:
             x, y, z = self.__face.get_directed_light()
             self.__face.set_light(
