@@ -8,7 +8,7 @@ from OpenGL.GL import glBindBuffer, glBufferData, glVertexAttribPointer
 from OpenGL.GL import glEnableVertexAttribArray, glGetAttribLocation
 from OpenGL.GL import glCreateShader, glShaderSource, glCompileShader
 from OpenGL.GL import glAttachShader, GL_ARRAY_BUFFER, glUseProgram
-from OpenGL.GL import glGetUniformLocation, glUniformMatrix4fv
+from OpenGL.GL import glGetUniformLocation, glUniformMatrix4fv, glUniform1fv
 
 from OpenGL.arrays.vbo import VBO
 
@@ -73,6 +73,11 @@ class ShadersHelper:
         location = glGetUniformLocation(self.__program, name)
         assert location >= 0
         glUniformMatrix4fv(location, 1, GL_FALSE, data.flatten())
+
+    def bind_uniform_floats(self, data, name):
+        location = glGetUniformLocation(self.__program, name)
+        assert location >= 0
+        glUniform1fv(location, data.size, data.flatten())
 
     def bind_buffer(self):
         """Prepare attributes and bind them."""
