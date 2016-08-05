@@ -9,6 +9,14 @@ from OpenGL.GL import glEnableVertexAttribArray, glGetAttribLocation
 from OpenGL.GL import glCreateShader, glShaderSource, glCompileShader
 from OpenGL.GL import glAttachShader, GL_ARRAY_BUFFER, glUseProgram
 from OpenGL.GL import glGetUniformLocation, glUniformMatrix4fv, glUniform1fv
+from OpenGL.GL import glGenTextures, glPixelStorei, glTexParameterf
+from OpenGL.GL import glBindTexture, glEnable, GL_UNPACK_ALIGNMENT
+from OpenGL.GL import glUniform1i, GL_TEXTURE_1D, GL_TEXTURE_2D, GL_TEXTURE_3D
+from OpenGL.GL import glTexImage1D, glTexImage2D, glTexImage3D, glDisable
+from OpenGL.GL import GL_RED, GL_RG, GL_RGB, GL_RGBA
+from OpenGL.GL import GL_R32F, GL_RG32F, GL_RGB32F, GL_RGBA32F
+from OpenGL.GL import GL_TEXTURE_MAG_FILTER, GL_TEXTURE_MIN_FILTER, GL_NEAREST
+
 
 from OpenGL.arrays.vbo import VBO
 
@@ -21,7 +29,8 @@ SHADERS_PATH = dirname(abspath(__file__))
 class ShadersHelper:
     """Helper class to work with program and shaders."""
 
-    def __init__(self, vertex, fragment, number_of_buffers=0):
+    def __init__(self, vertex, fragment, number_of_buffers=0,
+                 number_of_textures=0):
         """Initialize program with shaders."""
         self.__program = glCreateProgram()
 
@@ -39,6 +48,12 @@ class ShadersHelper:
             self.__vbo_id = glGenBuffers(number_of_buffers)
 
         self.__attributes = []
+
+        if number_of_textures == 1:
+            self.__textures_ids = [glGenTextures(1)]
+        elif number_of_textures > 1:
+            self.__textures_ids = glGenTextures(number_of_textures)
+        self.__textures = []
 
     def __load_shader(self, shader_filename, shader_type):
         """Load shader of specific type from file."""
@@ -88,3 +103,50 @@ class ShadersHelper:
         self.__attributes = []
         glUseProgram(0)
         glBindVertexArray(0)
+
+    def bind_float_texture(self, data, name, size, dimensions=2, components=3):
+        """Bind texture with floating point vectors within.
+
+        dimensions: dimensionality of the texture
+                    vector, matrix, 3D matrix.
+        components: dimensionality of texture element
+                    number or 2D, 3D, 4D vector.
+        """
+        if dimensions == 1:
+            texture_type = GL_TEXTURE_1D
+            texture_store = glTexImage1D
+        elif dimensions == 2:
+            texture_type = GL_TEXTURE_2D
+            texture_store = glTexImage2D
+        elif dimensions == 3:
+            texture_type = GL_TEXTURE_3D
+            texture_store = glTexImage3D
+
+        if components == 1:
+            internal_format = GL_R32F
+            texture_format = GL_RED
+        if components == 2:
+            internal_format = GL_RG32F
+            texture_format = GL_RG
+        if components == 3:
+            internal_format = GL_RGB32F
+            texture_format = GL_RGB
+        if components == 4:
+            internal_format = GL_RGBA32F
+            texture_format = GL_RGBA
+
+        glBindTexture(texture_type, self.__textures_ids[len(self.__textures)])
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
+
+        texture_store(texture_type, 0, internal_format, *size, 0,
+                      texture_format, GL_FLOAT, data.flatten())
+
+        glEnable(texture_type)
+        glTexParameterf(texture_type, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+        glTexParameterf(texture_type, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+
+        self.__textures.append(dimensions)
+
+        location = glGetUniformLocation(self.__program, name)
+        assert location >= 0
+        glUniform1i(location, 0)
