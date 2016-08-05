@@ -97,6 +97,13 @@ class ModelFitter:
         """
         raise NotImplementedError()
 
+    def receive_image(self, image, index=None):
+        """Callback for host on renderer.
+
+        Provides normal vectors and label of Face which was requested.
+        """
+        raise NotImplementedError()
+
     def get_image_deviation(self, image, normals):
         """Cost function for fitting result."""
         diff = image - self.__image
