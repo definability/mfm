@@ -33,7 +33,10 @@ class ShadersHelper:
 
         self.__vao_id = glGenVertexArrays(1)
         glBindVertexArray(self.__vao_id)
-        self.__vbo_id = glGenBuffers(number_of_buffers)
+        if number_of_buffers == 1:
+            self.__vbo_id = [glGenBuffers(number_of_buffers)]
+        elif number_of_buffers > 1:
+            self.__vbo_id = glGenBuffers(number_of_buffers)
 
         self.__attributes = []
 
