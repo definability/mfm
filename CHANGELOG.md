@@ -12,7 +12,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `Model`
   - `request_image` method for requesting rendered face by Face instance.
 - `ShadersHelper`
-  - `bind_uniform_floats` method for binding uniform array of `float`.
+  - `bind_uniform_floats` method for binding uniform array of `float`;
+  - `bind_float_texture` method for binding texture containing `float` cells.
 
 ### Deprecated
 - `ModelFitter`
