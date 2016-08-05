@@ -23,6 +23,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - `calculate` deprecated because calculations will be made by shaders;
   - `change_light` deprecated because calculations will be made by shaders.
 
+### Fixed
+- Shaders Helper with one buffer works.
+
 ## [0.2.2] - 2016-08-04
 ### Added
 - Ability to set following static fields to `View`
