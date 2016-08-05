@@ -85,6 +85,27 @@ class Model:
         else:
             self.__on_draw_callbacks.append((coefficients, callback))
 
+    def request_image(self, face, callback):
+        """Send request for rendered face with given parameters.
+
+        Adds callback with given face to queue and starts
+        calculation and rendering procedure.
+
+        Handy for fitting procedure:
+        - Fitter requests rendered face with provided Face parameters
+          and sends callback function;
+        - Model renders Face with given parameters and sends achived
+          image via callback.
+        """
+        if self.__texture == Texture.normal:
+            self.toggle_texture()
+
+        if len(self.__on_draw_callbacks) == 0 and not self.__now_processing:
+            self.__now_processing = True
+            self.redraw(lambda: self.__on_redraw(callback))
+        else:
+            self.__on_draw_callbacks.append((face, callback))
+
     def __on_redraw(self, callback):
         # print('redraw callback')
         img = array(self.__view.get_image())
