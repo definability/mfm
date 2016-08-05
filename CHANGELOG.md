@@ -3,6 +3,25 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- `ModelFitter`
+  - `request_face` to request render of provided Face.
+  - `receive_image` to receive rendered image;
+  - `initial_face` parameter to constructor
+    instead of array of coefficients `initial`.
+- `Model`
+  - `request_image` method for requesting rendered face by Face instance.
+
+### Deprecated
+- `ModelFitter`
+  - `request_normals` deprecated in favor of `request_face`;
+  - `receive_normals` deprecated in favor of `receive_image`;
+  - `estimate_light` will be useless with new shadows model (shadows map);
+  - `initial` parameter of constructor deprecated in favor of `initial_face`.
+- `Model`
+  - `request_normals` deprecated in favor of `request_image`;
+  - `calculate` deprecated because calculations will be made by shaders;
+  - `change_light` deprecated because calculations will be made by shaders.
 
 ## [0.2.2] - 2016-08-04
 ### Added
