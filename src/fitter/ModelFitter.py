@@ -81,6 +81,15 @@ class ModelFitter:
         self.__model.request_normals(
             parameters, lambda normals: self.receive_normals(normals, index))
 
+    def request_face(self, face, label=None):
+        """Requests rendered face with given parameters.
+
+        Label will be provided with callback for Fitter to identify
+        request, which provoked this response.
+        """
+        self.__model.request_face(
+            face, lambda image: self.receive_image(image, label))
+
     def receive_normals(self, normals, index=None):
         """Callback for host on render.
 
