@@ -180,7 +180,7 @@ class View:
         else:
             self.__sh.add_attribute(0, self.__face.get_vertices(),
                                     'vin_position')
-            self.__sh.add_attribute(0, self.__face.get_normals(),
+            self.__sh.add_attribute(1, self.__face.get_normals(),
                                     'vin_normal')
         self.__sh.bind_buffer()
 
