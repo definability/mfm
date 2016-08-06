@@ -1,3 +1,5 @@
+from warnings import warn
+
 from numpy import array, nonzero, zeros
 from numpy.linalg import lstsq  # , inv
 
@@ -31,6 +33,7 @@ class ModelFitter:
         Light parameters contain vector of directed light
         and intensity of ambient light.
         """
+        warn('New shadows model', DeprecationWarning)
         indices = nonzero(normals[:, 3])
 
         N = normals[indices]
@@ -83,6 +86,7 @@ class ModelFitter:
         Will be provided with callback for Fitter to identify
         request, which provoked this response.
         """
+        warn('New shadows model', DeprecationWarning)
         self.__model.request_normals(
             parameters, lambda normals: self.receive_normals(normals, index))
 
