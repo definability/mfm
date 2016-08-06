@@ -35,7 +35,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - `normal_min` will be useless with new shadows model (shadows map);
   - `normal_max` will be useless with new shadows model (shadows map).
 - `View`
-  - ability to draw without entire face provided.
+  - Ability to draw without entire face provided.
 
 ### Fixed
 - Shaders Helper with one buffer works.
