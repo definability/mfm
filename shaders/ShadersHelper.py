@@ -138,8 +138,11 @@ class ShadersHelper:
         glBindTexture(texture_type, self.__textures_ids[len(self.__textures)])
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
 
-        texture_store(texture_type, 0, internal_format, *size, 0,
-                      texture_format, GL_FLOAT, data.flatten())
+        # HACK: Python <3.5 doesn't allow to use *size
+        # within enumerable arguments
+        params = ([texture_type, 0, internal_format]
+                 + size + [0, texture_format, GL_FLOAT, data.flatten()])
+        texture_store(*params)
 
         glEnable(texture_type)
         glTexParameterf(texture_type, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
