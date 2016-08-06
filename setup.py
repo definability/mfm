@@ -37,7 +37,7 @@ setup(
     ],
     packages=[join('src', p) for p in find_packages('src')] + \
              [join('tests', p) for p in find_packages('tests')] + \
-             ['data'],
+             ['data', 'shaders'],
     install_requires=[
         'argparse==1.1.0',
         'cairocffi==0.7.2',
