@@ -17,7 +17,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `Face`
   - `coefficients` property.
 - `View`
-  - `face` property.
+  - `face` property;
+  - Ability to draw face when it's set.
 
 ### Deprecated
 - `ModelFitter`
