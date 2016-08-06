@@ -30,7 +30,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - `calculate` deprecated because calculations will be made by shaders;
   - `change_light` deprecated because calculations will be made by shaders.
 - `Face`
-  - `get_coefficients` deprecated in favor of `coefficients` property.
+  - `get_coefficients` deprecated in favor of `coefficients` property;
+  - `normal_min` will be useless with new shadows model (shadows map);
+  - `normal_max` will be useless with new shadows model (shadows map).
 - `View`
   - ability to draw without entire face provided.
 
