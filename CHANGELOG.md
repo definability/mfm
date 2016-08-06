@@ -16,6 +16,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - `bind_float_texture` method for binding texture containing `float` cells.
 - `Face`
   - `coefficients` property.
+- `View`
+  - `face` property.
 
 ### Deprecated
 - `ModelFitter`
@@ -29,6 +31,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - `change_light` deprecated because calculations will be made by shaders.
 - `Face`
   - `get_coefficients` deprecated in favor of `coefficients` property.
+- `View`
+  - ability to draw without entire face provided.
 
 ### Fixed
 - Shaders Helper with one buffer works.
