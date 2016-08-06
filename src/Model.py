@@ -104,21 +104,26 @@ class Model:
 
         if len(self.__on_draw_callbacks) == 0 and not self.__now_processing:
             self.__now_processing = True
-            self.redraw(lambda: self.__on_redraw(callback))
+            self.__view.face = face
+            self.redraw(lambda: self.__on_redraw(callback, True))
         else:
             self.__on_draw_callbacks.append((face, callback))
 
-    def __on_redraw(self, callback):
+    def __on_redraw(self, callback, use_face=False):
         # print('redraw callback')
         img = array(self.__view.get_image())
         img = img.reshape(img.size//4, 4)
         data = column_stack((
             self.__face.normal_map_to_normal_vectors(img[:, :3]), img[:, 3]))
         callback(data)
-        if len(self.__on_draw_callbacks) > 0:
+        if len(self.__on_draw_callbacks) > 0 and not use_face:
             coefficients, callback = self.__on_draw_callbacks.pop(0)
             self.calculate(True, coefficients)
             self.redraw(lambda: self.__on_redraw(callback))
+        elif len(self.__on_draw_callbacks) > 0:
+            face, callback = self.__on_draw_callbacks.pop(0)
+            self.__view.face = face
+            self.redraw(lambda: self.__on_redraw(callback, True))
         else:
             self.__now_processing = False
 
@@ -155,6 +160,8 @@ class Model:
                 [0] * 4))
         elif self.__texture is Texture.light:
             self.__view.light = concatenate((self.__face.light, [0] * 8))
+
+        self.__view.face = self.__face
 
     def rotate(self, axis, value):
         """Rotate camera of the viewport.
