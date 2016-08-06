@@ -22,7 +22,7 @@ from OpenGL.GLUT import glutInitDisplayMode, glutLeaveMainLoop, glutDisplayFunc
 
 from numpy import zeros, array
 
-from shaders import ShadersHelper
+from .ShadersHelper import ShadersHelper
 
 
 class View:

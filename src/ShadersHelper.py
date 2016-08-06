@@ -1,5 +1,3 @@
-from os.path import dirname, abspath, join
-
 from OpenGL.GL import glCreateProgram, glLinkProgram, glGetProgramiv
 from OpenGL.GL import glGenVertexArrays, glBindVertexArray, glGenBuffers
 from OpenGL.GL import GL_VERTEX_SHADER, GL_FRAGMENT_SHADER, GL_LINK_STATUS
@@ -17,13 +15,11 @@ from OpenGL.GL import GL_RED, GL_RG, GL_RGB, GL_RGBA
 from OpenGL.GL import GL_R32F, GL_RG32F, GL_RGB32F, GL_RGBA32F
 from OpenGL.GL import GL_TEXTURE_MAG_FILTER, GL_TEXTURE_MIN_FILTER, GL_NEAREST
 
-
 from OpenGL.arrays.vbo import VBO
 
 from numpy import concatenate
 
-
-SHADERS_PATH = dirname(abspath(__file__))
+from shaders import get_shader_path
 
 
 class ShadersHelper:
@@ -34,8 +30,8 @@ class ShadersHelper:
         """Initialize program with shaders."""
         self.__program = glCreateProgram()
 
-        self.__load_shader(join(SHADERS_PATH, vertex), GL_VERTEX_SHADER)
-        self.__load_shader(join(SHADERS_PATH, fragment), GL_FRAGMENT_SHADER)
+        self.__load_shader(get_shader_path(vertex), GL_VERTEX_SHADER)
+        self.__load_shader(get_shader_path(fragment), GL_FRAGMENT_SHADER)
 
         glLinkProgram(self.__program)
         assert glGetProgramiv(self.__program, GL_LINK_STATUS) == GL_TRUE
