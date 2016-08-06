@@ -189,7 +189,7 @@ class View:
         self.__sh.use_shaders()
 
         self.__sh.bind_uniform_matrix(rotation_matrix, 'rotation_matrix')
-        if self.__face is None:
+        if self.__face is None or self.__light is not None:
             self.__sh.bind_uniform_matrix(self.__light, 'vin_light')
         else:
             self.__sh.bind_uniform_matrix(self.__face.directed_light,
