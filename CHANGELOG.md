@@ -42,9 +42,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.2.2] - 2016-08-04
 ### Added
 - Ability to set following static fields to `View`
-  - principal components via `set_principal_components`;
-  - deviations of principal components via `set_deviations`;
-  - average face via `set_mean_face`.
+  - `set_principal_components` setter for principal components;
+  - `set_deviations` setter for deviations of principal components;
+  - `set_mean_face` setter for average face.
 
 ### Changed
 - `get_face` method has `coefficients_only` parameter to set
