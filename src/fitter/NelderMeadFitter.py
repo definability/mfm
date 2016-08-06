@@ -8,7 +8,7 @@ from .ModelFitter import ModelFitter
 
 class NelderMeadFitter(ModelFitter):
     def __init__(self, image, dimensions=199, model=None, initial=None,
-                 offset=1.):
+                 offset=1., initial_face=None):
         self.__step = None
         self.__parameters = [None] * (dimensions)
         self.__errors = [None] * (dimensions)
@@ -32,7 +32,7 @@ class NelderMeadFitter(ModelFitter):
         self.__sigma = .5
 
         super(NelderMeadFitter, self).__init__(image, dimensions, model,
-                                               initial)
+                                               initial, initial_face)
 
     def start(self):
         self.__initiate_parameters()
