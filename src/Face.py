@@ -193,6 +193,10 @@ class Face:
     def normal_max(self, normal_max):
         self.__normal_max = normal_max
 
+    @property
+    def coefficients(self):
+        return self.__coefficients
+
     def get_normal_map(self):
         """Get normal map for each vertex.
 
