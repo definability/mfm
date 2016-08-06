@@ -20,6 +20,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - `face` property;
   - Ability to draw face when it's set.
 
+### Changed
+- Moved `ShadersHelper` to `src` directory.
+
 ### Deprecated
 - `ModelFitter`
   - `request_normals` deprecated in favor of `request_face`;
@@ -38,7 +41,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - Ability to draw without entire face provided.
 
 ### Fixed
-- Shaders Helper with one buffer works.
+- Shaders Helper with one buffer works;
+- Added `shaders` folder to packages in `setup.py`.
 
 ## [0.2.2] - 2016-08-04
 ### Added
