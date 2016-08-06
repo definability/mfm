@@ -8,7 +8,7 @@ class ModelFitter:
     Should call Face rendering and wait for response.
     """
     def __init__(self, image, dimensions=199, model=None, initial=None,
-                 initial_face):
+                 initial_face=None):
         """Initializes fitter for given image.
 
         Fits provided number of dimensions of given model to the image.
