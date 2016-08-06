@@ -43,6 +43,7 @@ class View:
         self.__normals = None
         self.__rotation = (0., 0., 0.)
         self.__position = (0., 0., 0.)
+        self.__face = None
 
         self.__init_display()
         self.__adjust_viewport()
@@ -116,6 +117,14 @@ class View:
     def colors(self, colors):
         self.__colors = colors
 
+    @property
+    def face(self):
+        return self.__face
+
+    @face.setter
+    def face(self, face):
+        self.__face = face
+
     def redraw(self, callback=None):
         """Trigger redisplay and trigger callback after render."""
         # print('Set callback to', callback)
@@ -162,9 +171,17 @@ class View:
         """Render the model by existent vertices, colors and triangles."""
         glRotatef(1., *self.__rotation)
         rotation_matrix = array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
+        if self.__face is None:
+            warn('Set the face instead of its parameters', DeprecationWarning)
 
-        self.__sh.add_attribute(0, self.__vertices, 'vin_position')
-        self.__sh.add_attribute(1, self.__normals, 'vin_normal')
+        if self.__face is None:
+            self.__sh.add_attribute(0, self.__vertices, 'vin_position')
+            self.__sh.add_attribute(1, self.__normals, 'vin_normal')
+        else:
+            self.__sh.add_attribute(0, self.__face.get_vertices(),
+                                    'vin_position')
+            self.__sh.add_attribute(0, self.__face.get_normals(),
+                                    'vin_normal')
         self.__sh.bind_buffer()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -172,7 +189,11 @@ class View:
         self.__sh.use_shaders()
 
         self.__sh.bind_uniform_matrix(rotation_matrix, 'rotation_matrix')
-        self.__sh.bind_uniform_matrix(self.__light, 'vin_light')
+        if self.__face is None:
+            self.__sh.bind_uniform_matrix(self.__light, 'vin_light')
+        else:
+            self.__sh.bind_uniform_matrix(self.__face.directed_light,
+                                          'vin_light')
 
         glDrawElements(GL_TRIANGLES, View.__triangles_size,
                        GL_UNSIGNED_SHORT, View.__triangles)
