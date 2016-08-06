@@ -180,18 +180,22 @@ class Face:
 
     @property
     def normal_min(self):
+        warn('Normal map will not be used', DeprecationWarning)
         return self.__normal_min
 
     @normal_min.setter
     def normal_min(self, normal_min):
+        warn('Normal map will not be used', DeprecationWarning)
         self.__normal_min = normal_min
 
     @property
     def normal_max(self):
+        warn('Normal map will not be used', DeprecationWarning)
         return self.__normal_max
 
     @normal_max.setter
     def normal_max(self, normal_max):
+        warn('Normal map will not be used', DeprecationWarning)
         self.__normal_max = normal_max
 
     @property
