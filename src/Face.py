@@ -66,6 +66,7 @@ class Face:
 
     def get_coefficients(self):
         """Get coefficients for eigenvectors of current Face."""
+        warn('Use property instead', DeprecationWarning)
         return self.__coefficients
 
     def get_original_vertices(self):
