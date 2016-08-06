@@ -14,6 +14,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `ShadersHelper`
   - `bind_uniform_floats` method for binding uniform array of `float`;
   - `bind_float_texture` method for binding texture containing `float` cells.
+- `Face`
+  - `coefficients` property.
 
 ### Deprecated
 - `ModelFitter`
@@ -25,6 +27,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - `request_normals` deprecated in favor of `request_image`;
   - `calculate` deprecated because calculations will be made by shaders;
   - `change_light` deprecated because calculations will be made by shaders.
+- `Face`
+  - `get_coefficients` deprecated in favor of `coefficients` property.
 
 ### Fixed
 - Shaders Helper with one buffer works.
