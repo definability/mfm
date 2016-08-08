@@ -12,7 +12,7 @@ from OpenGL.GL import glDepthMask, glDepthFunc, glCullFace
 from OpenGL.GL import glEnable, glClearColor, glEnableClientState, glClear
 from OpenGL.GL import glDrawElements, glGetFloatv
 
-from OpenGL.GL import glReadBuffer, glReadPixels, GL_BACK, GL_RGBA
+from OpenGL.GL import glReadBuffer, glReadPixels, GL_RGBA, GL_FRONT
 
 from OpenGL.GLUT import GLUT_DOUBLE, GLUT_DEPTH, GLUT_RGB
 
@@ -133,7 +133,7 @@ class View:
 
     def get_image(self):
         """Copy RGBA data from the viewport to NumPy Matrix of float."""
-        glReadBuffer(GL_BACK)
+        glReadBuffer(GL_FRONT)
         height, width = self.__size
         data = zeros(width*height*4, dtype='f')
         glReadPixels(0, 0, width, height, GL_RGBA, GL_FLOAT, data)
