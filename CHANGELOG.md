@@ -4,10 +4,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `bind_uniform_vector` method to `ShadersHelper`.
+- `bind_uniform_vector` method to `ShadersHelper`;
+- `generate_face` method to `Model`.
 
 ### Fixed
 - `bind_float_texture` now accepts any iterable `size`.
+- Light direction in MFM Face generation.
 
 ## [0.2.3] - 2016-08-06
 ### Added
