@@ -21,7 +21,7 @@ setup(
     ext_modules=[normals, face],
     include_dirs=numpy.distutils.misc_util.get_numpy_include_dirs(),
     name='MFM',
-    version='0.2.4',
+    version='0.2.3',
     license='MIT',
     description='Morphable Face Model fitting application',
     long_description=long_description,
