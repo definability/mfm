@@ -122,9 +122,7 @@ class Model:
         # print('redraw callback')
         img = array(self.__view.get_image())
         img = img.reshape(img.size//4, 4)
-        data = column_stack((
-            self.__face.normal_map_to_normal_vectors(img[:, :3]), img[:, 3]))
-        callback(data)
+        callback(img)
         if len(self.__on_draw_callbacks) > 0 and not use_face:
             coefficients, callback = self.__on_draw_callbacks.pop(0)
             self.calculate(True, coefficients)
