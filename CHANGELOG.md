@@ -13,8 +13,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `change_light` method of `Model` restored.
 
 ### Fixed
-- `bind_float_texture` now accepts any iterable `size`.
-- Light direction in MFM Face generation.
+- `bind_float_texture` now accepts any iterable `size`;
+- Light direction in MFM Face generation;
+- `request_image` in `Model` requests image instead of normal map now.
+
+### Removed
+- `request_normals` method from `Model`.
 
 ## [0.2.3] - 2016-08-06
 ### Added
