@@ -2,6 +2,7 @@ from PIL import Image
 from numpy import zeros, nonzero
 
 from .ModelFitter import ModelFitter
+from src import Face
 
 
 class BGDFitter(ModelFitter):
@@ -12,8 +13,8 @@ class BGDFitter(ModelFitter):
 
         self.__dx = dx
         self.__step = step
-        self.__coefficients = None
-        self.__current_step = 0
+        self.__face = None
+        self.__current_step = -5
         self.__callback = callback
 
         self.__derivatives = None
@@ -27,23 +28,22 @@ class BGDFitter(ModelFitter):
                                         initial_face)
 
     def start(self):
-        self.__coefficients = self._initial.copy()
+        self.__face = Face(coefficients=self._initial.copy(),
+                           directed_light=(0, 0, 0), ambient_light=1.0)
 
-        self.__derivatives = zeros(self._dimensions, dtype='f')
-        self.__left_derivatives = zeros(self._dimensions, dtype='f')
-        self.__right_derivatives = zeros(self._dimensions, dtype='f')
+        derivatives_size = self._dimensions + 4
+        self.__derivatives = zeros(derivatives_size, dtype='f')
+        self.__left_derivatives = zeros(derivatives_size, dtype='f')
+        self.__right_derivatives = zeros(derivatives_size, dtype='f')
 
         self.__next_iteration()
 
-    def receive_normals(self, normals, index=None):
+    def receive_image(self, image, index=None):
         if index == 'start_iteration':
-            light = self.estimate_light(normals)
-            shadows = normals.dot(light)
-            # print('{:0>3}: Error is {}'.format(
-            #     self.__loop, self.get_image_deviation(shadows, normals)))
+            shadows = image
             index = 'start'
             if self.__loop >= self.__max_loops:
-                self.__finish(normals, shadows)
+                self.__finish(shadows)
                 return
         if index == 'start' and self.__current_step >= self._dimensions - 1:
             self.__next_iteration()
@@ -51,59 +51,84 @@ class BGDFitter(ModelFitter):
         elif index == 'start':
             self.__current_step += 1
 
-        self.__get_derivative(self.__current_step, index, normals)
+        self.__get_derivative(self.__current_step, index, image)
 
     def __next_iteration(self):
         self.__loop += 1
-        self.__current_step = -1
-        self.__coefficients -= self.__step * self.__derivatives
+        self.__current_step = -5
+        coefficients = (self.__face.coefficients
+                - self.__step * self.__derivatives[:self._dimensions])
+        directed_light = (self.__face.directed_light
+                - self.__step * self.__derivatives[-3:] / 50)
+        ambient_light = (self.__face.ambient_light
+                - self.__step * self.__derivatives[-4] / 50)
+        self.__face = Face(coefficients=coefficients,
+                           directed_light=directed_light,
+                           ambient_light=ambient_light)
         # print(self.__derivatives)
-        # print(self.__coefficients)
-        self.request_normals(self.__coefficients, 'start_iteration')
+        self.request_face(self.__face, 'start_iteration')
 
-    def __get_derivative(self, param, step, normals):
+    def __get_derivative(self, param, step, image):
         if step == 'start':
-            light = self.estimate_light(normals)
-            shadows = normals.dot(light)
-            self.__derivatives[param] = self.get_image_deviation(shadows,
-                                                                 normals)
-            value = self.__coefficients[param] + self.__dx
-            self.request_normals((param, value), 'right_derivative')
-        elif 'derivative' in step:
-            # print('.' if param % 10 else '*', end='', flush=True)
-            light = self.estimate_light(normals)
-            shadows = normals.dot(light)
+            shadows = image
+            self.__derivatives[param] = self.get_image_deviation(shadows)
 
-            value = self.__coefficients[param]
+            face = self.__derivative_face(param, self.__dx)
+
+            self.request_face(face, 'right_derivative')
+        elif 'derivative' in step:
+            shadows = image
+
+            face = self.__face
 
             if 'right' in step:
-                value -= self.__dx
+                face = self.__derivative_face(param, -self.__dx)
+
                 action = 'left_derivative'
                 self.__right_derivatives[param] = self.__derivative(
                     self.__derivatives[param],
-                    self.get_image_deviation(shadows, normals))
+                    self.get_image_deviation(shadows))
             elif 'left' in step:
                 action = 'start'
                 self.__left_derivatives[param] = self.__derivative(
-                    self.get_image_deviation(shadows, normals),
+                    self.get_image_deviation(shadows),
                     self.__derivatives[param])
                 self.__derivatives[param] = (
                     0.5 * (self.__left_derivatives[param]
                            + self.__right_derivatives[param]))
 
-            self.request_normals((param, value), action)
+            self.request_face(face, action)
+
+    def __derivative_face(self, param, dx):
+        ambient_light = self.__face.ambient_light
+
+        directed_light = self.__face.directed_light.copy()
+
+        coefficients = self.__face.coefficients.copy()
+
+        if param >= 0:
+            coefficients[param] += dx
+        elif param == -4:
+            ambient_light += dx / 2
+        else:
+            directed_light[param+3] += dx / 2
+        # print(coefficients)
+
+        return Face(coefficients=coefficients,
+                    directed_light=directed_light,
+                    ambient_light=ambient_light)
 
     def __derivative(self, y0, y1):
         return (y1 - y0) / self.__dx
 
-    def __finish(self, normals, shadows):
+    def __finish(self, shadows):
         img = shadows
-        img[normals[:, 3] == 0.] = 1.
+        img[shadows[:, 3] == 0.] = 1.
         img = img[::-1]
         image = Image.new('L', (500, 500))
         image.putdata((img*255).astype('i'))
         image.save('img.png'.format(self.__loop))
         image.close()
         if self.__callback is not None:
-            self.__callback(self.__coefficients)
+            self.__callback(self.__face)
         # print('Finished')
