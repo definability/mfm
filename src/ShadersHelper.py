@@ -137,7 +137,7 @@ class ShadersHelper:
         # HACK: Python <3.5 doesn't allow to use *size
         # within enumerable arguments
         params = ([texture_type, 0, internal_format]
-                 + size + [0, texture_format, GL_FLOAT, data.flatten()])
+                 + list(size) + [0, texture_format, GL_FLOAT, data.flatten()])
         texture_store(*params)
 
         glEnable(texture_type)
