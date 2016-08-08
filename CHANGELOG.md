@@ -6,6 +6,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - `bind_uniform_vector` method to `ShadersHelper`;
 - `generate_face` method to `Model`.
+- `face` property (getter and setter) to `Model`.
+
+### Changed
+- Using `Face` in `Model` to draw face;
+- `change_light` method of `Model` restored.
 
 ### Fixed
 - `bind_float_texture` now accepts any iterable `size`.
