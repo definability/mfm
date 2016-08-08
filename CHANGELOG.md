@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- `bind_uniform_vector` method to `ShadersHelper`.
+
 ### Fixed
 - `bind_float_texture` now accepts any iterable `size`.
 
