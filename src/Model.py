@@ -72,30 +72,6 @@ class Model:
         # print('redrawing')
         self.__view.redraw(callback)
 
-    def request_normals(self, coefficients, callback):
-        """Send request for normal vectors with coefficients.
-
-        Adds callback with given coefficients to queue and starts
-        calculation and rendering procedure.
-
-        Handy for fitting procedure:
-        - Fitter requests normal vectors with provided Face parameters
-        and sends callback function;
-        - Model renders Face with given parameters and sends achived
-        normal vectors via callback.
-        """
-        warn('Normal map is deprecated. Use request_image instead',
-             DeprecationWarning)
-        if self.__texture == Texture.light:
-            self.toggle_texture()
-
-        if len(self.__on_draw_callbacks) == 0 and not self.__now_processing:
-            self.__now_processing = True
-            self.calculate(True, coefficients)
-            self.redraw(lambda: self.__on_redraw(callback))
-        else:
-            self.__on_draw_callbacks.append((coefficients, callback))
-
     def request_image(self, face, callback):
         """Send request for rendered face with given parameters.
 
