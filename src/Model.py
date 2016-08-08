@@ -53,6 +53,15 @@ class Model:
 
         self.calculate()
 
+    @property
+    def face(self):
+        return self.__face
+
+    @face.setter
+    def face(self, face):
+        self.__face = face
+        self.__view.face = face
+
     def start(self, fitter):
         """Start main application loop."""
         self.__fitter = fitter
