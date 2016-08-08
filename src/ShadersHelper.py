@@ -7,6 +7,7 @@ from OpenGL.GL import glEnableVertexAttribArray, glGetAttribLocation
 from OpenGL.GL import glCreateShader, glShaderSource, glCompileShader
 from OpenGL.GL import glAttachShader, GL_ARRAY_BUFFER, glUseProgram
 from OpenGL.GL import glGetUniformLocation, glUniformMatrix4fv, glUniform1fv
+from OpenGL.GL import glUniform4f
 from OpenGL.GL import glGenTextures, glPixelStorei, glTexParameterf
 from OpenGL.GL import glBindTexture, glEnable, GL_UNPACK_ALIGNMENT
 from OpenGL.GL import glUniform1i, GL_TEXTURE_1D, GL_TEXTURE_2D, GL_TEXTURE_3D
@@ -84,6 +85,12 @@ class ShadersHelper:
         location = glGetUniformLocation(self.__program, name)
         assert location >= 0
         glUniformMatrix4fv(location, 1, GL_FALSE, data.flatten())
+
+    def bind_uniform_vector(self, data, name):
+        """Bind uniform vector parameter."""
+        location = glGetUniformLocation(self.__program, name)
+        assert location >= 0
+        glUniform4f(location, *data.flatten())
 
     def bind_uniform_floats(self, data, name):
         location = glGetUniformLocation(self.__program, name)
