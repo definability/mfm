@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.2.4] - 2016-08-08
 ### Added
 - `bind_uniform_vector` method to `ShadersHelper`;
 - `generate_face` method to `Model`.
@@ -269,7 +271,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.2.3...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.2.4...HEAD
+[0.2.4]: https://github.com/char-lie/mfm/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/char-lie/mfm/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/char-lie/mfm/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/char-lie/mfm/compare/v0.2.0...v0.2.1
