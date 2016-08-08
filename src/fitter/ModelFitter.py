@@ -21,11 +21,11 @@ class ModelFitter:
 
         self._initial = initial
         if self._initial is None:
-            self._initial = zeros(self._dimensions, dtype='f')
-        else:
             warn('Use initial_face instead of initial coefficients',
                  DeprecationWarning)
-        self._initial_face = initial_face
+            self._initial = zeros(self._dimensions, dtype='f')
+        else:
+            self._initial_face = initial_face
 
     def estimate_light(self, normals):
         """Estimates light parameters to the image with given normal vectors.
