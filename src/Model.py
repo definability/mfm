@@ -190,7 +190,6 @@ class Model:
 
         Set vector for directed light and intensity for ambient light.
         """
-        warn('Shaders will make all calculations', DeprecationWarning)
         if direction is not None:
             x, y, z = self.__face.directed_light
             self.__face.directed_light = (
