@@ -57,9 +57,8 @@ class ModelInput:
             self.__model.change_light(direction=directed_light)
         elif key == b'n' and not release:
             self.__model.toggle_texture()
-            self.__model.calculate(False)
         elif key == b'r' and not release:
-            self.__model.calculate()
+            self.__model.face = self.__model.generate_face()
             self.__model.redraw()
             return
         elif key == b'q' and not release:
@@ -82,4 +81,3 @@ class ModelInput:
         assert key in commands
         axis, value = commands[key]
         self.__model.rotate(axis, 0. if release else value)
-        self.__model.calculate(False)
