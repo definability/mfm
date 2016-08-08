@@ -87,7 +87,7 @@ def change_coefficient(face, index, coefficient):
                 coefficients=coefficients)
 
 
-def get_face(coefficients=None, directed_light=None, constant_light=None,
+def get_face(coefficients=None, directed_light=None, ambient_light=None,
              coefficients_only=False):
     """Produce new face.
 
@@ -109,19 +109,20 @@ def get_face(coefficients=None, directed_light=None, constant_light=None,
                                       __random_cos()]))
         if norm(directed_light) > 0:
             directed_light /= norm(directed_light)
-    if constant_light is None:
-        constant_light = __random_cos()
+    if ambient_light is None:
+        ambient_light = __random_cos()
 
     if coefficients_only:
         vertices = __mean_shape
-        return Face(vertices, directed_light, constant_light,
-                    coefficients=coefficients, need_normalize=False)
+        return Face(directed_light=-directed_light,
+                    ambient_light=ambient_light,
+                    coefficients=coefficients)
 
 
     warn('Shaders calculate the shape', DeprecationWarning)
     if len(coefficients.shape) == 1:
         vertices = calculate_face(coefficients.astype('f'))
-        return Face(vertices, directed_light, constant_light,
+        return Face(vertices, directed_light, ambient_light,
                     coefficients=coefficients)
     else:
         coefficients = coefficients.reshape((coefficients.size, 1))
@@ -136,5 +137,5 @@ def get_face(coefficients=None, directed_light=None, constant_light=None,
         features = __principal_components.dot(coefficients * pc_deviations)
         vertices = mean_shape + features
 
-        return Face(vertices.astype('f'), directed_light, constant_light,
+        return Face(vertices.astype('f'), directed_light, ambient_light,
                     coefficients=coefficients)
