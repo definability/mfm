@@ -19,6 +19,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Light direction in MFM Face generation;
 - `request_image` in `Model` should request image instead of normal map.
 - `request_face` method in `ModelFitter` should call `request_image` of `Model`.
+- `get_image` should get image from front buffer instead of back buffer
+    in `View` to avoid blank data array.
 
 ### Removed
 - `request_normals` method from `Model`.
