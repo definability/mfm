@@ -96,7 +96,7 @@ class ModelFitter:
         Label will be provided with callback for Fitter to identify
         request, which provoked this response.
         """
-        self.__model.request_face(
+        self.__model.request_image(
             face, lambda image: self.receive_image(image, label))
 
     def receive_normals(self, normals, index=None):
