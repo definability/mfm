@@ -180,14 +180,15 @@ class Model:
         """
         warn('Shaders will make all calculations', DeprecationWarning)
         if direction is not None:
-            x, y, z = self.__face.get_directed_light()
-            self.__face.set_light(
-                directed_light=(x + direction['x'], y + direction['y'],
-                                z + direction['z']))
+            x, y, z = self.__face.directed_light
+            self.__face.directed_light = (
+                x + direction['x'],
+                y + direction['y'],
+                z + direction['z'])
         if intensity is not None:
             constant_light = self.__face.get_constant_light()
             constant_light += intensity
-            self.__face.set_light(constant_light=constant_light)
+            self.__face.ambient_light = constant_light
         self.calculate(False)
 
     def toggle_texture(self):
