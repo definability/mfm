@@ -3,8 +3,6 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-
-## [0.2.4] - 2016-08-08
 ### Added
 - `bind_uniform_vector` method to `ShadersHelper`;
 - `generate_face` method to `Model`.
@@ -23,9 +21,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `request_face` method in `ModelFitter` should call `request_image` of `Model`.
 - `get_image` should get image from front buffer instead of back buffer
     in `View` to avoid blank data array.
-
-### Removed
-- `request_normals` method from `Model`.
 
 ## [0.2.3] - 2016-08-06
 ### Added
