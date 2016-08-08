@@ -174,7 +174,6 @@ class Model:
             constant_light = self.__face.get_constant_light()
             constant_light += intensity
             self.__face.ambient_light = constant_light
-        self.calculate(False)
 
     def toggle_texture(self):
         """Toggle Face texture between shadow and normal map."""
