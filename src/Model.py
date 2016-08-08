@@ -51,7 +51,7 @@ class Model:
             'z': 0.
         }
 
-        self.calculate()
+        self.face = self.generate_face()
 
     @property
     def face(self):
