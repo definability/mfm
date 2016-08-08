@@ -83,7 +83,7 @@ def change_coefficient(face, index, coefficient):
 
     calculate_row(__principal_components_flattened, __pc_deviations,
                   coefficients[index] - coefficient, index, vertices)
-    return Face(vertices, face.get_directed_light(), face.get_constant_light(),
+    return Face(vertices, face.directed_light, face.ambient_light,
                 coefficients=coefficients)
 
 
