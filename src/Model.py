@@ -127,6 +127,9 @@ class Model:
         else:
             self.__now_processing = False
 
+    def generate_face(self):
+        return MFM.get_face(coefficients_only=True)
+
     def calculate(self, new_model=True, coefficients=None):
         """Generates new face or changes light of old face.
 
