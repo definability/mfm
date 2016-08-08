@@ -10,7 +10,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Using `Face` in `Model` to draw face;
-- `change_light` method of `Model` restored.
+- `change_light` method of `Model` restored;
+- `get_image_deviation` allows to not provide normals &mdash;
+    using alpha channel of provided image instead.
 
 ### Fixed
 - `bind_float_texture` now accepts any iterable `size`;
