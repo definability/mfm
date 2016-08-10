@@ -12,6 +12,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - requesting images instead of normals;
   - fitting for light.
 
+### Fixed
+- `get_image_deviation` should work not only for `RGBA` images
+    but `RA`, `RGA` as well.
+
 ## [0.2.4] - 2016-08-08
 ### Added
 - `bind_uniform_vector` method to `ShadersHelper`;
