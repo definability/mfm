@@ -267,3 +267,12 @@ class Face:
             Face.__triangles_flattened = triangles.flatten()
         if triangles_c is not None:
             Face.__triangles_c = triangles_c
+
+    @staticmethod
+    def from_array(parameters):
+        coefficients = parameters[:-4]
+        ambient_light = parameters[-4]
+        directed_light = parameters[-3:]
+        return Face(coefficients=coefficients,
+                    directed_light=directed_light,
+                    ambient_light=ambient_light)
