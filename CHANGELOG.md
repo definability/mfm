@@ -7,7 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `from_array` static method of `Face` to generate new face from array.
 
 ### Changed
-- `BGDFitter`
+- `BGDFitter`, `NelderMeadFitter`
   - using Face instead of coefficients;
   - requesting images instead of normals;
   - fitting for light.
