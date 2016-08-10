@@ -77,6 +77,9 @@ class BruteForceFitter(ModelFitter):
     def receive_image(self, image, index=None):
         if index == 'init':
             return
+        elif index == 'finish':
+            self.finish()
+            return
         shadows = image
 
         error = self.get_image_deviation(shadows)
@@ -84,7 +87,9 @@ class BruteForceFitter(ModelFitter):
 
         change_on = self.__inc_index()
         if change_on == -1:
-            self.finish(self.__convert_parameters())
+            result = self.__convert_parameters()
+            self.__face = Face.from_array(result[-1][0])
+            self.request_face(self.__face, 'finish')
             return
 
         self.__get_parameter(change_on=change_on)
@@ -93,5 +98,5 @@ class BruteForceFitter(ModelFitter):
         sorted_parameters = sorted(self.__errors.items(), key=lambda x: -x[1])
         return [(tuple(self.__get_values(p)), e) for p, e in sorted_parameters]
 
-    def finish(self, result):
+    def finish(self):
         return
