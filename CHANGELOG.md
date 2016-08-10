@@ -7,14 +7,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `from_array` static method of `Face` to generate new face from array.
 
 ### Changed
-- `BGDFitter`, `NelderMeadFitter`
+- `BGDFitter`, `NelderMeadFitter`, `BruteForceFitter`
   - using Face instead of coefficients;
   - requesting images instead of normals;
   - fitting for light.
 
 ### Fixed
 - `get_image_deviation` should work not only for `RGBA` images
-    but `RA`, `RGA` as well.
+    but `RA`, `RGA` as well;
+- `BruteForceFitter` initial parameters should be equal to starting values,
+    not zeros.
 
 ## [0.2.4] - 2016-08-08
 ### Added
