@@ -9,11 +9,11 @@ from .ModelFitter import ModelFitter
 class NelderMeadFitter(ModelFitter):
     def __init__(self, image, dimensions=199, model=None, initial=None,
                  offset=1., initial_face=None):
+        dimensions += 4
         self.__step = None
         self.__parameters = [None] * (dimensions)
         self.__errors = [None] * (dimensions)
         self.__normals = None
-        self.__light = None
         self.__offset = offset
 
         self.__centroid = None
