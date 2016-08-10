@@ -6,6 +6,7 @@ from .ModelFitter import ModelFitter
 class BruteForceFitter(ModelFitter):
     def __init__(self, image, dimensions=199, model=None, steps=None,
                  max_level=3):
+        dimensions += 4
         self.__steps = ones(dimensions, dtype='i') if steps is None else steps
         self.__current_step = None
         self.__parameters = zeros(dimensions, dtype='f')
