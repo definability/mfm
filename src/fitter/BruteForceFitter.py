@@ -1,6 +1,7 @@
 from numpy import ones, zeros
 
 from .ModelFitter import ModelFitter
+from src import Face
 
 
 class BruteForceFitter(ModelFitter):
@@ -18,12 +19,15 @@ class BruteForceFitter(ModelFitter):
         self.__max_level = max_level
         self.__indices = []
         self.__directions = []
+        self.__face = None
 
         super(BruteForceFitter, self).__init__(image, dimensions, model)
 
     def start(self):
         self.__loop = 0
-        self.request_normals(zeros(self._dimensions, dtype='f'), 'init')
+        self.__parameters = zeros(self._dimensions, dtype='f')
+        self.__face = Face.from_array(self.__parameters)
+        self.request_face(self.__face, 'init')
 
         self.__errors = {}
         self.__generate_errors()
@@ -50,7 +54,9 @@ class BruteForceFitter(ModelFitter):
 
     def __get_parameter(self, index=None, change_on=0):
         value = self.__get_value(change_on, self.__indices[change_on])
-        self.request_normals((change_on, value), index)
+        self.__parameters[change_on] = value
+        self.__face = Face.from_array(self.__parameters)
+        self.request_face(self.__face, index)
 
     def __inc_index(self, level=0):
         self.__indices[level] += self.__directions[level]
@@ -63,13 +69,12 @@ class BruteForceFitter(ModelFitter):
         self.__indices[level] += self.__directions[level]
         return self.__inc_index(level + 1)
 
-    def receive_normals(self, normals, index=None):
+    def receive_image(self, image, index=None):
         if index == 'init':
             return
-        light = self.estimate_light(normals)
-        shadows = normals.dot(light)
+        shadows = image
 
-        error = self.get_image_deviation(shadows, normals)
+        error = self.get_image_deviation(shadows)
         self.__errors[tuple(self.__indices)] = error
 
         change_on = self.__inc_index()
