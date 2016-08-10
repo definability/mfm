@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- `from_array` static method of `Face` to generate new face from array.
+
 ### Changed
 - `BGDFitter`
   - using Face instead of coefficients;
