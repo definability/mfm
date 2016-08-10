@@ -4,6 +4,7 @@ from numpy.random import randn
 from numpy.linalg import norm
 
 from .ModelFitter import ModelFitter
+from src import Face
 
 
 class NelderMeadFitter(ModelFitter):
@@ -39,25 +40,23 @@ class NelderMeadFitter(ModelFitter):
 
     def __initiate_parameters(self):
         self.__step = 'start'
-        for i in range(self._dimensions):
+        for i in range(len(self.__parameters)):
             # print('Initial step {} of {}'.format(i, self._dimensions))
             # self.__parameters[i] = randn(self._dimensions) * 1
             # self.__parameters[i] = zeros(self._dimensions)
             # self.__parameters[i][:i] = self.__offset
             self.__parameters[i] = self._initial.copy()
             self.__parameters[i][:i] += self.__offset
-            self.request_normals(self.__parameters[i], i)
+            self.request_face(Face.from_array(self.__parameters[i]), i)
         # self.__end = ones(self._dimensions)
         # self.__end = randn(self._dimensions)
         self.__end = self._initial + self.__offset
-        self.request_normals(self.__end, self._dimensions)
+        self.request_face(Face.from_array(self.__end), self._dimensions)
 
-    def receive_normals(self, normals, index=None):
-        light = self.estimate_light(normals)
-        error = self.get_image_deviation(normals.dot(light), normals)
-        self.__normals = normals
-        self.__light = light
-        # print('Received normals for step', self.__step, 'with error', error)
+
+    def receive_image(self, image, index=None):
+        error = self.get_image_deviation(image)
+        # print('Received image for step', self.__step, 'with error', error)
 
         if self.__step in ['reflection', 'expansion', 'contraction']:
             setattr(self, self.__step + '_error', error)
@@ -131,7 +130,7 @@ class NelderMeadFitter(ModelFitter):
         self.calculate_centroid()
         self.__reflection = self.__centroid + self.__alpha * \
             (self.__centroid - self.__end)
-        self.request_normals(self.__reflection)
+        self.request_face(Face.from_array(self.__reflection))
 
     def reflection(self):
         self.__sort_parameters()
@@ -152,7 +151,7 @@ class NelderMeadFitter(ModelFitter):
         self.__step = 'expansion'
         self.__expansion = self.__centroid + self.__gamma * \
             (self.__reflection - self.__centroid)
-        self.request_normals(self.__expansion)
+        self.request_face(Face.from_array(self.__expansion))
 
     def expansion(self):
         if self.expansion_error < self.reflection_error:
@@ -167,7 +166,7 @@ class NelderMeadFitter(ModelFitter):
         self.__step = 'contraction'
         self.__contraction = self.__centroid + self.__rho * \
             (self.__parameters[-1] - self.__centroid)
-        self.request_normals(self.__contraction)
+        self.request_face(Face.from_array(self.__contraction))
 
     def contraction(self):
         if self.contraction_error < self.end_error:
@@ -187,8 +186,8 @@ class NelderMeadFitter(ModelFitter):
         self.end_error = None
 
         for i in range(1, self._dimensions):
-            self.request_normals(self.__parameters[i], i)
-        self.request_normals(self.__end, self._dimensions)
+            self.request_face(Face.from_array(self.__parameters[i]), i)
+        self.request_face(Face.from_array(self.__end), self._dimensions)
 
     def shrink(self):
         if self.__finished():
