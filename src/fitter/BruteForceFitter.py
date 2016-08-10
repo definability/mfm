@@ -33,6 +33,11 @@ class BruteForceFitter(ModelFitter):
         self.__generate_errors()
         self.__indices = [0] * self.__max_level
         self.__directions = [1] * self.__max_level
+
+        self.__parameters = ([self.__get_value(i, self.__indices[i])
+                             for i in range(self.__max_level)]
+                             + [0] * (self._dimensions - self.__max_level))
+
         self.__get_parameter()
 
     def __generate_errors(self, current_level=0, tail=None):
