@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - using Face instead of coefficients;
   - requesting images instead of normals;
   - fitting for light.
+- `BruteForceFitter` displays result of optimization in the end.
 
 ### Fixed
 - `get_image_deviation` should work not only for `RGBA` images
