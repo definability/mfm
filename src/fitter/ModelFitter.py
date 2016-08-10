@@ -116,7 +116,7 @@ class ModelFitter:
     def get_image_deviation(self, image, normals=None):
         """Cost function for fitting result."""
         if normals is None:
-            indices = nonzero(image[:, 3])
+            indices = nonzero(image[:, -1])
         else:
             indices = nonzero(normals[:, 3])
         if len(image.shape) > 1:
