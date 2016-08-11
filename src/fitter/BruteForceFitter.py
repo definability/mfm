@@ -6,9 +6,11 @@ from src import Face
 
 class BruteForceFitter(ModelFitter):
     def __init__(self, image, dimensions=199, model=None, steps=None,
-                 max_level=3):
+                 max_level=3, offsets=None, scale=None):
         dimensions += 4
         self.__steps = ones(dimensions, dtype='i') if steps is None else steps
+        self.__offsets = zeros(dimensions, dtype='f') if offsets is None else offsets
+        self.__scale = ones(dimensions, dtype='f') if scale is None else scale
         self.__current_step = None
         self.__parameters = zeros(dimensions, dtype='f')
 
@@ -52,7 +54,8 @@ class BruteForceFitter(ModelFitter):
                 self.__generate_errors(current_level + 1, tail + [value])
 
     def __get_value(self, level, item):
-        return 6. * (item - self.__steps[level] * .5) / self.__steps[level]
+        normalized_value = item / self.__steps[level] + self.__offsets[level]
+        return self.__scale[level] * normalized_value
 
     def __get_values(self, parameters):
         return [self.__get_value(i, p) for i, p in enumerate(parameters)]
