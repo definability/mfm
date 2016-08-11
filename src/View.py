@@ -38,6 +38,10 @@ class View:
         """Initialize viewport with initial Face rotation and position."""
         self.__size = size
 
+        self.__height, self.__width = self.__size
+        self.__output_image = zeros(self.__width * self.__height * 4,
+                                    dtype='f')
+
         self.__vertices = None
         self.__colors = None
         self.__normals = None
@@ -134,10 +138,9 @@ class View:
     def get_image(self):
         """Copy RGBA data from the viewport to NumPy Matrix of float."""
         glReadBuffer(GL_FRONT)
-        height, width = self.__size
-        data = zeros(width*height*4, dtype='f')
-        glReadPixels(0, 0, width, height, GL_RGBA, GL_FLOAT, data)
-        return data
+        glReadPixels(0, 0, self.__width, self.__height, GL_RGBA, GL_FLOAT,
+                     self.__output_image)
+        return self.__output_image
 
     def close(self):
         """Close the viewport."""
