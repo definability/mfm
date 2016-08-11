@@ -19,6 +19,6 @@ fitter = Fitter(
     image=image_data, model=model, dimensions=0,
     steps=[1, 10, 10, 5], max_level=4,
     offsets=[0, -0.5, -0.5, 0],
-    scale=[0, -2, -2, 1])
+    scales=[0, -2, -2, 1])
 
 model.start(fitter)
