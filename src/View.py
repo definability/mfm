@@ -12,7 +12,7 @@ from OpenGL.GL import glDepthMask, glDepthFunc, glCullFace
 from OpenGL.GL import glEnable, glClearColor, glEnableClientState, glClear
 from OpenGL.GL import glDrawElements, glGetFloatv
 
-from OpenGL.GL import glReadBuffer, glReadPixels, GL_RGBA, GL_FRONT
+from OpenGL.GL import glReadBuffer, glReadPixels, GL_RGBA, glFlush
 
 from OpenGL.GLUT import GLUT_DOUBLE, GLUT_DEPTH, GLUT_RGB
 
@@ -203,13 +203,13 @@ class View:
 
         self.__sh.clear()
 
-        glutSwapBuffers()
+        glFlush()
         if self.__callback is not None:
             self.__callback()
 
     def __init_display(self):
         """Initialize the viewport with specified size."""
-        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
+        glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH)
         glutInitWindowSize(*self.__size)
 
         glutInitWindowPosition(0, 0)
