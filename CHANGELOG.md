@@ -15,6 +15,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - displays result of optimization in the end;
   - `offsets` constructor parameter sets initial value of parameters fitting;
   - `scales` constructor parameter controls range for parameters fitting.
+- `View`
+  - Using single buffer for rendering.
 
 ### Fixed
 - `get_image_deviation` should work not only for `RGBA` images
