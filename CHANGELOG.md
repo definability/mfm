@@ -20,7 +20,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `get_image_deviation` should work not only for `RGBA` images
     but `RA`, `RGA` as well;
 - `BruteForceFitter` initial parameters should be equal to starting values,
-    not zeros.
+    not zeros;
+- `get_face` method of `MFM` should generate correct light conditions
+    for face to be visible.
 
 ## [0.2.4] - 2016-08-08
 ### Added
