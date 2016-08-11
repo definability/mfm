@@ -82,8 +82,7 @@ class BruteForceFitter(ModelFitter):
             return
         shadows = image
 
-        error = self.get_image_deviation(shadows)
-        self.__errors[tuple(self.__indices)] = error
+        self.__errors[tuple(self.__indices)] = self.get_image_deviation(shadows)
 
         change_on = self.__inc_index()
         if change_on == -1:
