@@ -120,6 +120,6 @@ class ModelFitter:
         else:
             indices = nonzero(normals[:, 3])
         if len(image.shape) > 1:
-            image = image[:,0]
+            image = image[:, 0]
         diff = image - self.__image
         return (diff[indices] ** 2).mean()
