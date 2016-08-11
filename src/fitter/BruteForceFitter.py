@@ -7,6 +7,21 @@ from src import Face
 class BruteForceFitter(ModelFitter):
     def __init__(self, image, dimensions=199, model=None, steps=None,
                  max_level=3, offsets=None, scale=None):
+        """
+        All parameters are normalized to [0; 1] by default and divided by
+        `steps` chunks.
+
+        Parameter `offset` added to this interval, then `scale` multiplied.
+
+        Final formula for current `step`:
+        ```
+        v = (step / steps)
+        result = scale * (v + offset)
+        ```
+
+        You can chose `scale` and `offset` parameters to `0` to bypass some
+        parameter and leave it on zero value.
+        """
         dimensions += 4
         self.__steps = ones(dimensions, dtype='i') if steps is None else steps
         self.__offsets = zeros(dimensions, dtype='f') if offsets is None else offsets
