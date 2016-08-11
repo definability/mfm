@@ -6,12 +6,13 @@ from src import Face
 
 class BruteForceFitter(ModelFitter):
     def __init__(self, image, dimensions=199, model=None, steps=None,
-                 max_level=3, offsets=None, scale=None):
+                 max_level=3, offsets=None, scales=None):
         """
         All parameters are normalized to [0; 1] by default and divided by
         `steps` chunks.
 
-        Parameter `offset` added to this interval, then `scale` multiplied.
+        Corresponding parameter `offsets` added to this interval,
+        then `scales` multiplied.
 
         Final formula for current `step`:
         ```
