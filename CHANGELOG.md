@@ -31,6 +31,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - `get_light_map` useless with shaders;
   - `normal_map_to_normal_vectors` useless with shaders;
   - `normalize` useless with shaders.
+- `View`
+  - Ability to not provide `Face`.
 
 ## [0.2.6] - 2016-08-15
 ### Added
