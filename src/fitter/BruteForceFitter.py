@@ -26,7 +26,7 @@ class BruteForceFitter(ModelFitter):
         dimensions += 4
         self.__steps = ones(dimensions, dtype='i') if steps is None else steps
         self.__offsets = zeros(dimensions, dtype='f') if offsets is None else offsets
-        self.__scale = ones(dimensions, dtype='f') if scale is None else scale
+        self.__scales = ones(dimensions, dtype='f') if scales is None else scales
         self.__current_step = None
         self.__parameters = zeros(dimensions, dtype='f')
 
@@ -71,7 +71,7 @@ class BruteForceFitter(ModelFitter):
 
     def __get_value(self, level, item):
         normalized_value = item / self.__steps[level] + self.__offsets[level]
-        return self.__scale[level] * normalized_value
+        return self.__scales[level] * normalized_value
 
     def __get_values(self, parameters):
         return [self.__get_value(i, p) for i, p in enumerate(parameters)]
