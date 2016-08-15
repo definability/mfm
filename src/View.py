@@ -1,4 +1,5 @@
 import sys
+from math import ceil
 from warnings import warn
 
 from OpenGL.GL import GL_LESS, GL_TRUE, GL_DEPTH_TEST, GL_STENCIL_TEST
@@ -20,7 +21,7 @@ from OpenGL.GLUT import glutInitWindowSize, glutSwapBuffers, glutPostRedisplay
 from OpenGL.GLUT import glutCreateWindow, glutInit, glutInitWindowPosition
 from OpenGL.GLUT import glutInitDisplayMode, glutLeaveMainLoop, glutDisplayFunc
 
-from numpy import zeros, array
+from numpy import zeros, array, concatenate
 
 from .ShadersHelper import ShadersHelper
 
@@ -58,7 +59,8 @@ class View:
 
         glClearColor(1., 1., 1., 0.)
 
-        self.__sh = ShadersHelper('face.vert', 'face.frag', 2)
+        self.__sh = ShadersHelper('face.vert', 'face.frag', 1, 1)
+        self.__texture_bound = False
 
         glutDisplayFunc(self.__display)
         self.__callback = None
@@ -177,14 +179,7 @@ class View:
         if self.__face is None:
             warn('Set the face instead of its parameters', DeprecationWarning)
 
-        if self.__face is None:
-            self.__sh.add_attribute(0, self.__vertices, 'vin_position')
-            self.__sh.add_attribute(1, self.__normals, 'vin_normal')
-        else:
-            self.__sh.add_attribute(0, self.__face.get_vertices(),
-                                    'vin_position')
-            self.__sh.add_attribute(1, self.__face.get_normals(),
-                                    'vin_normal')
+        self.__sh.add_attribute(0, self.__mean_face, 'mean_position')
         self.__sh.bind_buffer()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -192,11 +187,17 @@ class View:
         self.__sh.use_shaders()
 
         self.__sh.bind_uniform_matrix(rotation_matrix, 'rotation_matrix')
-        if self.__face is None or self.__light is not None:
-            self.__sh.bind_uniform_matrix(self.__light, 'vin_light')
+        if self.__face is None:
+            self.__sh.bind_uniform_matrix(self.__light, 'light_vector')
         else:
-            self.__sh.bind_uniform_matrix(self.__face.directed_light,
-                                          'vin_light')
+            self.__sh.bind_uniform_vector(self.__face.light.astype('f'),
+                                          'light_vector')
+            coefficients = zeros(199, dtype='f')
+            coefficients[:len(self.__face.coefficients)] = self.__face.coefficients
+            self.__sh.bind_uniform_floats(coefficients, 'coefficients')
+
+            if not self.__texture_bound:
+                self.__bind_texture()
 
         glDrawElements(GL_TRIANGLES, View.__triangles_size,
                        GL_UNSIGNED_SHORT, View.__triangles)
@@ -206,6 +207,21 @@ class View:
         glFlush()
         if self.__callback is not None:
             self.__callback()
+
+    def __bind_texture(self):
+        size = View.__principal_components.size // 3
+        data = (View.__principal_components
+               * View.__deviations.flatten()).transpose()
+
+        columns = 2**13
+        rows = ceil(size / columns)
+
+        padding = [0] * (rows * columns - size) * 3
+        data = concatenate((data.flatten(), padding))
+
+        self.__sh.bind_float_texture(data, 'principal_components',
+                                     (columns, rows), 2, 3)
+        self.__texture_bound = True
 
     def __init_display(self):
         """Initialize the viewport with specified size."""
@@ -223,7 +239,7 @@ class View:
 
         SIDE_LENGTH = .5
         glOrtho(-SIDE_LENGTH, SIDE_LENGTH, -SIDE_LENGTH, SIDE_LENGTH,
-                -SIDE_LENGTH, SIDE_LENGTH)
+                -2 * SIDE_LENGTH, 2 * SIDE_LENGTH)
 
     def __enable_depth_test(self):
         """Enable depth test and faces culling.
