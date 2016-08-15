@@ -26,27 +26,27 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - `get_image_deviation` should work not only for `RGBA` images
-    but `RA`, `RGA` as well;
+    but `RA`, `RGA` as well.
 - `BruteForceFitter` initial parameters should be equal to starting values,
-    not zeros;
+    not zeros.
 - `get_face` method of `MFM` should generate correct light conditions
     for face to be visible.
 
 ## [0.2.4] - 2016-08-08
 ### Added
-- `bind_uniform_vector` method to `ShadersHelper`;
+- `bind_uniform_vector` method to `ShadersHelper`.
 - `generate_face` method to `Model`.
 - `face` property (getter and setter) to `Model`.
 
 ### Changed
-- Using `Face` in `Model` to draw face;
-- `change_light` method of `Model` restored;
+- Using `Face` in `Model` to draw face.
+- `change_light` method of `Model` restored.
 - `get_image_deviation` allows to not provide normals &mdash;
     using alpha channel of provided image instead.
 
 ### Fixed
-- `bind_float_texture` now accepts any iterable `size`;
-- Light direction in MFM Face generation;
+- `bind_float_texture` now accepts any iterable `size`.
+- Light direction in MFM Face generation.
 - `request_image` in `Model` should request image instead of normal map.
 - `request_face` method in `ModelFitter` should call `request_image` of `Model`.
 - `get_image` should get image from front buffer instead of back buffer
@@ -55,7 +55,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.2.3] - 2016-08-06
 ### Added
 - `ModelFitter`
-  - `request_face` to request render of provided Face.
+  - `request_face` to request render of provided Face;
   - `receive_image` to receive rendered image;
   - `initial_face` parameter to constructor
     instead of array of coefficients `initial`.
@@ -103,7 +103,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - `get_face` method has `coefficients_only` parameter to set
-    whether it's needed to calculate the face;
+    whether it's needed to calculate the face.
 - Assertion in `ShadersHelper` if uniform matrix binding failed.
 - Setting PC, EV and mean face in View on MFM initialization.
 
@@ -129,7 +129,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Face properties with setters and getters
   - `directed_light`;
   - `ambient_light`;
-  - `light`;
+  - `light`.
 - View properties with setters and getters
   - `light`;
   - `normals`;
@@ -143,7 +143,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 - Usage of normal maps: shadows will be calculated in shaders
   and normal map will be redundant for shadow calculations via
-  least squares method;
+  least squares method.
 - Face
   - `get_vertices_c` not needed;
   - `get_directed_light` has shortcut property `directed_light`;
@@ -152,7 +152,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - `get_light_map_c` not needed;
   - `get_normal_map_c` not needed;
   - `get_normal_map` not needed;
-  - `set_light` has shortcut properties `directed_light` and `ambient_light`;
+  - `set_light` has shortcut properties `directed_light` and `ambient_light`.
 - View
   - `update` has shortcut properties `light`, `normals`, `vertices`,
     `colors` and `rotation`.
