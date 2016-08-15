@@ -5,14 +5,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ## [0.2.6] - 2016-08-15
-
-## [0.2.5] - 2016-08-11
 ### Added
-- `from_array` static method of `Face` to generate new face from array.
 - `setup.cfg` file.
 
 ### Fixed
 - `BruteForceFitter` used undefined variable.
+
+## [0.2.5] - 2016-08-11
+### Added
+- `from_array` static method of `Face` to generate new face from array.
 
 ### Changed
 - `BGDFitter`, `NelderMeadFitter`, `BruteForceFitter`
