@@ -176,8 +176,6 @@ class View:
         """Render the model by existent vertices, colors and triangles."""
         glRotatef(1., *self.__rotation)
         rotation_matrix = array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
-        if self.__face is None:
-            warn('Set the face instead of its parameters', DeprecationWarning)
 
         self.__sh.add_attribute(0, self.__mean_face, 'mean_position')
         self.__sh.bind_buffer()
@@ -187,17 +185,14 @@ class View:
         self.__sh.use_shaders()
 
         self.__sh.bind_uniform_matrix(rotation_matrix, 'rotation_matrix')
-        if self.__face is None:
-            self.__sh.bind_uniform_matrix(self.__light, 'light_vector')
-        else:
-            self.__sh.bind_uniform_vector(self.__face.light.astype('f'),
-                                          'light_vector')
-            coefficients = zeros(199, dtype='f')
-            coefficients[:len(self.__face.coefficients)] = self.__face.coefficients
-            self.__sh.bind_uniform_floats(coefficients, 'coefficients')
+        self.__sh.bind_uniform_vector(self.__face.light.astype('f'),
+                                      'light_vector')
+        coefficients = zeros(199, dtype='f')
+        coefficients[:len(self.__face.coefficients)] = self.__face.coefficients
+        self.__sh.bind_uniform_floats(coefficients, 'coefficients')
 
-            if not self.__texture_bound:
-                self.__bind_texture()
+        if not self.__texture_bound:
+            self.__bind_texture()
 
         glDrawElements(GL_TRIANGLES, View.__triangles_size,
                        GL_UNSIGNED_SHORT, View.__triangles)
