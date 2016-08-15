@@ -3,6 +3,34 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Using texture to store principal components.
+- Calculating model shape via shaders.
+- Calculating shadows via shaders.
+
+### Fixed
+- Flat shading model should contain only one color for entire triangle.
+
+### Removed
+- `Face`
+  - `get_coefficients` in favor of `coefficients` property;
+  - `get_triangles` useless because `View` has triangles;
+  - `get_directed_light` in favor of `directed_light`;
+  - `get_constant_light` in favor of `ambient_light`;
+  - `set_light` in favor of `directed_light` and `ambient_light`.
+  - `get_original_vertices` useless with shaders;
+  - `get_vertices` useless with shaders;
+  - `get_vertices_c` useless with shaders;
+  - `get_triangles_c` useless with shaders;
+  - `normal_min` useless with shaders;
+  - `normal_max` useless with shaders;
+  - `get_light_map_c` useless with shaders;
+  - `get_normal_map_c` useless with shaders;
+  - `get_normal_map` useless with shaders;
+  - `get_normals` useless with shaders.
+  - `get_light_map` useless with shaders;
+  - `normal_map_to_normal_vectors` useless with shaders;
+  - `normalize` useless with shaders.
 
 ## [0.2.6] - 2016-08-15
 ### Added
