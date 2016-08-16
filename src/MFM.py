@@ -88,38 +88,13 @@ def get_face(coefficients=None, directed_light=None, ambient_light=None,
     if coefficients is None:
         coefficients = randn(__dimensions)
     if directed_light is None and not coefficients_only:
-        directed_light = fabs(array([__random_cos(), __random_cos(),
-                                      __random_cos()]))
+        directed_light = array([__random_cos(), __random_cos(),
+                                fabs(__random_cos())])
         if norm(directed_light) > 0:
             directed_light /= norm(directed_light)
     if ambient_light is None:
         ambient_light = fabs(__random_cos())
 
-    if coefficients_only:
-        vertices = __mean_shape
-        directed_light = array([__random_cos(), __random_cos(),
-                                fabs(__random_cos())])
-        return Face(directed_light=directed_light,
-                    ambient_light=ambient_light,
-                    coefficients=coefficients)
-
-    warn('Shaders calculate the shape', DeprecationWarning)
-    if len(coefficients.shape) == 1:
-        vertices = calculate_face(coefficients.astype('f'))
-        return Face(vertices, directed_light, ambient_light,
-                    coefficients=coefficients)
-    else:
-        coefficients = coefficients.reshape((coefficients.size, 1))
-        n_seg = coefficients.shape[1]
-
-        mean_shape = __mean_shape * ones([1, n_seg])
-        pc_deviations = __pc_deviations[0:__dimensions] * ones([1, n_seg])
-
-        features = dot(__principal_components[:, 0:__dimensions],
-                       coefficients * pc_deviations)
-
-        features = __principal_components.dot(coefficients * pc_deviations)
-        vertices = mean_shape + features
-
-        return Face(vertices.astype('f'), directed_light, ambient_light,
-                    coefficients=coefficients)
+    return Face(directed_light=directed_light,
+                ambient_light=ambient_light,
+                coefficients=coefficients)
