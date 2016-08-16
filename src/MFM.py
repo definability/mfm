@@ -79,7 +79,7 @@ def get_face(coefficients=None, directed_light=None, ambient_light=None):
     """
     if coefficients is None:
         coefficients = randn(__dimensions)
-    if directed_light is None and not coefficients_only:
+    if directed_light is None:
         directed_light = array([__random_cos(), __random_cos(),
                                 fabs(__random_cos())])
         if norm(directed_light) > 0:
