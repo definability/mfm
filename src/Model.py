@@ -12,12 +12,10 @@ from src import MFM
 class Texture(Enum):
     """Enumerate of Face textures.
 
-    Face can be displayed in two modes:
+    Face can be displayed in single mode:
     - shadow map;
-    - normal map.
     """
     light = 0
-    normal = 1
 
 
 class Model:
