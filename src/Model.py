@@ -84,9 +84,6 @@ class Model:
         - Model renders Face with given parameters and sends achived
           image via callback.
         """
-        if self.__texture == Texture.normal:
-            self.toggle_texture()
-
         if len(self.__on_draw_callbacks) == 0 and not self.__now_processing:
             self.__now_processing = True
             self.__view.face = face
@@ -139,14 +136,6 @@ class Model:
             constant_light += intensity
             self.__face.ambient_light = constant_light
 
-    def toggle_texture(self):
-        """Toggle Face texture between shadow and normal map."""
-        if self.__texture == Texture.light:
-            warn('Normal map texture is deprecated', DeprecationWarning)
-            self.__texture = Texture.normal
-        else:
-            self.__texture = Texture.light
-
     def close(self):
         """Close the viewport"""
         self.__view.close()
@@ -158,31 +147,18 @@ class Model:
     def save_image(self, filename):
         """Render current viewport state to file.
 
-        If normal map used, result will be saved to NumPy file.
-        File will contain matrix, where each cell will match image pixel
-        and contain normal vector.
-
         If shadow map used, result will be simply rendered.
         Also light conditions will be saved to NumPy file.
         """
-        if self.__texture == Texture.normal:
-            img = array(self.__view.get_image())
-            img = img.reshape(img.size//4, 4)
-            data = column_stack((
-                self.__face.normal_map_to_normal_vectors(img[:, :3]),
-                img[:, 3]))
-            with open(filename + '.npy', 'wb') as f:
-                save(f, data[::-1])
-        elif self.__texture == Texture.light:
-            size = self.__view.get_size()
-            image = Image.new('RGBA', size)
-            data = (self.__view.get_image() * 255).astype('i')
-            pixels = [(data[i*4+0], data[i*4+1], data[i*4+2], data[i*4+3])
-                      for i in range(size[0]*size[1]-1, -1, -1)]
-            image.putdata(pixels)
-            image.save(filename + '.png')
-            image.close()
-            with open(filename + '.light.npy', 'wb') as f:
-                light = list(self.__face.directed_light)
-                light.append(self.__face.ambient_light)
-                save(f, light)
+        size = self.__view.get_size()
+        image = Image.new('RGBA', size)
+        data = (self.__view.get_image() * 255).astype('i')
+        pixels = [(data[i*4+0], data[i*4+1], data[i*4+2], data[i*4+3])
+                  for i in range(size[0]*size[1]-1, -1, -1)]
+        image.putdata(pixels)
+        image.save(filename + '.png')
+        image.close()
+        with open(filename + '.light.npy', 'wb') as f:
+            light = list(self.__face.directed_light)
+            light.append(self.__face.ambient_light)
+            save(f, light)
