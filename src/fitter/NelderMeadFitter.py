@@ -1,5 +1,5 @@
 from PIL import Image
-from numpy import nonzero, mean, zeros, argsort  # , column_stack
+from numpy import nonzero, mean, zeros, argsort, concatenate
 from numpy.random import randn
 from numpy.linalg import norm
 
@@ -8,8 +8,8 @@ from src import Face
 
 
 class NelderMeadFitter(ModelFitter):
-    def __init__(self, image, dimensions=199, model=None, initial=None,
-                 offset=1., initial_face=None):
+    def __init__(self, image, dimensions=199, model=None, offset=1.,
+                 initial_face=None):
         dimensions += 4
         self.__step = None
         self.__parameters = [None] * (dimensions)
@@ -33,24 +33,28 @@ class NelderMeadFitter(ModelFitter):
         self.__sigma = .5
 
         super(NelderMeadFitter, self).__init__(image, dimensions, model,
-                                               initial, initial_face)
+                                               initial_face)
 
     def start(self):
         self.__initiate_parameters()
 
     def __initiate_parameters(self):
         self.__step = 'start'
+        initial_parameters = concatenate((
+            self._initial_face.coefficients,
+            self._initial_face.light
+        ))
         for i in range(len(self.__parameters)):
             # print('Initial step {} of {}'.format(i, self._dimensions))
             # self.__parameters[i] = randn(self._dimensions) * 1
             # self.__parameters[i] = zeros(self._dimensions)
             # self.__parameters[i][:i] = self.__offset
-            self.__parameters[i] = self._initial.copy()
+            self.__parameters[i] = initial_parameters
             self.__parameters[i][:i] += self.__offset
             self.request_face(Face.from_array(self.__parameters[i]), i)
         # self.__end = ones(self._dimensions)
         # self.__end = randn(self._dimensions)
-        self.__end = self._initial + self.__offset
+        self.__end = initial_parameters + self.__offset
         self.request_face(Face.from_array(self.__end), self._dimensions)
 
 
