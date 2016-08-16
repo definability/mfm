@@ -33,6 +33,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - `normalize` useless with shaders.
 - `View`
   - Ability to not provide `Face`.
+- `ModelFitter`, `NelderMeadFitter`, `BGDFitter`
+  - Ability to provide initial array in favor of initial `Face`.
 
 ## [0.2.6] - 2016-08-15
 ### Added
