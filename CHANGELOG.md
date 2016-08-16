@@ -35,10 +35,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - `request_normals` in favor of `request_image`;
   - `calculate` useless with shaders;
   - `toggle_texture` useless with shaders.
+- `MFM`
+  - `change_coefficient` useless with shaders.
 
 ### Changed
 - `get_face` method of `MFM` only allows to generate new coefficients
     &mdash; not vertices.
+- `get_face` method of `MFM` should not have redundant `coefficients_only`
+    argument.
 - `View` allows to provide only initial `Face`, not array of coefficients.
 - `ModelFitter` allows to provide only initial `Face`,
     not array of coefficients.
