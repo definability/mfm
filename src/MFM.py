@@ -70,23 +70,6 @@ def get_multipliers(scale=1):
     return floor(scale * __ev_normalized**.5).astype('i')
 
 
-def change_coefficient(face, index, coefficient):
-    """Change `index` coefficient of eigenvector for `face`.
-
-    Works much faster (~10x), than entire Face update,
-    because changes only one (of 199 by default) components.
-    """
-    vertices = face.get_original_vertices().copy()
-
-    coefficients = face.get_coefficients().copy()
-    coefficient, coefficients[index] = coefficients[index], coefficient
-
-    calculate_row(__principal_components_flattened, __pc_deviations,
-                  coefficients[index] - coefficient, index, vertices)
-    return Face(vertices, face.directed_light, face.ambient_light,
-                coefficients=coefficients)
-
-
 def get_face(coefficients=None, directed_light=None, ambient_light=None,
              coefficients_only=False):
     """Produce new face.
