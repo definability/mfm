@@ -113,42 +113,6 @@ class Model:
     def generate_face(self):
         return MFM.get_face(coefficients_only=True)
 
-    def calculate(self, new_model=True, coefficients=None):
-        """Generates new face or changes light of old face.
-
-        If `new_model` is `True`
-        - if `coefficients` is a tuple of numbers, new Face will be generated
-        on the base of old one, but coefficient `coefficients[0]`
-        will be changed to `coefficients[1]`;
-        - in other case new random Face will be generated.
-        """
-        warn('Shaders will make all calculations', DeprecationWarning)
-        if new_model and type(coefficients) is not tuple:
-            self.__face = MFM.get_face(coefficients)
-        elif new_model:
-            self.__face = MFM.change_coefficient(
-                self.__face, coefficients[0], coefficients[1])
-
-        self.__view.vertices = self.__face.get_vertices()
-
-        normals = self.__view.normals = self.__face.get_normals()
-
-        normal_min = apply_along_axis(numpy.min, 0, normals)
-        normal_max = apply_along_axis(numpy.max, 0, normals)
-
-        self.__face.normal_min = normal_min
-        self.__face.normal_max = normal_max
-
-        if self.__texture is Texture.normal:
-            self.__view.light = concatenate((
-                concatenate((normal_min, [-1])),
-                concatenate((normal_max - normal_min, [1])),
-                [0] * 4))
-        elif self.__texture is Texture.light:
-            self.__view.light = concatenate((self.__face.light, [0] * 8))
-
-        self.__view.face = self.__face
-
     def rotate(self, axis, value):
         """Rotate camera of the viewport.
 
