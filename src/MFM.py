@@ -70,20 +70,12 @@ def get_multipliers(scale=1):
     return floor(scale * __ev_normalized**.5).astype('i')
 
 
-def get_face(coefficients=None, directed_light=None, ambient_light=None,
-             coefficients_only=False):
+def get_face(coefficients=None, directed_light=None, ambient_light=None):
     """Produce new face.
 
     Usage:
     - if coefficients not provided, random Face will be generated.
     - if light parameters not provided, random will be chosen.
-
-    If `coefficients` is 1D Array, will work faster,
-    because C function will be called.
-
-    Coefficients will be multiplied by eigenvalues,
-    so it's okay to generate random variables with
-    standard normal distribution, because they will be normalized.
     """
     if coefficients is None:
         coefficients = randn(__dimensions)
