@@ -1,8 +1,6 @@
 from warnings import warn
 
-from numpy import array, dot, zeros_like, mean, apply_along_axis, column_stack
-from numpy import concatenate
-import numpy
+from numpy import array, zeros, concatenate
 
 from .normals import get_normals
 
