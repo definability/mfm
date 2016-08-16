@@ -106,7 +106,7 @@ class Model:
             self.__now_processing = False
 
     def generate_face(self):
-        return MFM.get_face(coefficients_only=True)
+        return MFM.get_face()
 
     def rotate(self, axis, value):
         """Rotate camera of the viewport.
