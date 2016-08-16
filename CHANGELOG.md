@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.3.0] - 2016-08-16
 ### Changed
 - Using texture to store principal components.
 - Calculating model shape via shaders.
@@ -346,7 +348,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.2.6...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/char-lie/mfm/compare/v0.2.6...v0.3.0
 [0.2.6]: https://github.com/char-lie/mfm/compare/v0.2.5...v0.2.6
 [0.2.5]: https://github.com/char-lie/mfm/compare/v0.2.4...v0.2.5
 [0.2.4]: https://github.com/char-lie/mfm/compare/v0.2.3...v0.2.4
