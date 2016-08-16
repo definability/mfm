@@ -27,14 +27,25 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - `get_light_map_c` useless with shaders;
   - `get_normal_map_c` useless with shaders;
   - `get_normal_map` useless with shaders;
-  - `get_normals` useless with shaders.
+  - `get_normals` useless with shaders;
   - `get_light_map` useless with shaders;
   - `normal_map_to_normal_vectors` useless with shaders;
   - `normalize` useless with shaders.
-- `View`
-  - Ability to not provide `Face`.
-- `ModelFitter`, `NelderMeadFitter`, `BGDFitter`
-  - Ability to provide initial array in favor of initial `Face`.
+- `Model`
+  - `request_normals` in favor of `request_image`;
+  - `calculate` useless with shaders;
+  - `toggle_texture` useless with shaders.
+
+### Changed
+- `get_face` method of `MFM` only allows to generate new coefficients
+    &mdash; not vertices.
+- `View` allows to provide only initial `Face`, not array of coefficients.
+- `ModelFitter` allows to provide only initial `Face`,
+    not array of coefficients.
+- `NelderMeadFitter` allows to provide only initial `Face`,
+    not array of coefficients.
+- `BGDFitter` allows to provide only initial `Face`,
+    not array of coefficients.
 
 ## [0.2.6] - 2016-08-15
 ### Added
