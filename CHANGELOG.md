@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.3.2] - 2016-08-17
+### Changed
+- Refactored the project.
+
 ## [0.3.1] - 2016-08-16
 ### Fixed
 - `get_face` of `MFM` tried to use undefined variable.
@@ -352,7 +356,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.3.1...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.3.2...HEAD
+[0.3.2]: https://github.com/char-lie/mfm/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/char-lie/mfm/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/char-lie/mfm/compare/v0.2.6...v0.3.0
 [0.2.6]: https://github.com/char-lie/mfm/compare/v0.2.5...v0.2.6
