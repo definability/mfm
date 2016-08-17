@@ -1,4 +1,3 @@
-from warnings import warn
 
 from numpy import array, zeros, concatenate
 
@@ -14,11 +13,8 @@ ERROR_TEXT = {
 }
 
 
-class Face:
 
-    __triangles = None
-    __triangles_flattened = None
-    __triangles_c = None
+class Face:
 
     def __init__(self, ambient_light=0, directed_light=None,
                  coefficients=None):
@@ -65,25 +61,6 @@ class Face:
     @property
     def coefficients(self):
         return self.__coefficients
-
-    @staticmethod
-    def set_triangles(triangles=None, triangles_c=None):
-        """Sets indices of vertices connected in triangles.
-
-        Sets both NumPy and C arrays of triangles.
-        """
-        warn('View already has triangles', DeprecationWarning)
-        if triangles is not None:
-            if len(triangles.shape) != 2:
-                raise ValueError(ERROR_TEXT['TRIANGLES_SHAPE']
-                                 .format(triangles.shape))
-            elif triangles.shape[1] != 3:
-                raise ValueError(ERROR_TEXT['TRIANGLES_VERTICES']
-                                 .format(triangles.shape[1]))
-            Face.__triangles = triangles
-            Face.__triangles_flattened = triangles.flatten()
-        if triangles_c is not None:
-            Face.__triangles_c = triangles_c
 
     @staticmethod
     def from_array(parameters):
