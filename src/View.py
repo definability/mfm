@@ -43,12 +43,8 @@ class View:
         self.__output_image = zeros(self.__width * self.__height * 4,
                                     dtype='f')
 
-        self.__vertices = None
-        self.__colors = None
-        self.__normals = None
         self.__light = None
         self.__rotation = (0., 0., 0.)
-        self.__position = (0., 0., 0.)
         self.__face = None
 
         self.__init_display()
