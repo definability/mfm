@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.4.0] - 2016-08-17
 ### Removed
 - `ModelFitter`
   - `request_normals` in favor of `request_image`;
@@ -386,7 +388,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.3.3...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/char-lie/mfm/compare/v0.3.3...v0.4.0
 [0.3.3]: https://github.com/char-lie/mfm/compare/v0.3.2...v0.3.3
 [0.3.2]: https://github.com/char-lie/mfm/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/char-lie/mfm/compare/v0.3.0...v0.3.1
