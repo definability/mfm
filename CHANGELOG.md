@@ -3,6 +3,27 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Removed
+- `ModelFitter`
+  - `request_normals` in favor of `request_image`;
+  - `receive_normals` in favor of `receive_image`;
+  - `estimate_light` will be useless with shadow mapping.
+- `Face`
+  - `set_triangles` useless because `View` has triangles.
+- `View`
+  - `update` in favor of `light`, `normals`, `vertices`,
+  - `normals` useless with shaders;
+  - `vertices` useless with shaders;
+  - `colors` useless with shaders.
+- `libs` package (`C` modules) are useless with shaders
+  - `face`;
+    - `calculate_face`;
+    - `calculate_row`;
+  - `normals`;
+    - `get_normals`.
+
+### Changed
+- Removed initialization of `C` module from `MFM`.
 
 ## [0.3.3] - 2016-08-17
 ### Deprecated
@@ -12,9 +33,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - `normals` useless with shaders;
   - `vertices` useless with shaders;
   - `colors` useless with shaders.
-
-### Changed
-- Removed initialization of `C` module from `MFM`.
 
 ## [0.3.2] - 2016-08-17
 ### Changed
