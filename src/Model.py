@@ -27,7 +27,6 @@ class Model:
 
         Creates initial light and rotation conditions and renders first Face.
         """
-        self.__light = True
         self.__face = None
         self.__view = view
         self.__fitter = None
@@ -37,11 +36,6 @@ class Model:
         self.__texture = Texture.light
 
         self.__rotations = {
-            'x': 0.,
-            'y': 0.,
-            'z': 0.
-        }
-        self.__light = {
             'x': 0.,
             'y': 0.,
             'z': 0.
@@ -92,11 +86,7 @@ class Model:
         img = array(self.__view.get_image())
         img = img.reshape(img.size//4, 4)
         callback(img)
-        if len(self.__on_draw_callbacks) > 0 and not use_face:
-            coefficients, callback = self.__on_draw_callbacks.pop(0)
-            self.calculate(True, coefficients)
-            self.redraw(lambda: self.__on_redraw(callback))
-        elif len(self.__on_draw_callbacks) > 0:
+        if len(self.__on_draw_callbacks) > 0:
             face, callback = self.__on_draw_callbacks.pop(0)
             self.__view.face = face
             self.redraw(lambda: self.__on_redraw(callback, True))

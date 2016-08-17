@@ -46,6 +46,7 @@ class View:
         self.__vertices = None
         self.__colors = None
         self.__normals = None
+        self.__light = None
         self.__rotation = (0., 0., 0.)
         self.__position = (0., 0., 0.)
         self.__face = None
