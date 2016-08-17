@@ -1,5 +1,4 @@
 from unittest import TestCase
-from numpy import array, allclose, array_equal, column_stack, zeros, ones
 
 from src import Face
 
