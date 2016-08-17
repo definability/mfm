@@ -15,9 +15,9 @@ from OpenGL.GL import glDrawElements, glGetFloatv
 
 from OpenGL.GL import glReadBuffer, glReadPixels, GL_RGBA, glFlush
 
-from OpenGL.GLUT import GLUT_DOUBLE, GLUT_DEPTH, GLUT_RGB
+from OpenGL.GLUT import GLUT_DEPTH, GLUT_RGB
 
-from OpenGL.GLUT import glutInitWindowSize, glutSwapBuffers, glutPostRedisplay
+from OpenGL.GLUT import glutInitWindowSize, glutPostRedisplay
 from OpenGL.GLUT import glutCreateWindow, glutInit, glutInitWindowPosition
 from OpenGL.GLUT import glutInitDisplayMode, glutLeaveMainLoop, glutDisplayFunc
 
@@ -206,7 +206,7 @@ class View:
     def __bind_texture(self):
         size = View.__principal_components.size // 3
         data = (View.__principal_components
-               * View.__deviations.flatten()).transpose()
+                * View.__deviations.flatten()).transpose()
 
         columns = 2**13
         rows = ceil(size / columns)

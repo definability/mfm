@@ -24,9 +24,22 @@ class BruteForceFitter(ModelFitter):
         parameter and leave it on zero value.
         """
         dimensions += 4
-        self.__steps = ones(dimensions, dtype='i') if steps is None else steps
-        self.__offsets = zeros(dimensions, dtype='f') if offsets is None else offsets
-        self.__scales = ones(dimensions, dtype='f') if scales is None else scales
+
+        if steps is None:
+            self.__steps = ones(dimensions, dtype='i')
+        else:
+            self.__steps = steps
+
+        if offsets is None:
+            self.__offsets = zeros(dimensions, dtype='f')
+        else:
+            self.__offsets = offsets
+
+        if scales is None:
+            self.__scales = ones(dimensions, dtype='f')
+        else:
+            self.__scales = scales
+
         self.__current_step = None
         self.__parameters = zeros(dimensions, dtype='f')
 
@@ -99,9 +112,8 @@ class BruteForceFitter(ModelFitter):
         elif index == 'finish':
             self.finish()
             return
-        shadows = image
 
-        self.__errors[tuple(self.__indices)] = self.get_image_deviation(shadows)
+        self.__errors[tuple(self.__indices)] = self.get_image_deviation(image)
 
         change_on = self.__inc_index()
         if change_on == -1:

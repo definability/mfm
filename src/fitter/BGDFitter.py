@@ -1,5 +1,5 @@
 from PIL import Image
-from numpy import zeros, nonzero
+from numpy import zeros
 
 from .ModelFitter import ModelFitter
 from src import Face
@@ -54,12 +54,15 @@ class BGDFitter(ModelFitter):
     def __next_iteration(self):
         self.__loop += 1
         self.__current_step = -5
-        coefficients = (self.__face.coefficients
-                - self.__step * self.__derivatives[:self._dimensions])
-        directed_light = (self.__face.directed_light
-                - self.__step * self.__derivatives[-3:] / 50)
-        ambient_light = (self.__face.ambient_light
-                - self.__step * self.__derivatives[-4] / 50)
+        coefficients = (
+            self.__face.coefficients
+            - self.__step * self.__derivatives[:self._dimensions])
+        directed_light = (
+            self.__face.directed_light
+            - self.__step * self.__derivatives[-3:] / 50)
+        ambient_light = (
+            self.__face.ambient_light
+            - self.__step * self.__derivatives[-4] / 50)
         self.__face = Face(coefficients=coefficients,
                            directed_light=directed_light,
                            ambient_light=ambient_light)

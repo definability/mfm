@@ -1,8 +1,5 @@
-from warnings import warn
 
 from numpy import array, zeros, concatenate
-
-from .normals import get_normals
 
 ERROR_TEXT = {
     'VERTICES_SIZE': "Size of vertices array should be a multiple of three, "

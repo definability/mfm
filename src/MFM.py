@@ -1,13 +1,11 @@
-from warnings import warn
-import ctypes
 from scipy.io import loadmat
 from numpy.random import rand, randn
 from numpy.linalg import norm
-from numpy import array, ones, dot, fabs, zeros, floor
+from numpy import array, fabs, floor
 
 from .Face import Face
 from .View import View
-from .face import init_face_calculator, calculate_face, calculate_row
+from .face import init_face_calculator
 
 DEFAULT_MODEL_PATH = '01_MorphableModel.mat'
 
