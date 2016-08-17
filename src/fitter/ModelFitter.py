@@ -1,5 +1,3 @@
-from warnings import warn
-
 from numpy import array, nonzero, zeros
 from numpy.linalg import lstsq  # , inv
 
