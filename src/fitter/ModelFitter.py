@@ -1,5 +1,4 @@
 from numpy import array, nonzero, zeros
-from numpy.linalg import lstsq  # , inv
 
 from src import Face
 
