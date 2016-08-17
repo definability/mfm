@@ -5,21 +5,12 @@ from numpy import array, fabs, floor
 
 from .Face import Face
 from .View import View
-from .face import init_face_calculator
 
 DEFAULT_MODEL_PATH = '01_MorphableModel.mat'
 
 __model = None
-__triangles = None
-__triangles_flattened = None
-__triangles_c = None
-
-__principal_components = None
-__principal_components_flattened = None
 __ev_normalized = None
 __dimensions = None
-__mean_shape = None
-__pc_deviations = None
 
 
 def init(path=None):
@@ -28,30 +19,25 @@ def init(path=None):
     Loads information from MatLAB file, chaches triangles, principal components
     and other immutable values used by any Face.
     """
-    global __model, __triangles, __triangles_flattened, __dimensions
-    global __principal_components, __principal_components_flattened
-    global __ev_normalized, __mean_shape, __pc_deviations
+    global __model, __dimensions, __ev_normalized
 
     __model = loadmat(path if path is not None else DEFAULT_MODEL_PATH)
-    __triangles = __model['tl'] - 1
-    __triangles_flattened = (__model['tl'] - 1).flatten()
-    __triangles_c = __triangles_flattened.ctypes.get_as_parameter()
-
-    __principal_components = __model['shapePC'].astype('f')
-    __principal_components_flattened = __principal_components.flatten()
-    __dimensions = __principal_components.shape[1]
-
     __ev_normalized = __model['shapeEV'].flatten() / __model['shapeEV'].min()
-    __mean_shape = __model['shapeMU'].astype('f')
-    __pc_deviations = __model['shapeEV'].astype('f')
 
-    init_face_calculator(__mean_shape, __principal_components_flattened,
-                         __pc_deviations)
-    Face.set_triangles(__triangles, __triangles_c)
-    View.set_triangles(__triangles_c, __triangles.size)
-    View.set_principal_components(__principal_components)
-    View.set_deviations(__pc_deviations)
-    View.set_mean_face(__mean_shape)
+    principal_components = __model['shapePC'].astype('f')
+
+    __dimensions = principal_components.shape[1]
+
+    mean_shape = __model['shapeMU'].astype('f')
+    pc_deviations = __model['shapeEV'].astype('f')
+
+    triangles = (__model['tl'] - 1).flatten()
+    triangles_c = triangles.ctypes.get_as_parameter()
+
+    View.set_triangles(triangles_c, triangles.size)
+    View.set_principal_components(principal_components)
+    View.set_deviations(pc_deviations)
+    View.set_mean_face(mean_shape)
 
 
 def __random_cos():
