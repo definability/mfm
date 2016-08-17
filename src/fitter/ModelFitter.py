@@ -35,17 +35,6 @@ class ModelFitter:
         """
         raise NotImplementedError()
 
-    def request_normals(self, parameters, index=None):
-        """Requests normals from Model with given parameters.
-
-        Parameter `index` is a label for the request.
-        Will be provided with callback for Fitter to identify
-        request, which provoked this response.
-        """
-        warn('New shadows model', DeprecationWarning)
-        self.__model.request_normals(
-            parameters, lambda normals: self.receive_normals(normals, index))
-
     def request_face(self, face, label=None):
         """Requests rendered face with given parameters.
 
