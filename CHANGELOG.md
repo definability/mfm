@@ -4,6 +4,18 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.3.3] - 2016-08-17
+### Deprecated
+- `Face`
+  - `set_triangles` useless because `View` has triangles.
+- `View`
+  - `normals` useless with shaders;
+  - `vertices` useless with shaders;
+  - `colors` useless with shaders.
+
+### Changed
+- Removed initialization of `C` module from `MFM`.
+
 ## [0.3.2] - 2016-08-17
 ### Changed
 - Refactored the project.
@@ -356,7 +368,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.3.2...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.3.3...HEAD
+[0.3.3]: https://github.com/char-lie/mfm/compare/v0.3.2...v0.3.3
 [0.3.2]: https://github.com/char-lie/mfm/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/char-lie/mfm/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/char-lie/mfm/compare/v0.2.6...v0.3.0
