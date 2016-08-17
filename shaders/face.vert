@@ -12,7 +12,7 @@ void main(void) {
     int c_pos = gl_VertexID;
     ivec2 texPos = ivec2(c_pos % 8192, c_pos / 8192);
     vec4 tmp = vec4(0.0);
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 199; i++) {
         tmp += texelFetch(principal_components, texPos, 0) * coefficients[i];
         c_pos += 53490;
         texPos = ivec2(c_pos % 8192, c_pos / 8192);
