@@ -49,12 +49,9 @@ class ModelFitter:
         """
         raise NotImplementedError()
 
-    def get_image_deviation(self, image, normals=None):
+    def get_image_deviation(self, image):
         """Cost function for fitting result."""
-        if normals is None:
-            indices = nonzero(image[:, -1])
-        else:
-            indices = nonzero(normals[:, 3])
+        indices = nonzero(normals[:, 3])
         if len(image.shape) > 1:
             image = image[:, 0]
         diff = image - self.__image
