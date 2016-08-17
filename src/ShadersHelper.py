@@ -11,7 +11,7 @@ from OpenGL.GL import glUniform4f
 from OpenGL.GL import glGenTextures, glPixelStorei, glTexParameterf
 from OpenGL.GL import glBindTexture, glEnable, GL_UNPACK_ALIGNMENT
 from OpenGL.GL import glUniform1i, GL_TEXTURE_1D, GL_TEXTURE_2D, GL_TEXTURE_3D
-from OpenGL.GL import glTexImage1D, glTexImage2D, glTexImage3D, glDisable
+from OpenGL.GL import glTexImage1D, glTexImage2D, glTexImage3D
 from OpenGL.GL import GL_RED, GL_RG, GL_RGB, GL_RGBA
 from OpenGL.GL import GL_R32F, GL_RG32F, GL_RGB32F, GL_RGBA32F
 from OpenGL.GL import GL_TEXTURE_MAG_FILTER, GL_TEXTURE_MIN_FILTER, GL_NEAREST
@@ -144,7 +144,7 @@ class ShadersHelper:
         # HACK: Python <3.5 doesn't allow to use *size
         # within enumerable arguments
         params = ([texture_type, 0, internal_format]
-                 + list(size) + [0, texture_format, GL_FLOAT, data.flatten()])
+                  + list(size) + [0, texture_format, GL_FLOAT, data.flatten()])
         texture_store(*params)
 
         glEnable(texture_type)

@@ -1,6 +1,6 @@
-from PIL import Image
-from numpy import nonzero, mean, zeros, argsort, concatenate
-from numpy.random import randn
+# from PIL import Image
+from numpy import mean, argsort, concatenate  # , zeros
+# from numpy.random import randn
 from numpy.linalg import norm
 
 from .ModelFitter import ModelFitter
@@ -56,7 +56,6 @@ class NelderMeadFitter(ModelFitter):
         # self.__end = randn(self._dimensions)
         self.__end = initial_parameters + self.__offset
         self.request_face(Face.from_array(self.__end), self._dimensions)
-
 
     def receive_image(self, image, index=None):
         error = self.get_image_deviation(image)

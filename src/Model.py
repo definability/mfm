@@ -1,10 +1,8 @@
 from enum import Enum
-from warnings import warn
 
 from OpenGL.GLUT import glutMainLoop
 from PIL import Image
-from numpy import save, array, column_stack, concatenate, apply_along_axis
-import numpy
+from numpy import save, array
 
 from src import MFM
 
