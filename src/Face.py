@@ -22,6 +22,9 @@ class Face:
     def __init__(self, ambient_light=0, directed_light=None,
                  coefficients=None):
         """Create new Face."""
+        self.__directed_light = None
+        self.__ambient_light = None
+
         self.ambient_light = ambient_light
 
         if directed_light is None:
