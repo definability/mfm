@@ -70,20 +70,6 @@ class View:
         """Get size of the viewport."""
         return self.__size
 
-    def update(self, vertices=None, colors=None, rotation=None, position=None):
-        """Change model parameters.
-
-        Allows to replace vertices, colors, rotation and position
-        of displayed model.
-
-        When you replace the vertices, it means that you change shape.
-        """
-        warn('Use properties instead', DeprecationWarning)
-        self.__vertices = vertices if vertices is not None else self.__vertices
-        self.__colors = colors if colors is not None else self.__colors
-        self.__rotation = rotation if rotation is not None else self.__rotation
-        self.__position = position if position is not None else self.__position
-
     @property
     def light(self):
         return self.__light
