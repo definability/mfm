@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- Principal components amount in vertex shader for face.
 
 ## [0.4.0] - 2016-08-17
 ### Removed
