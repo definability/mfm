@@ -1,3 +1,4 @@
+from warnings import warn
 
 from numpy import array, zeros, concatenate
 
@@ -71,6 +72,7 @@ class Face:
 
         Sets both NumPy and C arrays of triangles.
         """
+        warn('View already has triangles', DeprecationWarning)
         if triangles is not None:
             if len(triangles.shape) != 2:
                 raise ValueError(ERROR_TEXT['TRIANGLES_SHAPE']

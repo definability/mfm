@@ -94,18 +94,22 @@ class View:
 
     @property
     def normals(self):
+        warn('Shaders do all the work', DeprecationWarning)
         return self.__normals
 
     @normals.setter
     def normals(self, normals):
+        warn('Shaders do all the work', DeprecationWarning)
         self.__normals = normals
 
     @property
     def vertices(self):
+        warn('Shaders do all the work', DeprecationWarning)
         return self.__vertices
 
     @vertices.setter
     def vertices(self, vertices):
+        warn('Shaders do all the work', DeprecationWarning)
         self.__vertices = vertices
 
     @property
@@ -118,10 +122,12 @@ class View:
 
     @property
     def colors(self):
+        warn('Shaders do all the work', DeprecationWarning)
         return self.__colors
 
     @colors.setter
     def colors(self, colors):
+        warn('Shaders do all the work', DeprecationWarning)
         self.__colors = colors
 
     @property
