@@ -2,7 +2,7 @@ from os import remove
 
 from unittest import TestCase
 from scipy.io import savemat
-from numpy import array, allclose, column_stack, zeros, ones
+from numpy import array, zeros, ones
 
 from src import MFM, Face
 
