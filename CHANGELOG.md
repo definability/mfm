@@ -8,11 +8,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.4.3] - 2016-08-22
 ### Fixed
-- Removed call of non-existent texture toggle from Model Input.
+- Removed call of non-existent texture toggle from `ModelInput`.
 
 ## [0.4.2] - 2016-08-22
 ### Fixed
-- `View` should accept `NumPy` array of triangles to display Face properly.
+- `View` should accept `NumPy` array of triangles to display `Face` properly.
 
 ## [0.4.1] - 2016-08-17
 ### Fixed
