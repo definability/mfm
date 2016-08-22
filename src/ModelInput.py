@@ -55,8 +55,6 @@ class ModelInput:
             axis, value = ModelInput.__light_keys[key]
             directed_light[axis] = value
             self.__model.change_light(direction=directed_light)
-        elif key == b'n' and not release:
-            self.__model.toggle_texture()
         elif key == b'r' and not release:
             self.__model.face = self.__model.generate_face()
             self.__model.redraw()
