@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.4.2] - 2016-08-22
 ### Fixed
 - `View` should accept `NumPy` array of triangles to display Face properly.
 
@@ -394,7 +396,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.4.1...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.4.2...HEAD
+[0.4.2]: https://github.com/char-lie/mfm/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/char-lie/mfm/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/char-lie/mfm/compare/v0.3.3...v0.4.0
 [0.3.3]: https://github.com/char-lie/mfm/compare/v0.3.2...v0.3.3
