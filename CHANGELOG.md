@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- `ModelFitter` image deviation calculator should work without normals.
 
 ## [0.4.3] - 2016-08-22
 ### Fixed
