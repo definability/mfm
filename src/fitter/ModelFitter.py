@@ -50,7 +50,7 @@ class ModelFitter:
 
     def get_image_deviation(self, image):
         """Cost function for fitting result."""
-        indices = nonzero(normals[:, 3])
+        indices = nonzero(image[:, -1])
         if len(image.shape) > 1:
             image = image[:, 0]
         diff = image - self.__image
