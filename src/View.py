@@ -29,7 +29,6 @@ class View:
     """Viewport for Faces."""
 
     __triangles = None
-    __triangles_size = None
     __principal_components = None
     __deviations = None
     __mean_face = None
@@ -107,16 +106,13 @@ class View:
         glutLeaveMainLoop()
 
     @staticmethod
-    def set_triangles(triangles, triangles_size):
+    def set_triangles(triangles):
         """Set triangles of the model.
 
-        Accepts C array of ints, which contains triangles
-        as indices of vertices.
         Allows to not allocate additional memory for each point,
         which is used in multiple triangles.
         """
         View.__triangles = triangles
-        View.__triangles_size = triangles_size
 
     @staticmethod
     def set_principal_components(principal_components):
@@ -152,7 +148,7 @@ class View:
         if not self.__texture_bound:
             self.__bind_texture()
 
-        glDrawElements(GL_TRIANGLES, View.__triangles_size,
+        glDrawElements(GL_TRIANGLES, View.__triangles.size,
                        GL_UNSIGNED_SHORT, View.__triangles)
 
         self.__sh.clear()

@@ -22,19 +22,18 @@ def init(path=None):
     global __model, __dimensions, __ev_normalized
 
     __model = loadmat(path if path is not None else DEFAULT_MODEL_PATH)
+
     __ev_normalized = __model['shapeEV'].flatten() / __model['shapeEV'].min()
 
     principal_components = __model['shapePC'].astype('f')
+    triangles = (__model['tl'] - 1).flatten()
 
     __dimensions = principal_components.shape[1]
 
     mean_shape = __model['shapeMU'].astype('f')
     pc_deviations = __model['shapeEV'].astype('f')
 
-    triangles = (__model['tl'] - 1).flatten()
-    triangles_c = triangles.ctypes.get_as_parameter()
-
-    View.set_triangles(triangles_c, triangles.size)
+    View.set_triangles(triangles)
     View.set_principal_components(principal_components)
     View.set_deviations(pc_deviations)
     View.set_mean_face(mean_shape)
