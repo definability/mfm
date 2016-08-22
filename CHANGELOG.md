@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- `View` should accept `NumPy` array of triangles to display Face properly.
 
 ## [0.4.1] - 2016-08-17
 ### Fixed
