@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- Removed call of non-existent texture toggle from Model Input.
 
 ## [0.4.2] - 2016-08-22
 ### Fixed
