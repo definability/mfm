@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.4.5] - 2016-08-25
 ### Added
 - `bind_uniform_ints` method in `ShadersHelper` to bind array if integers.
 - Ability to choose coefficients to be calculated in vertices shader.
@@ -407,7 +409,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.4.4...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.4.5...HEAD
+[0.4.5]: https://github.com/char-lie/mfm/compare/v0.4.4...v0.4.5
 [0.4.4]: https://github.com/char-lie/mfm/compare/v0.4.3...v0.4.4
 [0.4.3]: https://github.com/char-lie/mfm/compare/v0.4.2...v0.4.3
 [0.4.2]: https://github.com/char-lie/mfm/compare/v0.4.1...v0.4.2
