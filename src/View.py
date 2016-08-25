@@ -141,6 +141,11 @@ class View:
         self.__sh.bind_uniform_matrix(rotation_matrix, 'rotation_matrix')
         self.__sh.bind_uniform_vector(self.__face.light.astype('f'),
                                       'light_vector')
+        coefficients_amount = len(self.__face.coefficients)
+        indices = -ones(199, dtype='i')
+        indices[:coefficients_amount] = array(range(coefficients_amount))
+        self.__sh.bind_uniform_ints(indices, 'indices')
+
         coefficients = zeros(199, dtype='f')
         coefficients[:len(self.__face.coefficients)] = self.__face.coefficients
         self.__sh.bind_uniform_floats(coefficients, 'coefficients')
