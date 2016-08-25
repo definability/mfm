@@ -20,7 +20,7 @@ from OpenGL.GLUT import glutInitWindowSize, glutPostRedisplay
 from OpenGL.GLUT import glutCreateWindow, glutInit, glutInitWindowPosition
 from OpenGL.GLUT import glutInitDisplayMode, glutLeaveMainLoop, glutDisplayFunc
 
-from numpy import zeros, array, concatenate
+from numpy import zeros, ones, array, concatenate
 
 from .ShadersHelper import ShadersHelper
 
@@ -147,7 +147,7 @@ class View:
         self.__sh.bind_uniform_ints(indices, 'indices')
 
         coefficients = zeros(199, dtype='f')
-        coefficients[:len(self.__face.coefficients)] = self.__face.coefficients
+        coefficients[:coefficients_amount] = self.__face.coefficients
         self.__sh.bind_uniform_floats(coefficients, 'coefficients')
 
         if not self.__texture_bound:
@@ -164,8 +164,7 @@ class View:
 
     def __bind_texture(self):
         size = View.__principal_components.size // 3
-        data = (View.__principal_components
-                * View.__deviations.flatten()).transpose()
+        data = View.__principal_components.transpose() * View.__deviations
 
         columns = 2**13
         rows = ceil(size / columns)
