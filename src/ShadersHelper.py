@@ -7,6 +7,7 @@ from OpenGL.GL import glEnableVertexAttribArray, glGetAttribLocation
 from OpenGL.GL import glCreateShader, glShaderSource, glCompileShader
 from OpenGL.GL import glAttachShader, GL_ARRAY_BUFFER, glUseProgram
 from OpenGL.GL import glGetUniformLocation, glUniformMatrix4fv, glUniform1fv
+from OpenGL.GL import glUniform1iv
 from OpenGL.GL import glUniform4f
 from OpenGL.GL import glGenTextures, glPixelStorei, glTexParameterf
 from OpenGL.GL import glBindTexture, glEnable, GL_UNPACK_ALIGNMENT
@@ -96,6 +97,11 @@ class ShadersHelper:
         location = glGetUniformLocation(self.__program, name)
         assert location >= 0
         glUniform1fv(location, data.size, data.flatten())
+
+    def bind_uniform_ints(self, data, name):
+        location = glGetUniformLocation(self.__program, name)
+        assert location >= 0
+        glUniform1iv(location, data.size, data.flatten())
 
     def bind_buffer(self):
         """Prepare attributes and bind them."""
