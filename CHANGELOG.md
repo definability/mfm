@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- `bind_uniform_ints` method in `ShadersHelper` to bind array if integers.
+- Ability to choose coefficients to be calculated in vertices shader.
 
 ## [0.4.4] - 2016-08-23
 ### Fixed
