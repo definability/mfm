@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- `levels` parameter in `BruteForceFitter` constructor.
+
+### Removed
+- `max_level` parameter from constructor of `BruteForceFitter`
+    in favor of `levels`.
 
 ## [0.4.7] - 2016-08-28
 ### Added
