@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Images formats libraries installation for Pillow.
+
+### Fixed
+- Model scaling when it's not rotating.
 
 ## [0.4.5] - 2016-08-25
 ### Added
