@@ -9,9 +9,10 @@ class BGDFitter(ModelFitter):
     """Batch gradient descent."""
     def __init__(self, image, dimensions=199, model=None,
                  dx=.1, step=100., max_loops=10, callback=None,
-                 initial_face=None):
+                 initial_face=None, light_dx=.1):
 
         self.__dx = dx
+        self.__light_dx = light_dx
         self.__step = step
         self.__face = None
         self.__current_step = -5
@@ -110,9 +111,9 @@ class BGDFitter(ModelFitter):
         if param >= 0:
             coefficients[param] += dx
         elif param == -4:
-            ambient_light += dx / 2
+            ambient_light += self.__light_dx
         else:
-            directed_light[param+3] += dx / 2
+            directed_light[param+3] += self.__light_dx
         # print(coefficients)
 
         return Face(coefficients=coefficients,
