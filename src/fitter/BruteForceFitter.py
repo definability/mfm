@@ -6,7 +6,8 @@ from src import Face
 
 class BruteForceFitter(ModelFitter):
     def __init__(self, image, dimensions=199, model=None, steps=None,
-                 max_level=3, offsets=None, scales=None):
+                 max_level=3, offsets=None, scales=None,
+                 initial_face=None):
         """
         All parameters are normalized to [0; 1] by default and divided by
         `steps` chunks.
@@ -52,12 +53,17 @@ class BruteForceFitter(ModelFitter):
         self.__directions = []
         self.__face = None
 
-        super(BruteForceFitter, self).__init__(image, dimensions, model)
+        super(BruteForceFitter, self).__init__(image, dimensions, model,
+                                               initial_face)
 
     def start(self):
         self.__loop = 0
+        self.__face = self._initial_face
+
         self.__parameters = zeros(self._dimensions, dtype='f')
-        self.__face = Face.from_array(self.__parameters)
+        self.__parameters[-4] = self.__face.ambient_light
+        self.__parameters[-3:] = self.__face.directed_light
+        self.__parameters[:-4] = self.__face.coefficients
         self.request_face(self.__face, 'init')
 
         self.__errors = {}
