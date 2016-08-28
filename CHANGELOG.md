@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.4.6] - 2016-08-28
 ### Added
 - Images formats libraries installation for Pillow.
 
@@ -414,7 +416,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.4.5...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.4.6...HEAD
+[0.4.6]: https://github.com/char-lie/mfm/compare/v0.4.5...v0.4.6
 [0.4.5]: https://github.com/char-lie/mfm/compare/v0.4.4...v0.4.5
 [0.4.4]: https://github.com/char-lie/mfm/compare/v0.4.3...v0.4.4
 [0.4.3]: https://github.com/char-lie/mfm/compare/v0.4.2...v0.4.3
