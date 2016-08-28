@@ -6,7 +6,7 @@ from src import Face
 
 class BruteForceFitter(ModelFitter):
     def __init__(self, image, dimensions=199, model=None, steps=None,
-                 max_level=3, offsets=None, scales=None,
+                 levels=None, offsets=None, scales=None,
                  initial_face=None):
         """
         All parameters are normalized to [0; 1] by default and divided by
@@ -48,7 +48,7 @@ class BruteForceFitter(ModelFitter):
         self.__values = None
 
         self.__loop = 0
-        self.__max_level = max_level
+        self.__levels = levels
         self.__indices = []
         self.__directions = []
         self.__face = None
@@ -68,19 +68,19 @@ class BruteForceFitter(ModelFitter):
 
         self.__errors = {}
         self.__generate_errors()
-        self.__indices = [0] * self.__max_level
-        self.__directions = [1] * self.__max_level
+        self.__indices = [0] * len(self.__levels)
+        self.__directions = [1] * len(self.__levels)
 
-        self.__parameters = ([self.__get_value(i, self.__indices[i])
-                              for i in range(self.__max_level)]
-                             + [0] * (self._dimensions - self.__max_level))
+        self.__parameters[self.__levels] = [
+            self.__get_value(i, self.__indices[i])
+            for i in range(len(self.__levels))]
 
         self.__get_parameter()
 
     def __generate_errors(self, current_level=0, tail=None):
         if tail is None:
             tail = []
-        if current_level == self.__max_level - 1:
+        if current_level == len(self.__levels) - 1:
             for value in range(self.__steps[current_level]):
                 self.__errors[tuple(tail + [value])] = None
             return
@@ -97,7 +97,7 @@ class BruteForceFitter(ModelFitter):
 
     def __get_parameter(self, index=None, change_on=0):
         value = self.__get_value(change_on, self.__indices[change_on])
-        self.__parameters[change_on] = value
+        self.__parameters[self.__levels[change_on]] = value
         self.__face = Face.from_array(self.__parameters)
         self.request_face(self.__face, index)
 
@@ -106,7 +106,7 @@ class BruteForceFitter(ModelFitter):
         if self.__indices[level] >= 0 \
                 and self.__indices[level] <= self.__steps[level]:
             return level
-        elif level == self.__max_level - 1:
+        elif level == self.__levels[-1]:
             return -1
         self.__directions[level] = - self.__directions[level]
         self.__indices[level] += self.__directions[level]
