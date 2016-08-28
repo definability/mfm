@@ -43,6 +43,7 @@ class View:
 
         self.__light = None
         self.__rotation = (0., 0., 0.)
+        self.__need_rotation = True
         self.__face = None
 
         self.__init_display()
@@ -78,6 +79,7 @@ class View:
 
     @rotation.setter
     def rotation(self, rotation):
+        self.__need_rotation = True
         self.__rotation = rotation
 
     @property
@@ -128,7 +130,9 @@ class View:
 
     def __display(self):
         """Render the model by existent vertices, colors and triangles."""
-        glRotatef(1., *self.__rotation)
+        if self.__need_rotation:
+            glRotatef(1., *self.__rotation)
+            self.__need_rotation = False
         rotation_matrix = array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
 
         self.__sh.add_attribute(0, self.__mean_face, 'mean_position')
