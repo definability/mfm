@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- `light_dx` parameter to `BGDFitter` constructor
+    to handle derivation of light components.
+- `initial_face` parameter to `BruteForceFitter` constructor.
 
 ## [0.4.6] - 2016-08-28
 ### Added
