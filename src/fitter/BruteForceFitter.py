@@ -1,7 +1,7 @@
 from numpy import ones, zeros
 
-from .ModelFitter import ModelFitter
 from src import Face
+from .ModelFitter import ModelFitter
 
 
 class BruteForceFitter(ModelFitter):
