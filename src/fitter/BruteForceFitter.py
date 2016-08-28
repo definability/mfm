@@ -23,6 +23,9 @@ class BruteForceFitter(ModelFitter):
 
         You can chose `scale` and `offset` parameters to `0` to bypass some
         parameter and leave it on zero value.
+
+        Sequence `levels` contains indices of parameters
+        which should be fitted.
         """
         dimensions += 4
 
