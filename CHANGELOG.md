@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.4.10] - 2016-09-04
 ### Fixed
 - Input image flip in example.
 
@@ -436,7 +438,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.4.9...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.4.10...HEAD
+[0.4.10]: https://github.com/char-lie/mfm/compare/v0.4.9...v0.4.10
 [0.4.9]: https://github.com/char-lie/mfm/compare/v0.4.8...v0.4.9
 [0.4.8]: https://github.com/char-lie/mfm/compare/v0.4.7...v0.4.8
 [0.4.7]: https://github.com/char-lie/mfm/compare/v0.4.6...v0.4.7
