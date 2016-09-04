@@ -8,6 +8,14 @@ from src import MFM, Model, ModelInput, View
 from src.fitter import FittersChain
 from data import get_datafile_path
 
+parser = argparse.ArgumentParser(
+    description='Morphable Face Model fitting application')
+parser.add_argument(
+    '--config', metavar='config', type=str, required=True,
+    help='specify configuration file for fitting procedure')
+
+args = parser.parse_args()
+
 MFM.init()
 view = View((500, 500))
 model = Model(view)
