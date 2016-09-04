@@ -11,6 +11,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.4.9] - 2016-09-04
 ### Added
 - `FittersChain` class for handy creation of fitters sequences.
+- `callback` parameter to `ModelFitter` constructor.
+- `callback` parameter to `BruteForceFitter` constructor.
+- `finish` method to `ModelFitter`.
+- `finish` method to `BruteForceFitter`.
+
+### Changed
+- `ModelFitter` constructor corrects `initial_face`
+    according to provided amount of dimensions.
 
 ## [0.4.8] - 2016-08-28
 ### Added
