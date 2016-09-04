@@ -28,8 +28,8 @@ def make_chain(initial_face, fitters, parameters, final_callback):
         callback = lambda face: make_chain(
             face, tail_fitters, tail_parameters, final_callback).start()
 
-    fitter = fitters.pop(0)
-    parameters = parameters.pop(0)
+    fitter = fitters[0]
+    parameters = parameters[0]
     parameters['callback'] = callback
     parameters['initial_face'] = initial_face
 
