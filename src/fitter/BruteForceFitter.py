@@ -7,7 +7,7 @@ from .ModelFitter import ModelFitter
 class BruteForceFitter(ModelFitter):
     def __init__(self, image, dimensions=199, model=None, steps=None,
                  levels=None, offsets=None, scales=None,
-                 initial_face=None):
+                 initial_face=None, callback=None):
         """
         All parameters are normalized to [0; 1] by default and divided by
         `steps` chunks.
@@ -57,7 +57,7 @@ class BruteForceFitter(ModelFitter):
         self.__face = None
 
         super(BruteForceFitter, self).__init__(image, dimensions-4, model,
-                                               initial_face)
+                                               initial_face, callback)
         self._dimensions += 4
 
     def start(self):
