@@ -24,6 +24,9 @@ class FittersChain:
             self.__parameters.append(
                 {key: value for key, value in node.items() if key != 'fitter'})
             self.__fitters.append(parse_fitter(node['fitter']))
+        for key in self.__parameters:
+            self.__parameters[key]['image'] = image
+            self.__parameters[key]['model'] = model
 
     def start(self, callback):
         """Start fitting procedure."""
