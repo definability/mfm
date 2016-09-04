@@ -20,11 +20,6 @@ fitting_settings = None
 with open(args.config) as config:
     fitting_settings = json.load(config)
 
-MFM.init()
-view = View((500, 500))
-model = Model(view)
-model_input = ModelInput(model)
-
 fitters = fitting_settings['fitters']
 
 model_filename = get_datafile_path('test.png')
@@ -32,6 +27,11 @@ image = Image.open(model_filename).convert('L')
 original_data = array((image.getdata())).astype('f') / 255
 image_data = original_data.reshape(image.size)[::-1, :].flatten()
 image.close()
+
+MFM.init()
+view = View((500, 500))
+model = Model(view)
+model_input = ModelInput(model)
 
 chain = FittersChain(fitters, image_data, model)
 
