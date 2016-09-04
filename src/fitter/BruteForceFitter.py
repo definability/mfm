@@ -120,7 +120,7 @@ class BruteForceFitter(ModelFitter):
         if index == 'init':
             return
         elif index == 'finish':
-            self.finish()
+            self.finish(self.__face)
             return
 
         self.__errors[tuple(self.__indices)] = self.get_image_deviation(image)
@@ -138,5 +138,5 @@ class BruteForceFitter(ModelFitter):
         sorted_parameters = sorted(self.__errors.items(), key=lambda x: -x[1])
         return [(tuple(self.__get_values(p)), e) for p, e in sorted_parameters]
 
-    def finish(self):
-        return
+    def finish(self, face):
+        return super(BruteForceFitter, self).finish(face)
