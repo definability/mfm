@@ -1,0 +1,26 @@
+{
+    "input": {
+        "input_image": "test_001.png"
+    },
+    "fitters": [{
+        "fitter": "BruteForce",
+        "dimensions": 0,
+        "steps": [1, 10, 10, 5],
+        "levels": [0, 1, 2, 3],
+        "offsets": [0, -0.5, -0.5, 0],
+        "scales": [0, -2, -2, 1]
+    }, {
+        "fitter": "BruteForce",
+        "dimensions": 4,
+        "steps": [8, 8, 8, 8],
+        "levels": [0, 1, 2, 3],
+        "offsets": [-0.5, -0.5, -0.5, -0.5],
+        "scales": [8, 8, 8, 8]
+    }, {
+        "fitter": "BGD",
+        "dimensions": 50,
+        "max_loops": 100,
+        "dx": 1.0,
+        "step": 50.0
+    }]
+}
