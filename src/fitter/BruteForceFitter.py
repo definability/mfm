@@ -56,7 +56,7 @@ class BruteForceFitter(ModelFitter):
         self.__directions = []
         self.__face = None
 
-        super(BruteForceFitter, self).__init__(image, dimensions, model,
+        super(BruteForceFitter, self).__init__(image, dimensions-4, model,
                                                initial_face)
 
     def start(self):
