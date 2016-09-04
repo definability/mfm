@@ -1,3 +1,6 @@
+import argparse
+import json
+
 from PIL import Image
 from numpy import array
 
