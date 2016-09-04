@@ -38,20 +38,30 @@ def make_chain(initial_face, fitters, parameters, final_callback):
 
 class FittersChain:
     """Class for Face fitters chaining."""
-    def __init__(self, chain, image, model, dimensions=199):
+    def __init__(self, chain, image, model,
+                 initial_face=None, callback=None):
         """Build chain of Fitters."""
         self.__parameters = []
         self.__fitters = []
-        for node in chain:
-            self.__parameters.append(
-                {key: value for key, value in node.items() if key != 'fitter'})
-            self.__fitters.append(parse_fitter(node['fitter']))
-        for key in self.__parameters:
-            self.__parameters[key]['image'] = image
-            self.__parameters[key]['model'] = model
+        self.__initial_face = initial_face
+        self.__callback = callback
 
-    def start(self, initial_face, callback):
+        common_parameters = {
+            'image': image,
+            'model': model
+        }
+        for node in chain:
+            parameters = {key: value
+                          for key, value in node.items()
+                          if key != 'fitter'}
+            parameters.update(common_parameters)
+            self.__parameters.append(parameters)
+            self.__fitters.append(parse_fitter(node['fitter']))
+
+        self.__chain = make_chain(
+            self.__initial_face, self.__fitters, self.__parameters,
+            self.__callback)
+
+    def start(self):
         """Start fitting procedure."""
-        chain = make_chain(initial_face, self.__fitters, self.__parameters,
-                           callback)
-        chain.start()
+        self.__chain.start()
