@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- `FittersChain` class for handy creation of fitters sequences.
 
 ## [0.4.8] - 2016-08-28
 ### Added
