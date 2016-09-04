@@ -14,7 +14,7 @@ def parse_fitter(fitter):
     raise ValueError('{} is not a valid fitter'.format(fitter))
 
 
-def make_chain(fitters, parameters, final_callback, initial_face):
+def make_chain(initial_face, fitters, parameters, final_callback):
     """Make chain of fitters.
 
     Returns first fitter of the chain.
