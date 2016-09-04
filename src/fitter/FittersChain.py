@@ -1,7 +1,6 @@
-from .ModelFitter import ModelFitter
-
 import src.fitter
 
+from .ModelFitter import ModelFitter
 
 def parse_fitter(fitter):
     """Get Fitter class from input parameter."""
