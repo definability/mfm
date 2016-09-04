@@ -16,6 +16,10 @@ parser.add_argument(
 
 args = parser.parse_args()
 
+fitting_settings = None
+with open(args.config) as config:
+    fitting_settings = json.load(config)
+
 MFM.init()
 view = View((500, 500))
 model = Model(view)
