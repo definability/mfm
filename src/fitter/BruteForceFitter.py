@@ -58,6 +58,7 @@ class BruteForceFitter(ModelFitter):
 
         super(BruteForceFitter, self).__init__(image, dimensions-4, model,
                                                initial_face)
+        self._dimensions += 4
 
     def start(self):
         self.__loop = 0
