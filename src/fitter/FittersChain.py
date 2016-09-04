@@ -52,6 +52,8 @@ class FittersChain:
             self.__parameters[key]['image'] = image
             self.__parameters[key]['model'] = model
 
-    def start(self, callback):
+    def start(self, initial_face, callback):
         """Start fitting procedure."""
-        raise NotImplementedError()
+        chain = make_chain(initial_face, self.__fitters, self.__parameters,
+                           callback)
+        chain.start()
