@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Command line arguments processing.
+- [JSON](http://www.json.org/) configuration files processing
+    to handle fitting procedure.
 
 ## [0.4.10] - 2016-09-04
 ### Fixed
