@@ -14,6 +14,30 @@ def parse_fitter(fitter):
     raise ValueError('{} is not a valid fitter'.format(fitter))
 
 
+def make_chain(fitters, parameters, final_callback, initial_face):
+    """Make chain of fitters.
+
+    Returns first fitter of the chain.
+    """
+    if len(fitters) == 0:
+        return
+
+    fitter = self.__fitters.pop(0)
+    parameters = self.__parameters.pop(0)
+
+    callback = final_callback
+    parameters['callback'] = final_callback
+    if len(self.__fitters) > 1:
+        tail_fitters = fitter[:]
+        tail_parameters = parameters[:]
+        parameters['callback'] = lambda face: make_chain(
+            tail_fitters, tail_parameters, final_callback, face)
+
+    parameters['initial_face'] = initial_face
+
+    return fitter(**parameters)
+
+
 class FittersChain:
     """Class for Face fitters chaining."""
     def __init__(self, chain, image, model, dimensions=199):
