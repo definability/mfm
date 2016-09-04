@@ -26,7 +26,7 @@ def make_chain(initial_face, fitters, parameters, final_callback):
         tail_fitters = fitters[1:]
         tail_parameters = parameters[1:]
         callback = lambda face: make_chain(
-            tail_fitters, tail_parameters, final_callback, face)
+            face, tail_fitters, tail_parameters, final_callback).start()
 
     fitter = fitters.pop(0)
     parameters = parameters.pop(0)
