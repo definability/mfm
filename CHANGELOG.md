@@ -8,6 +8,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - [JSON](http://www.json.org/) configuration files processing
     to handle fitting procedure.
 
+### Changed
+- `ModelInput` saves files to `output` directory to avoid garbage.
+
 ## [0.4.10] - 2016-09-04
 ### Fixed
 - Input image flip in example.
