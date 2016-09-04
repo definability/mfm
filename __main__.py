@@ -4,7 +4,7 @@ import json
 from PIL import Image
 from numpy import array
 
-from src import MFM, Model, ModelInput, View
+from src import MFM, Model, ModelInput, View, Face
 from src.fitter import FittersChain
 from data import get_datafile_path
 
@@ -22,6 +22,15 @@ with open(args.config) as config:
 
 fitters = fitting_settings['fitters']
 
+face_parameters = fitting_settings['input'].get('initial_face', {})
+
+coefficients = face_parameters.get('coefficients', [])
+directed_light = face_parameters.get('directed_light', (0., 0., 0.))
+ambient_light = face_parameters.get('ambient_light', 0.)
+initial_face = Face(coefficients=coefficients,
+                    directed_light=directed_light,
+                    ambient_light=ambient_light)
+
 model_filename = get_datafile_path(fitting_settings['input']['input_image'])
 image = Image.open(model_filename).convert('L')
 original_data = array((image.getdata())).astype('f') / 255
@@ -33,6 +42,6 @@ view = View((500, 500))
 model = Model(view)
 model_input = ModelInput(model)
 
-chain = FittersChain(fitters, image_data, model)
+chain = FittersChain(fitters, image_data, model, initial_face=initial_face)
 
 model.start(chain)
