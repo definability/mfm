@@ -18,6 +18,8 @@ def make_chain(initial_face, fitters, parameters, final_callback):
 
     Returns first fitter of the chain.
     """
+    assert len(fitters) == len(parameters)
+
     if len(fitters) == 0:
         return
 
