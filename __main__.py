@@ -12,7 +12,8 @@ model_input = ModelInput(model)
 
 model_filename = get_datafile_path('test.png')
 image = Image.open(model_filename).convert('L')
-image_data = array((image.getdata()))[::-1].astype('f') / 255
+original_data = array((image.getdata())).astype('f') / 255
+image_data = original_data.reshape(image.size)[::-1, :].flatten()
 image.close()
 
 fitters = [{
