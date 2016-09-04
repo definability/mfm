@@ -7,7 +7,7 @@ from .ModelFitter import ModelFitter
 class BruteForceFitter(ModelFitter):
     def __init__(self, image, dimensions=199, model=None, steps=None,
                  levels=None, offsets=None, scales=None,
-                 initial_face=None):
+                 initial_face=None, callback=None):
         """
         All parameters are normalized to [0; 1] by default and divided by
         `steps` chunks.
@@ -56,8 +56,9 @@ class BruteForceFitter(ModelFitter):
         self.__directions = []
         self.__face = None
 
-        super(BruteForceFitter, self).__init__(image, dimensions, model,
-                                               initial_face)
+        super(BruteForceFitter, self).__init__(image, dimensions-4, model,
+                                               initial_face, callback)
+        self._dimensions += 4
 
     def start(self):
         self.__loop = 0
@@ -119,7 +120,7 @@ class BruteForceFitter(ModelFitter):
         if index == 'init':
             return
         elif index == 'finish':
-            self.finish()
+            self.finish(self.__face)
             return
 
         self.__errors[tuple(self.__indices)] = self.get_image_deviation(image)
@@ -137,5 +138,5 @@ class BruteForceFitter(ModelFitter):
         sorted_parameters = sorted(self.__errors.items(), key=lambda x: -x[1])
         return [(tuple(self.__get_values(p)), e) for p, e in sorted_parameters]
 
-    def finish(self):
-        return
+    def finish(self, face):
+        return super(BruteForceFitter, self).finish(face)
