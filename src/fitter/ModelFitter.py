@@ -26,6 +26,16 @@ class ModelFitter:
                 directed_light=(0, 0, 0),
                 ambient_light=0.5
             )
+        coefficients = self._initial_face.coefficients
+        if len(coefficients) != self._dimensions:
+            correct_coefficients = zeros(self._dimensions, dtype='f')
+            count = min(len(coefficients), self._dimensions)
+            correct_coefficients[:count] = coefficients[:count]
+            self._initial_face = Face(
+                coefficients=correct_coefficients,
+                directed_light=self._initial_face.directed_light,
+                ambient_light=self._initial_face.ambient_light
+            )
 
     def start(self):
         """Start fitting procedure.
