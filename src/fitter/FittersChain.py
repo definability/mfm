@@ -11,7 +11,7 @@ def parse_fitter(fitter):
         return src.fitter.__dict__[fitter]
     elif fitter + 'Fitter' in src.fitter.__all__:
         return src.fitter.__dict__[fitter + 'Fitter']
-    raise NotImplementedError()
+    raise ValueError('{} is not a valid fitter'.format(fitter))
 
 
 class FittersChain:
