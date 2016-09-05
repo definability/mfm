@@ -139,8 +139,8 @@ class Model:
         size = self.__view.get_size()
         image = Image.new('RGBA', size)
         data = (self.__view.get_image() * 255).astype('i')
-        pixels = [(data[i*4+0], data[i*4+1], data[i*4+2], data[i*4+3])
-                  for i in range(size[0]*size[1]-1, -1, -1)]
+        data = data.reshape(size[1], size[0], 4)[::-1, :, :].flatten()
+        pixels = [tuple(data[i*4:i*4+4]) for i in range(size[0]*size[1])]
         image.putdata(pixels)
         image.save(filename + '.png')
         image.close()
