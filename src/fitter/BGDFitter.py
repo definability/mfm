@@ -82,6 +82,7 @@ class BGDFitter(ModelFitter):
             shadows = image
 
             face = self.__face
+            dx = self.__dx if param >= 0 else self.__light_dx
 
             if 'right' in step:
                 face = self.__derivative_face(param, -self.__dx)
@@ -89,12 +90,14 @@ class BGDFitter(ModelFitter):
                 action = 'left_derivative'
                 self.__right_derivatives[param] = self.__derivative(
                     self.__derivatives[param],
-                    self.get_image_deviation(shadows))
+                    self.get_image_deviation(shadows),
+                    dx)
             elif 'left' in step:
                 action = 'start'
                 self.__left_derivatives[param] = self.__derivative(
                     self.get_image_deviation(shadows),
-                    self.__derivatives[param])
+                    self.__derivatives[param],
+                    dx)
                 self.__derivatives[param] = (
                     0.5 * (self.__left_derivatives[param]
                            + self.__right_derivatives[param]))
@@ -120,8 +123,8 @@ class BGDFitter(ModelFitter):
                     directed_light=directed_light,
                     ambient_light=ambient_light)
 
-    def __derivative(self, y0, y1):
-        return (y1 - y0) / self.__dx
+    def __derivative(self, y0, y1, dx):
+        return (y1 - y0) / dx
 
     def __finish(self, shadows):
         img = shadows
