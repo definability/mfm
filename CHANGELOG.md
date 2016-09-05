@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Fixed
 - Image flip on save.
+- Derivative for light component in `BGDFitter`.
 
 ## [0.4.11] - 2016-09-04
 ### Added
