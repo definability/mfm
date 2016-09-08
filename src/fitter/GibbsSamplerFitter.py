@@ -47,21 +47,20 @@ class GibbsSamplerFitter(ModelFitter):
             # self.request_normals(parameters, i)
             self.request_normals((self.__current_step, value), i)
 
-    def receive_normals(self, normals, index=None):
+    def receive_image(self, image, index=None):
         if index == 'init':
             return
         elif index == 'pre':
             self.__get_parameter(self.__current_step + 1)
             return
 
-        light = self.estimate_light(normals)
-        shadows = normals.dot(light)
+        shadows = image
 
         if index is None:
             self.finish(normals, shadows)
             return
 
-        self.__errors[index] = self.get_image_deviation(shadows, normals)
+        self.__errors[index] = self.get_image_deviation(shadows)
 
         if None in self.__errors:
             return
