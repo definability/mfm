@@ -63,7 +63,7 @@ class GibbsSamplerFitter(ModelFitter):
         shadows = image
 
         if index is None:
-            self.finish(normals, shadows)
+            self.finish(self.__face)
             return
 
         self.__errors[index] = self.get_image_deviation(shadows)
@@ -108,13 +108,3 @@ class GibbsSamplerFitter(ModelFitter):
             return
 
         self.request_face(self.__face, 'pre')
-
-    def finish(self, normals, shadows):
-        img = shadows[::-1]
-        alpha = zeros(len(normals[:, 3]))
-        alpha[nonzero(normals[:, 3])[0]] = 1.
-        # data = (column_stack((img, img, img, alpha)) * 255).astype('i')
-        image = Image.new('L', (500, 500))
-        image.putdata((img*255).astype('i'))
-        image.save('img.png')
-        print('Finished')
