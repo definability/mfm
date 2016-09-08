@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.5.0] - 2016-09-08
 ### Fixed
 - `GibbsSamplerFitter` to work with new `ModelFitter` interface.
 
@@ -462,7 +464,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.4.12...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/char-lie/mfm/compare/v0.4.12...v0.5.0
 [0.4.12]: https://github.com/char-lie/mfm/compare/v0.4.11...v0.4.12
 [0.4.11]: https://github.com/char-lie/mfm/compare/v0.4.10...v0.4.11
 [0.4.10]: https://github.com/char-lie/mfm/compare/v0.4.9...v0.4.10
