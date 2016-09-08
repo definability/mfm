@@ -8,7 +8,9 @@ from .ModelFitter import ModelFitter
 
 class GibbsSamplerFitter(ModelFitter):
     def __init__(self, image, dimensions=199, model=None, steps=None,
-                 max_loops=1, determined_loops=0):
+                 max_loops=1, determined_loops=0,
+                 initial_face=None, callback=None):
+        dimensions += 4
         self.__steps = ones(dimensions, dtype='i') if steps is None else steps
         self.__current_step = None
         self.__parameters = zeros(dimensions, dtype='f')
@@ -19,7 +21,9 @@ class GibbsSamplerFitter(ModelFitter):
         self.__max_loops = max_loops
         self.__determined_loops = determined_loops
 
-        super(GibbsSamplerFitter, self).__init__(image, dimensions, model)
+        super(GibbsSamplerFitter, self).__init__(image, dimensions - 4, model,
+                                                 initial_face, callback)
+        self._dimensions += 4
 
     def start(self):
         self.__loop = 0
