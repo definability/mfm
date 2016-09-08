@@ -28,7 +28,14 @@ class GibbsSamplerFitter(ModelFitter):
 
     def start(self):
         self.__loop = 0
-        self.request_normals(zeros(self._dimensions, dtype='f'), 'init')
+
+        self.__face = self._initial_face
+        self.__parameters = zeros(self._dimensions, dtype='f')
+        self.__parameters[-4] = self.__face.ambient_light
+        self.__parameters[-3:] = self.__face.directed_light
+        self.__parameters[:-4] = self.__face.coefficients
+
+        self.request_face(self.__face, 'init')
         self.__get_parameter(0)
 
     def __get_parameter(self, i):
@@ -42,10 +49,9 @@ class GibbsSamplerFitter(ModelFitter):
         self.__errors = [None] * self.__values.size
         for i, value in enumerate(self.__values):
             self.__values[i] = value
-            # parameters = self.__parameters.copy()
-            # parameters[self.__current_step] = value
-            # self.request_normals(parameters, i)
-            self.request_normals((self.__current_step, value), i)
+            parameters = self.__parameters.copy()
+            parameters[self.__current_step] = value
+            self.request_face(Face.from_array(parameters), i)
 
     def receive_image(self, image, index=None):
         if index == 'init':
@@ -86,23 +92,22 @@ class GibbsSamplerFitter(ModelFitter):
             best_index = argmin(self.__errors)
 
         self.__parameters[self.__current_step] = self.__values[best_index]
+        self.__face = Face.from_array(self.__parameters)
         print('{}.{}: Error of the best is {} ({})'.format(
             self.__loop, self.__current_step, self.__errors[best_index],
             min(self.__errors)))
 
         if self.__current_step + 1 == self._dimensions \
                 and self.__loop + 1 >= self.__max_loops:
-            self.request_normals(self.__parameters)
+            self.request_face(self.__face)
             return
         elif self.__current_step + 1 == self._dimensions:
             self.__current_step = 0
             self.__loop += 1
-            self.request_normals((self._dimensions - 1,
-                                  self.__values[best_index]), 'pre')
+            self.request_face(self.__face, 'pre')
             return
 
-        self.request_normals((self.__current_step, self.__values[best_index]),
-                             'pre')
+        self.request_face(self.__face, 'pre')
 
     def finish(self, normals, shadows):
         img = shadows[::-1]
