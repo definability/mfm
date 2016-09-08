@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- `GibbsSamplerFitter` to work with new `ModelFitter` interface.
 
 ## [0.4.12] - 2016-09-05
 ### Fixed
