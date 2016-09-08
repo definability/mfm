@@ -4,6 +4,7 @@ from numpy import ones, zeros, linspace, argmin, nonzero, exp, array
 from numpy.random import rand
 
 from .ModelFitter import ModelFitter
+from src import Face
 
 
 class GibbsSamplerFitter(ModelFitter):
