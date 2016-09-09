@@ -110,7 +110,7 @@ class BruteForceFitter(ModelFitter):
         if self.__indices[level] >= 0 \
                 and self.__indices[level] <= self.__steps[level]:
             return level
-        elif level == self.__levels[-1]:
+        elif level == len(self.__levels) - 1:
             return -1
         self.__directions[level] = - self.__directions[level]
         self.__indices[level] += self.__directions[level]
