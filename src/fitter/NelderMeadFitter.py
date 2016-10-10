@@ -51,7 +51,7 @@ class NelderMeadFitter(ModelFitter):
             # self.__parameters[i] = randn(self._dimensions) * 1
             # self.__parameters[i] = zeros(self._dimensions)
             # self.__parameters[i][:i] = self.__offset
-            self.__parameters[i] = initial_parameters
+            self.__parameters[i] = initial_parameters.copy()
             self.__parameters[i][:i] += self.__offset
             self.request_face(Face.from_array(self.__parameters[i]), i)
         # self.__end = ones(self._dimensions)
