@@ -28,7 +28,6 @@ class BruteForceFitter(ModelFitter):
         which should be fitted.
         """
         dimensions += 4
-
         if steps is None:
             self.__steps = ones(dimensions, dtype='i')
         else:
