@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Final callback to `NelderMeadFitter` constructor.
+
+### Fixed
+- `NelderMeadFitter` parameters passing.
 
 ## [0.5.1] - 2016-09-09
 ### Fixed
