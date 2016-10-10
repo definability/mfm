@@ -32,8 +32,9 @@ class NelderMeadFitter(ModelFitter):
         self.__rho = .5
         self.__sigma = .5
 
-        super(NelderMeadFitter, self).__init__(image, dimensions, model,
+        super(NelderMeadFitter, self).__init__(image, dimensions-4, model,
                                                initial_face)
+        self._dimensions += 4
 
     def start(self):
         self.__initiate_parameters()
