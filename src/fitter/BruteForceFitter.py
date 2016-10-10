@@ -127,7 +127,13 @@ class BruteForceFitter(ModelFitter):
         change_on = self.__inc_index()
         if change_on == -1:
             result = self.__convert_parameters()
-            self.__face = Face.from_array(result[-1][0])
+
+            parameters = zeros(self._dimensions, dtype='f')
+            parameters[-4] = self._initial_face.ambient_light
+            parameters[-3:] = self._initial_face.directed_light
+            parameters[:-4] = self._initial_face.coefficients
+            parameters[self.__levels] = result[-1][0]
+            self.__face = Face.from_array(parameters)
             self.request_face(self.__face, 'finish')
             return
 
