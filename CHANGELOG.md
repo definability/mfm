@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - `NelderMeadFitter` parameters passing.
+- `BruteForceFitter` final processing.
 
 ## [0.5.1] - 2016-09-09
 ### Fixed
