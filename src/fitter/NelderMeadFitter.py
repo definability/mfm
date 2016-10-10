@@ -43,7 +43,8 @@ class NelderMeadFitter(ModelFitter):
         self.__step = 'start'
         initial_parameters = concatenate((
             self._initial_face.coefficients,
-            self._initial_face.light
+            [self._initial_face.ambient_light],
+            self._initial_face.directed_light
         ))
         for i in range(len(self.__parameters)):
             # print('Initial step {} of {}'.format(i, self._dimensions))
