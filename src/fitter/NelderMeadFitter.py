@@ -9,7 +9,7 @@ from src import Face
 
 class NelderMeadFitter(ModelFitter):
     def __init__(self, image, dimensions=199, model=None, offset=1.,
-                 initial_face=None):
+                 initial_face=None, callback=None):
         dimensions += 4
         self.__step = None
         self.__parameters = [None] * (dimensions)
