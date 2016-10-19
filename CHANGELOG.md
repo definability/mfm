@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Monte Carlo Fitter class.
 
 ## [0.5.2] - 2016-10-10
 ### Added
