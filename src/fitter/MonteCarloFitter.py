@@ -100,9 +100,6 @@ class MonteCarloFitter(ModelFitter):
 
         return (z * V / epsilon) / M
 
-    def __get_value(self, values):
-        return sum(p * Decimal(float(v[0])) for p, v in values)
-
     def __get_probabilities(self, differences):
         m = sum(Decimal(d).exp() for d in differences if d is not None).ln()
         return [(Decimal(d) - m).exp() for d in differences if d is not None]
