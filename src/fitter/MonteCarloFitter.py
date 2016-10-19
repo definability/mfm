@@ -67,7 +67,8 @@ class MonteCarloFitter(ModelFitter):
 
         # if self.__differences.count(None) % 1000 == 0 \\
         #       and self.__differences.count(None) < len(self.__differences):
-        #     params = [p for d, p in zip(self.__differences, self.__parameters) if d is not None]
+        #     params = [p for d, p in zip(self.__differences,
+        #                                 self.__parameters) if d is not None]
         #     tmp = [(d, p) for d, p in zip(
         #         self.__get_probabilities(self.__differences), params)]
         #     self.__get_iterations_count(tmp)
