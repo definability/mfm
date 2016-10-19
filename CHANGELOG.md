@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.5.3] - 2016-10-19
 ### Added
 - Monte Carlo Fitter class.
 
@@ -478,7 +480,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.5.2...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.5.3...HEAD
+[0.5.3]: https://github.com/char-lie/mfm/compare/v0.5.2...v0.5.3
 [0.5.2]: https://github.com/char-lie/mfm/compare/v0.5.1...v0.5.2
 [0.5.1]: https://github.com/char-lie/mfm/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/char-lie/mfm/compare/v0.4.12...v0.5.0
