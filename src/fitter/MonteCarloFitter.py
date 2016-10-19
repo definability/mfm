@@ -1,7 +1,7 @@
 from math import pi
 from decimal import Decimal
 
-from numpy import array, unique, save, savez, zeros, nonzero, std, log, mean, isnan
+from numpy import array, unique, zeros, std, log, mean, isnan
 from numpy.random import randn
 
 from src import Face
@@ -42,11 +42,9 @@ class MonteCarloFitter(ModelFitter):
     def start(self):
         self.__parameters = []
         self.__differences = []
-        self.__powers = []
-        self.__variance = 0.
 
-        for p in range(self.__steps):
-            self.request_face(self.__generate_face_parameters(), p)
+        for parameter in range(self.__steps):
+            self.request_face(self.__generate_face_parameters(), parameter)
 
     def receive_image(self, image, index=None):
         indices = (image[:, 0] != image[:, 2])
@@ -67,11 +65,12 @@ class MonteCarloFitter(ModelFitter):
         if None not in self.__differences:
             self.__calculate_result()
 
-        # if self.__differences.count(None) % 1000 == 0 and self.__differences.count(None) < len(self.__differences):
+        # if self.__differences.count(None) % 1000 == 0 \\
+        #       and self.__differences.count(None) < len(self.__differences):
         #     params = [p for d, p in zip(self.__differences, self.__parameters) if d is not None]
         #     tmp = [(d, p) for d, p in zip(
         #         self.__get_probabilities(self.__differences), params)]
-        #     self.__get_N(tmp)
+        #     self.__get_iterations_count(tmp)
 
     def __calculate_result(self):
         """Get weighted sum of achieved parameters.
@@ -82,12 +81,14 @@ class MonteCarloFitter(ModelFitter):
 
         Form parameters of final face and finish the fitting procedure.
         """
-        m = max(self.__differences)
+        max_difference = max(self.__differences)
         normalized_differences = array(self.__differences) - float(
-            sum(Decimal(diff - m).exp() for diff in self.__differences).ln())
-        params = [sum(
-            Decimal(float(p[i]))*Decimal(diff).exp()
-            for diff, p in zip(normalized_differences, self.__parameters))
+            sum(Decimal(diff - max_difference).exp()
+                for diff in self.__differences).ln())
+        params = [
+            sum(
+                Decimal(float(p[i]))*Decimal(diff).exp()
+                for diff, p in zip(normalized_differences, self.__parameters))
             for i in self.__estimating_parameters]
         face = self._initial_face
         parameters = zeros(self._dimensions, dtype='f')
@@ -97,26 +98,27 @@ class MonteCarloFitter(ModelFitter):
         parameters[self.__estimating_parameters] = params
         self.finish(face)
 
-    def __get_N(self, values):
+    def __get_iterations_count(self, values):
         """Estimate number of iterations.
 
         Calculate how much iterations needed with current variance
         to be 99% sure that relative error is not greater than 0.1.
         """
-        N = len(values)
-
-        M = sum(p * Decimal(float(v[0])) for p, v in values)
-        V = sum(p * (Decimal(float(v[0]))**2) for p, v in values) - M**2
+        average = sum(p * Decimal(float(v[0])) for p, v in values)
+        variance = (sum(p * (Decimal(float(v[0]))**2) for p, v in values)
+                    - mean**2)
 
         z = Decimal('2.575')**2
         epsilon = Decimal('0.01')**2
 
-        return (z * V / epsilon) / M
+        return (z * variance / epsilon) / average
 
     def __get_probabilities(self, differences):
         """Get normalized probabilities."""
-        m = sum(Decimal(d).exp() for d in differences if d is not None).ln()
-        return [(Decimal(d) - m).exp() for d in differences if d is not None]
+        normalizator = sum(Decimal(d).exp()
+                           for d in differences if d is not None).ln()
+        return [(Decimal(d) - normalizator).exp()
+                for d in differences if d is not None]
 
     def __generate_face_parameters(self):
         """Generate random face.
