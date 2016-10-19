@@ -1,0 +1,14 @@
+{
+    "input": {
+        "input_image": "test_001.png",
+        "initial_face": {
+            "directed_light": [-0.4, 0.4, 0.6]
+        }
+    },
+    "fitters": [{
+        "fitter": "MonteCarlo",
+        "dimensions": 50,
+        "estimating_parameters": [0, 1],
+        "steps": 100
+    }]
+}
