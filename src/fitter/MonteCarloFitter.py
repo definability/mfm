@@ -23,7 +23,6 @@ class MonteCarloFitter(ModelFitter):
             iterating_parameters = list(range(dimensions))
 
         dimensions += 4
-        image = array(image) / 16
 
         self.__iterating_parameters = unique(
             estimating_parameters + iterating_parameters)
