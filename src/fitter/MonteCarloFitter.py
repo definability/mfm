@@ -74,6 +74,14 @@ class MonteCarloFitter(ModelFitter):
         #     self.__get_N(tmp)
 
     def __calculate_result(self):
+        """Get weighted sum of achieved parameters.
+
+        Normalize probabilities as their sum should be 1.
+        Then get sum of parameters got during iterations
+        multiplied by corresponding probabilities.
+
+        Form parameters of final face and finish the fitting procedure.
+        """
         m = max(self.__differences)
         normalized_differences = array(self.__differences) - float(
             sum(Decimal(diff - m).exp() for diff in self.__differences).ln())
@@ -90,6 +98,11 @@ class MonteCarloFitter(ModelFitter):
         self.finish(face)
 
     def __get_N(self, values):
+        """Estimate number of iterations.
+
+        Calculate how much iterations needed with current variance
+        to be 99% sure that relative error is not greater than 0.1.
+        """
         N = len(values)
 
         M = sum(p * Decimal(float(v[0])) for p, v in values)
@@ -101,10 +114,15 @@ class MonteCarloFitter(ModelFitter):
         return (z * V / epsilon) / M
 
     def __get_probabilities(self, differences):
+        """Get normalized probabilities."""
         m = sum(Decimal(d).exp() for d in differences if d is not None).ln()
         return [(Decimal(d) - m).exp() for d in differences if d is not None]
 
     def __generate_face_parameters(self):
+        """Generate random face.
+
+        Based on needed parameters to iterate by and initial Face.
+        """
         face = self._initial_face
         parameters = zeros(self._dimensions, dtype='f')
         parameters[-4] = face.ambient_light
