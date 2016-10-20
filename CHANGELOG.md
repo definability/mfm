@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Fixed
 - `MonteCarloFitter` initial image normalization.
+- `MonteCarloFitter` Face pixels check.
+- `View` alpha channel storing.
 
 ## [0.5.3] - 2016-10-19
 ### Added
