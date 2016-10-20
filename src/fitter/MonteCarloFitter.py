@@ -1,7 +1,7 @@
 from math import pi
 from decimal import Decimal
 
-from numpy import array, unique, zeros, std, log, mean, isnan
+from numpy import array, unique, zeros, std, log, mean, isnan, nonzero
 from numpy.random import randn
 
 from src import Face
@@ -46,7 +46,7 @@ class MonteCarloFitter(ModelFitter):
             self.request_face(self.__generate_face_parameters(), parameter)
 
     def receive_image(self, image, index=None):
-        indices = (image[:, 0] != image[:, 2])
+        indices = nonzero(image[:, -1])
 
         difference = (self.__image - image[:, 0])[indices].flatten()
         variance = std(difference)**2
