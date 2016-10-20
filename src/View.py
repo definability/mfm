@@ -14,7 +14,7 @@ from OpenGL.GL import glDrawElements, glGetFloatv
 
 from OpenGL.GL import glReadBuffer, glReadPixels, GL_RGBA, glFlush
 
-from OpenGL.GLUT import GLUT_DEPTH, GLUT_RGB
+from OpenGL.GLUT import GLUT_DEPTH, GLUT_RGB, GLUT_ALPHA
 
 from OpenGL.GLUT import glutInitWindowSize, glutPostRedisplay
 from OpenGL.GLUT import glutCreateWindow, glutInit, glutInitWindowPosition
@@ -182,7 +182,7 @@ class View:
 
     def __init_display(self):
         """Initialize the viewport with specified size."""
-        glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH)
+        glutInitDisplayMode(GLUT_RGB | GLUT_ALPHA | GLUT_DEPTH)
         glutInitWindowSize(*self.__size)
 
         glutInitWindowPosition(0, 0)
