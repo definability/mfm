@@ -45,6 +45,7 @@ class View:
         self.__rotation = (0., 0., 0.)
         self.__need_rotation = True
         self.__face = None
+        self.__light_matrix = None
 
         self.__init_display()
         self.__adjust_viewport()
@@ -201,6 +202,8 @@ class View:
         SIDE_LENGTH = .5
         glOrtho(-SIDE_LENGTH, SIDE_LENGTH, -SIDE_LENGTH, SIDE_LENGTH,
                 -2 * SIDE_LENGTH, 2 * SIDE_LENGTH)
+
+        self.__light_matrix = array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
 
     def __enable_depth_test(self):
         """Enable depth test and faces culling.
