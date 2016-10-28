@@ -165,7 +165,21 @@ class View:
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
         self.__sh.clear()
 
+        # RENDER
+        # glCullFace(GL_FRONT)
+        # glViewport(0, 0, self.__width, self.__height)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        self.__sh.change_shader(vertex=0, fragment=0)
+        self.prepare_shaders(rotation_matrix, self.__light_matrix)
+        self.__sh.bind_buffer()
+        self.__sh.use_shaders()
+        glDrawElements(GL_TRIANGLES, View.__triangles.size,
+                       GL_UNSIGNED_SHORT, View.__triangles)
+        self.__sh.clear()
+
+        glutSwapBuffers()
+        if self.__callback is not None:
+            self.__callback()
 
     def prepare_shaders(self, rotation_matrix=None, light_matrix=None):
         self.__sh.add_attribute(0, self.__mean_face, 'mean_position')
