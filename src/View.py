@@ -10,17 +10,21 @@ from OpenGL.GL import GL_CULL_FACE, GL_FRONT, GL_MODELVIEW_MATRIX
 from OpenGL.GL import glMatrixMode, glLoadIdentity, glOrtho, glRotatef
 from OpenGL.GL import glDepthMask, glDepthFunc, glCullFace
 from OpenGL.GL import glEnable, glClearColor, glEnableClientState, glClear
-from OpenGL.GL import glDrawElements, glGetFloatv
+from OpenGL.GL import glDrawElements, glGetFloatv, glLoadMatrixf, glFinish
+from OpenGL.GL import glActiveTexture, glBindFramebuffer
+from OpenGL.GL import GL_TEXTURE0, GL_TEXTURE1, GL_FRAMEBUFFER
 
-from OpenGL.GL import glReadBuffer, glReadPixels, GL_RGBA, glFlush
+from OpenGL.GL import glReadBuffer, glReadPixels, GL_RGBA
 
-from OpenGL.GLUT import GLUT_DEPTH, GLUT_RGB, GLUT_ALPHA
+from OpenGL.GLUT import GLUT_DEPTH, GLUT_RGB, GLUT_ALPHA, GLUT_DOUBLE
 
+from OpenGL.GLUT import glutSwapBuffers
 from OpenGL.GLUT import glutInitWindowSize, glutPostRedisplay
 from OpenGL.GLUT import glutCreateWindow, glutInit, glutInitWindowPosition
 from OpenGL.GLUT import glutInitDisplayMode, glutLeaveMainLoop, glutDisplayFunc
 
 from numpy import zeros, ones, array, concatenate
+from numpy.linalg import inv
 
 from .ShadersHelper import ShadersHelper
 
