@@ -147,11 +147,17 @@ class View:
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
+    def prepare_shaders(self, rotation_matrix=None, light_matrix=None):
+        self.__sh.add_attribute(0, self.__mean_face, 'mean_position')
+        self.__sh.bind_buffer()
+
         self.__sh.use_shaders()
 
-        self.__sh.bind_uniform_matrix(rotation_matrix, 'rotation_matrix')
-        self.__sh.bind_uniform_vector(self.__face.light.astype('f'),
-                                      'light_vector')
+        self.__sh.bind_uniform_matrix(light_matrix, 'light_matrix')
+        if rotation_matrix is not None:
+            self.__sh.bind_uniform_matrix(rotation_matrix, 'rotation_matrix')
+            self.__sh.bind_uniform_vector(self.__face.light.astype('f'),
+                                          'light_vector')
         coefficients_amount = len(self.__face.coefficients)
         indices = -ones(199, dtype='i')
         indices[:coefficients_amount] = array(range(coefficients_amount))
@@ -161,17 +167,11 @@ class View:
         coefficients[:coefficients_amount] = self.__face.coefficients
         self.__sh.bind_uniform_floats(coefficients, 'coefficients')
 
-        if not self.__texture_bound:
-            self.__bind_texture()
-
-        glDrawElements(GL_TRIANGLES, View.__triangles.size,
-                       GL_UNSIGNED_SHORT, View.__triangles)
-
-        self.__sh.clear()
-
-        glFlush()
-        if self.__callback is not None:
-            self.__callback()
+        glActiveTexture(GL_TEXTURE0)
+        self.__sh.bind_texture(0)
+        if rotation_matrix is not None:
+            glActiveTexture(GL_TEXTURE1)
+            self.__sh.bind_texture(1)
 
     def __bind_texture(self):
         size = View.__principal_components.size // 3
