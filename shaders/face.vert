@@ -3,6 +3,7 @@
 in vec3 mean_position;
 
 out vec4 vertex_position;
+out vec4 source_position;
 
 uniform mat4 rotation_matrix;
 uniform float coefficients[199];
@@ -19,6 +20,7 @@ void main(void) {
         texPos = ivec2(c_pos % 8192, c_pos / 8192);
         acc += texelFetch(principal_components, texPos, 0) * coefficients[j];
     }
-    gl_Position = rotation_matrix * vec4(mean_position + vec3(acc), 246006.0);
+    source_position = vec4(mean_position + vec3(acc), 246006.0);
+    gl_Position = rotation_matrix * source_position;
     vertex_position = gl_Position;
 }
