@@ -61,6 +61,14 @@ class View:
         glutDisplayFunc(self.__display)
         self.__callback = None
 
+        self.__sh.add_attribute(0, self.__mean_face, 'mean_position')
+        self.__sh.bind_buffer()
+        self.__sh.use_shaders()
+        self.__sh.link_texture('principal_components', 0)
+        self.__sh.link_texture('depth_map', 1)
+        self.__bind_texture()
+        self.__sh.bind_depth_texture(self.__size)
+
     def get_size(self):
         """Get size of the viewport."""
         return self.__size
@@ -135,8 +143,6 @@ class View:
             self.__need_rotation = False
         rotation_matrix = array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
 
-        self.__sh.add_attribute(0, self.__mean_face, 'mean_position')
-        self.__sh.bind_buffer()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
