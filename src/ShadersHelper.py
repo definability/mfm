@@ -17,6 +17,12 @@ from OpenGL.GL import GL_RED, GL_RG, GL_RGB, GL_RGBA
 from OpenGL.GL import GL_R32F, GL_RG32F, GL_RGB32F, GL_RGBA32F
 from OpenGL.GL import GL_TEXTURE_MAG_FILTER, GL_TEXTURE_MIN_FILTER, GL_NEAREST
 
+from OpenGL.GL import GL_DEPTH_COMPONENT, GL_TEXTURE_WRAP_S, GL_TEXTURE_WRAP_T
+from OpenGL.GL import GL_REPEAT, GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_NONE
+from OpenGL.GL import glBindFramebuffer, glDrawBuffer, glReadBuffer
+from OpenGL.GL import glTexParameteri, glFramebufferTexture2D
+from OpenGL.GL import glDetachShader, glGenFramebuffers
+
 from OpenGL.arrays.vbo import VBO
 
 from numpy import concatenate
@@ -148,6 +154,35 @@ class ShadersHelper:
         self.__attributes = []
         glUseProgram(0)
         glBindVertexArray(0)
+
+    def bind_depth_texture(self, size):
+        width, height = size
+        texture_type = GL_TEXTURE_2D
+        self.__depth_map_fbo = glGenFramebuffers(1)
+
+        depth_map = self.__textures_ids[len(self.__textures)]
+        glBindTexture(texture_type, depth_map)
+        self.__textures.append(2)
+        glTexImage2D(texture_type, 0, GL_DEPTH_COMPONENT,
+                     width, height, 0, GL_DEPTH_COMPONENT,
+                     GL_FLOAT, None)
+        glTexParameteri(texture_type, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+        glTexParameteri(texture_type, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+        glTexParameteri(texture_type, GL_TEXTURE_WRAP_S, GL_REPEAT)
+        glTexParameteri(texture_type, GL_TEXTURE_WRAP_T, GL_REPEAT)
+
+        glBindFramebuffer(GL_FRAMEBUFFER, self.__depth_map_fbo)
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
+                               GL_TEXTURE_2D, depth_map, 0)
+        glDrawBuffer(GL_NONE)
+        glReadBuffer(GL_NONE)
+        glBindFramebuffer(GL_FRAMEBUFFER, 0)
+
+    def bind_texture(self, i):
+        glBindTexture(GL_TEXTURE_2D, self.__textures_ids[i])
+
+    def bind_fbo(self):
+        glBindFramebuffer(GL_FRAMEBUFFER, self.__depth_map_fbo)
 
     def bind_float_texture(self, data, name, size, dimensions=2, components=3):
         """Bind texture with floating point vectors within.
