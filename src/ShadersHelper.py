@@ -45,11 +45,11 @@ class ShadersHelper:
         self.__depth_map_fbo = None
         self.__attributes = []
 
-        if isinstance(vertex, list):
+        if not isinstance(vertex, list):
             vertex = [vertex]
         for v in vertex:
             self.__load_shader(get_shader_path(v), GL_VERTEX_SHADER)
-        if isinstance(fragment, list):
+        if not isinstance(fragment, list):
             fragment = [fragment]
         for f in fragment:
             self.__load_shader(get_shader_path(f), GL_FRAGMENT_SHADER)
