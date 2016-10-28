@@ -10,7 +10,7 @@ from OpenGL.GL import glGetUniformLocation, glUniformMatrix4fv, glUniform1fv
 from OpenGL.GL import glUniform1iv
 from OpenGL.GL import glUniform4f
 from OpenGL.GL import glGenTextures, glPixelStorei, glTexParameterf
-from OpenGL.GL import glBindTexture, glEnable, GL_UNPACK_ALIGNMENT
+from OpenGL.GL import glBindTexture, GL_UNPACK_ALIGNMENT
 from OpenGL.GL import glUniform1i, GL_TEXTURE_1D, GL_TEXTURE_2D, GL_TEXTURE_3D
 from OpenGL.GL import glTexImage1D, glTexImage2D, glTexImage3D
 from OpenGL.GL import GL_RED, GL_RG, GL_RGB, GL_RGBA
@@ -153,7 +153,6 @@ class ShadersHelper:
                   + list(size) + [0, texture_format, GL_FLOAT, data.flatten()])
         texture_store(*params)
 
-        glEnable(texture_type)
         glTexParameterf(texture_type, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
         glTexParameterf(texture_type, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 
