@@ -55,8 +55,8 @@ class View:
 
         glClearColor(1., 1., 1., 0.)
 
-        self.__sh = ShadersHelper('face.vert', 'face.frag', 1, 1)
-        self.__texture_bound = False
+        self.__sh = ShadersHelper(['face.vert', 'depth.vert'],
+                                  ['face.frag', 'depth.frag'], 1, 2)
 
         glutDisplayFunc(self.__display)
         self.__callback = None
