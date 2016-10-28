@@ -229,6 +229,7 @@ class ShadersHelper:
 
         self.__textures.append(dimensions)
 
+    def link_texture(self, name, number):
         location = glGetUniformLocation(self.__program, name)
         assert location >= 0
-        glUniform1i(location, 0)
+        glUniform1i(location, number)
