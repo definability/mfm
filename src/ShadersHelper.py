@@ -36,15 +36,17 @@ class ShadersHelper:
             GL_VERTEX_SHADER: [],
             GL_FRAGMENT_SHADER: []
         }
+        self.__depth_map_fbo = None
+        self.__attributes = []
 
-        if type(vertex) is not list:
+        if isinstance(vertex, list):
             vertex = [vertex]
         for v in vertex:
-            self.__load_shader(get_shader_path(v), GL_VERTEX_SHADER, False)
-        if type(fragment) is not list:
+            self.__load_shader(get_shader_path(v), GL_VERTEX_SHADER)
+        if isinstance(fragment, list):
             fragment = [fragment]
         for f in fragment:
-            self.__load_shader(get_shader_path(f), GL_FRAGMENT_SHADER, False)
+            self.__load_shader(get_shader_path(f), GL_FRAGMENT_SHADER)
 
         self.change_shader(0, 0)
 
@@ -57,8 +59,6 @@ class ShadersHelper:
             self.__vbo_id = [glGenBuffers(number_of_buffers)]
         elif number_of_buffers > 1:
             self.__vbo_id = glGenBuffers(number_of_buffers)
-
-        self.__attributes = []
 
         if number_of_textures == 1:
             self.__textures_ids = [glGenTextures(1)]
@@ -74,7 +74,7 @@ class ShadersHelper:
         if fragment is not None:
             changed |= self.__attach_shader(
                 self.__shaders[GL_FRAGMENT_SHADER][fragment],
-                                 GL_FRAGMENT_SHADER)
+                GL_FRAGMENT_SHADER)
         if not changed:
             return
         glLinkProgram(self.__program)
