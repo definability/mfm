@@ -31,9 +31,22 @@ class ShadersHelper:
                  number_of_textures=0):
         """Initialize program with shaders."""
         self.__program = glCreateProgram()
+        self.__current_shaders = {}
+        self.__shaders = {
+            GL_VERTEX_SHADER: [],
+            GL_FRAGMENT_SHADER: []
+        }
 
-        self.__load_shader(get_shader_path(vertex), GL_VERTEX_SHADER)
-        self.__load_shader(get_shader_path(fragment), GL_FRAGMENT_SHADER)
+        if type(vertex) is not list:
+            vertex = [vertex]
+        for v in vertex:
+            self.__load_shader(get_shader_path(v), GL_VERTEX_SHADER, False)
+        if type(fragment) is not list:
+            fragment = [fragment]
+        for f in fragment:
+            self.__load_shader(get_shader_path(f), GL_FRAGMENT_SHADER, False)
+
+        self.change_shader(0, 0)
 
         glLinkProgram(self.__program)
         assert glGetProgramiv(self.__program, GL_LINK_STATUS) == GL_TRUE
@@ -53,6 +66,29 @@ class ShadersHelper:
             self.__textures_ids = glGenTextures(number_of_textures)
         self.__textures = []
 
+    def change_shader(self, vertex=None, fragment=None):
+        changed = False
+        if vertex is not None:
+            changed |= self.__attach_shader(
+                self.__shaders[GL_VERTEX_SHADER][vertex], GL_VERTEX_SHADER)
+        if fragment is not None:
+            changed |= self.__attach_shader(
+                self.__shaders[GL_FRAGMENT_SHADER][fragment],
+                                 GL_FRAGMENT_SHADER)
+        if not changed:
+            return
+        glLinkProgram(self.__program)
+        assert glGetProgramiv(self.__program, GL_LINK_STATUS) == GL_TRUE
+
+    def __attach_shader(self, shader_id, shader_type):
+        if shader_type in self.__current_shaders:
+            if self.__current_shaders[shader_type] == shader_id:
+                return False
+            glDetachShader(self.__program, self.__current_shaders[shader_type])
+        self.__current_shaders[shader_type] = shader_id
+        glAttachShader(self.__program, shader_id)
+        return True
+
     def __load_shader(self, shader_filename, shader_type):
         """Load shader of specific type from file."""
         shader_source = ''
@@ -61,9 +97,9 @@ class ShadersHelper:
             assert shader_source
 
         shader_id = glCreateShader(shader_type)
+        self.__shaders[shader_type].append(shader_id)
         glShaderSource(shader_id, shader_source)
         glCompileShader(shader_id)
-        glAttachShader(self.__program, shader_id)
 
     def add_attribute(self, vid, data, name):
         """Add array vertex attribute for shaders."""
