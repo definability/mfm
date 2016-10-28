@@ -144,6 +144,26 @@ class View:
             self.__need_rotation = False
         rotation_matrix = array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
 
+        # GET SHADOWS
+        # glCullFace(GL_BACK)
+        self.__sh.change_shader(vertex=1, fragment=1)
+
+        glLoadMatrixf(self.__light_matrix.flatten())
+        if not self.__rotated:
+            # glRotatef(30., .5, 1., 0.)
+            self.__rotated = True
+        self.__light_matrix = array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
+        glLoadMatrixf(rotation_matrix.flatten())
+
+        self.prepare_shaders(light_matrix=self.__light_matrix)
+        self.__sh.bind_fbo()
+        glClear(GL_DEPTH_BUFFER_BIT)
+        glDrawElements(GL_TRIANGLES, View.__triangles.size,
+                       GL_UNSIGNED_SHORT, View.__triangles)
+        glFinish()
+
+        glBindFramebuffer(GL_FRAMEBUFFER, 0)
+        self.__sh.clear()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
