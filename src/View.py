@@ -153,9 +153,6 @@ class View:
         self.__sh.change_shader(vertex=1, fragment=1)
 
         glLoadMatrixf(self.__light_matrix.flatten())
-        if not self.__rotated:
-            # glRotatef(30., .5, 1., 0.)
-            self.__rotated = True
         self.__light_matrix = array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
         glLoadMatrixf(rotation_matrix.flatten())
 
