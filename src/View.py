@@ -176,9 +176,7 @@ class View:
         padding = [0] * (rows * columns - size) * 3
         data = concatenate((data.flatten(), padding))
 
-        self.__sh.bind_float_texture(data, 'principal_components',
-                                     (columns, rows), 2, 3)
-        self.__texture_bound = True
+        self.__sh.create_float_texture(data, (columns, rows), 2, 3)
 
     def __init_display(self):
         """Initialize the viewport with specified size."""

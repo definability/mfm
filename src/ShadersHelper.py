@@ -184,7 +184,7 @@ class ShadersHelper:
     def bind_fbo(self):
         glBindFramebuffer(GL_FRAMEBUFFER, self.__depth_map_fbo)
 
-    def bind_float_texture(self, data, name, size, dimensions=2, components=3):
+    def create_float_texture(self, data, size, dimensions=2, components=3):
         """Bind texture with floating point vectors within.
 
         dimensions: dimensionality of the texture
