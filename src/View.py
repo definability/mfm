@@ -186,7 +186,7 @@ class View:
 
     def __init_display(self):
         """Initialize the viewport with specified size."""
-        glutInitDisplayMode(GLUT_RGB | GLUT_ALPHA | GLUT_DEPTH)
+        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_ALPHA | GLUT_DEPTH)
         glutInitWindowSize(*self.__size)
 
         glutInitWindowPosition(0, 0)
