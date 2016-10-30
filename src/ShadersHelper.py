@@ -17,6 +17,8 @@ from OpenGL.GL import GL_RED, GL_RG, GL_RGB, GL_RGBA
 from OpenGL.GL import GL_R32F, GL_RG32F, GL_RGB32F, GL_RGBA32F
 from OpenGL.GL import GL_TEXTURE_MAG_FILTER, GL_TEXTURE_MIN_FILTER, GL_NEAREST
 
+from OpenGL.GL import GL_TEXTURE_COMPARE_MODE, GL_TEXTURE_COMPARE_FUNC
+from OpenGL.GL import GL_COMPARE_REF_TO_TEXTURE, GL_LESS
 from OpenGL.GL import GL_DEPTH_COMPONENT, GL_TEXTURE_WRAP_S, GL_TEXTURE_WRAP_T
 from OpenGL.GL import GL_REPEAT, GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_NONE
 from OpenGL.GL import glBindFramebuffer, glDrawBuffer, glReadBuffer
@@ -170,6 +172,12 @@ class ShadersHelper:
         glTexParameteri(texture_type, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
         glTexParameteri(texture_type, GL_TEXTURE_WRAP_S, GL_REPEAT)
         glTexParameteri(texture_type, GL_TEXTURE_WRAP_T, GL_REPEAT)
+
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_COMPARE_MODE,
+                        GL_COMPARE_REF_TO_TEXTURE)
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_COMPARE_FUNC,
+                        GL_LESS)
+
 
         glBindFramebuffer(GL_FRAMEBUFFER, self.__depth_map_fbo)
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
