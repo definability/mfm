@@ -156,7 +156,7 @@ class View:
         self.__light_matrix = array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
         glLoadMatrixf(rotation_matrix.flatten())
 
-        self.prepare_shaders(light_matrix=self.__light_matrix)
+        self.prepare_shaders(rotation_matrix, self.__light_matrix, True)
         self.__sh.bind_fbo()
         glClear(GL_DEPTH_BUFFER_BIT)
         glDrawElements(GL_TRIANGLES, View.__triangles.size,
@@ -171,7 +171,7 @@ class View:
         # glViewport(0, 0, self.__width, self.__height)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         self.__sh.change_shader(vertex=0, fragment=0)
-        self.prepare_shaders(rotation_matrix, self.__light_matrix)
+        self.prepare_shaders(rotation_matrix, self.__light_matrix, False)
         self.__sh.bind_buffer()
         self.__sh.use_shaders()
         glDrawElements(GL_TRIANGLES, View.__triangles.size,
@@ -182,16 +182,16 @@ class View:
         if self.__callback is not None:
             self.__callback()
 
-    def prepare_shaders(self, rotation_matrix=None, light_matrix=None):
+    def prepare_shaders(self, rotation_matrix=None, light_matrix=None, depth=True):
         self.__sh.add_attribute(0, self.__mean_face, 'mean_position')
         self.__sh.bind_buffer()
 
         self.__sh.use_shaders()
 
-        self.__sh.bind_uniform_matrix(light_matrix, 'light_matrix')
-        if rotation_matrix is not None:
+        self.__sh.bind_uniform_matrix(light_matrix.dot(rotation_matrix), 'light_matrix')
+        if not depth:
             self.__sh.bind_uniform_matrix(rotation_matrix, 'rotation_matrix')
-            self.__sh.bind_uniform_vector(self.__face.light.astype('f'),
+            self.__sh.bind_uniform_vector(inv(light_matrix).dot((0.0, 0.0, 1.0, 0.)),
                                           'light_vector')
         coefficients_amount = len(self.__face.coefficients)
         indices = -ones(199, dtype='i')
@@ -204,7 +204,7 @@ class View:
 
         glActiveTexture(GL_TEXTURE0)
         self.__sh.bind_texture(0)
-        if rotation_matrix is not None:
+        if not depth:
             glActiveTexture(GL_TEXTURE1)
             self.__sh.bind_texture(1)
 
@@ -238,7 +238,12 @@ class View:
         glOrtho(-SIDE_LENGTH, SIDE_LENGTH, -SIDE_LENGTH, SIDE_LENGTH,
                 -2 * SIDE_LENGTH, 2 * SIDE_LENGTH)
 
-        self.__light_matrix = array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
+        self.__light_matrix = array([
+            [1., 0., 0., 0.],
+            [0., 1., 0., 0.],
+            [0., 0., 1., 0.],
+            [0., 0., 0., 1.]
+        ], dtype='f')
 
     def __enable_depth_test(self):
         """Enable depth test and faces culling.
