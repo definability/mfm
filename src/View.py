@@ -23,6 +23,8 @@ from OpenGL.GLUT import glutInitWindowSize, glutPostRedisplay
 from OpenGL.GLUT import glutCreateWindow, glutInit, glutInitWindowPosition
 from OpenGL.GLUT import glutInitDisplayMode, glutLeaveMainLoop, glutDisplayFunc
 
+from OpenGL.GLU import gluLookAt
+
 from numpy import zeros, ones, array, concatenate
 from numpy.linalg import inv
 
@@ -49,7 +51,7 @@ class View:
         self.__rotation = (0., 0., 0.)
         self.__need_rotation = True
         self.__face = None
-        self.__light_matrix = None
+        self.__light_matrix = zeros((4, 4), dtype='f')
 
         self.__init_display()
         self.__adjust_viewport()
@@ -153,6 +155,9 @@ class View:
         self.__sh.change_shader(vertex=1, fragment=1)
 
         glLoadMatrixf(self.__light_matrix.flatten())
+        glLoadIdentity()
+        light = self.__face.directed_light
+        gluLookAt(-light[0], -light[1], light[2], 0.0, 0.0, 0.0, 0.0, 1.0, 0.0)
         self.__light_matrix = array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
         glLoadMatrixf(rotation_matrix.flatten())
 
@@ -191,7 +196,7 @@ class View:
         self.__sh.bind_uniform_matrix(light_matrix.dot(rotation_matrix), 'light_matrix')
         if not depth:
             self.__sh.bind_uniform_matrix(rotation_matrix, 'rotation_matrix')
-            self.__sh.bind_uniform_vector(inv(light_matrix).dot((0.0, 0.0, 1.0, 0.)),
+            self.__sh.bind_uniform_vector(self.__face.light,
                                           'light_vector')
         coefficients_amount = len(self.__face.coefficients)
         indices = -ones(199, dtype='i')
@@ -237,13 +242,6 @@ class View:
         SIDE_LENGTH = .5
         glOrtho(-SIDE_LENGTH, SIDE_LENGTH, -SIDE_LENGTH, SIDE_LENGTH,
                 -2 * SIDE_LENGTH, 2 * SIDE_LENGTH)
-
-        self.__light_matrix = array([
-            [1., 0., 0., 0.],
-            [0., 1., 0., 0.],
-            [0., 0., 1., 0.],
-            [0., 0., 0., 1.]
-        ], dtype='f')
 
     def __enable_depth_test(self):
         """Enable depth test and faces culling.
