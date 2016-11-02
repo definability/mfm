@@ -152,7 +152,6 @@ class View:
         rotation_matrix = array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
 
         # GET SHADOWS
-        # glCullFace(GL_BACK)
         glEnable(GL_POLYGON_OFFSET_FILL)
         glPolygonOffset(3, 0)
         self.__sh.change_shader(vertex=1, fragment=1)
