@@ -14,7 +14,8 @@ from OpenGL.GL import glDrawElements, glGetFloatv, glLoadMatrixf, glFinish
 from OpenGL.GL import glActiveTexture, glBindFramebuffer
 from OpenGL.GL import GL_TEXTURE0, GL_TEXTURE1, GL_FRAMEBUFFER
 
-from OpenGL.GL import glReadBuffer, glReadPixels, GL_RGBA
+from OpenGL.GL import glReadBuffer, glReadPixels, GL_RGBA, glPolygonOffset
+from OpenGL.GL import GL_POLYGON_OFFSET_FILL
 
 from OpenGL.GLUT import GLUT_DEPTH, GLUT_RGB, GLUT_ALPHA, GLUT_DOUBLE
 
@@ -152,6 +153,8 @@ class View:
 
         # GET SHADOWS
         # glCullFace(GL_BACK)
+        glEnable(GL_POLYGON_OFFSET_FILL)
+        glPolygonOffset(3, 0)
         self.__sh.change_shader(vertex=1, fragment=1)
 
         glLoadMatrixf(self.__light_matrix.flatten())
