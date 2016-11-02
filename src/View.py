@@ -8,7 +8,7 @@ from OpenGL.GL import GL_UNSIGNED_SHORT, GL_FLOAT, GL_MODELVIEW
 from OpenGL.GL import GL_CULL_FACE, GL_FRONT, GL_MODELVIEW_MATRIX
 
 from OpenGL.GL import glMatrixMode, glLoadIdentity, glOrtho, glRotatef
-from OpenGL.GL import glDepthMask, glDepthFunc, glCullFace
+from OpenGL.GL import glDepthMask, glDepthFunc, glCullFace, glDisable
 from OpenGL.GL import glEnable, glClearColor, glEnableClientState, glClear
 from OpenGL.GL import glDrawElements, glGetFloatv, glLoadMatrixf, glFinish
 from OpenGL.GL import glActiveTexture, glBindFramebuffer
@@ -161,6 +161,7 @@ class View:
         self.__light_matrix = array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
         glLoadMatrixf(rotation_matrix.flatten())
 
+        glDisable(GL_CULL_FACE)
         self.prepare_shaders(rotation_matrix, self.__light_matrix, True)
         self.__sh.bind_fbo()
         glClear(GL_DEPTH_BUFFER_BIT)
@@ -172,8 +173,9 @@ class View:
         self.__sh.clear()
 
         # RENDER
-        # glCullFace(GL_FRONT)
         # glViewport(0, 0, self.__width, self.__height)
+        glEnable(GL_CULL_FACE)
+        glCullFace(GL_FRONT)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         self.__sh.change_shader(vertex=0, fragment=0)
         self.prepare_shaders(rotation_matrix, self.__light_matrix, False)
@@ -250,9 +252,6 @@ class View:
         """
         glDepthMask(GL_TRUE)
         glDepthFunc(GL_LESS)
-
-        glEnable(GL_CULL_FACE)
-        glCullFace(GL_FRONT)
 
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_STENCIL_TEST)
