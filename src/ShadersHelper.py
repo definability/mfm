@@ -75,6 +75,10 @@ class ShadersHelper:
         self.__textures = []
 
     def change_shader(self, vertex=None, fragment=None):
+        """Change vertex and fragment shader of current program.
+
+        Needs indices of shaders from the list.
+        """
         changed = False
         if vertex is not None:
             changed |= self.__attach_shader(
@@ -89,6 +93,7 @@ class ShadersHelper:
         assert glGetProgramiv(self.__program, GL_LINK_STATUS) == GL_TRUE
 
     def __attach_shader(self, shader_id, shader_type):
+        """Attach the shader to the program."""
         if shader_type in self.__current_shaders:
             if self.__current_shaders[shader_type] == shader_id:
                 return False
@@ -138,11 +143,13 @@ class ShadersHelper:
         glUniform4f(location, *data.flatten())
 
     def bind_uniform_floats(self, data, name):
+        """Bind uniform float array."""
         location = glGetUniformLocation(self.__program, name)
         assert location >= 0
         glUniform1fv(location, data.size, data.flatten())
 
     def bind_uniform_ints(self, data, name):
+        """Bind uniform int array."""
         location = glGetUniformLocation(self.__program, name)
         assert location >= 0
         glUniform1iv(location, data.size, data.flatten())
@@ -158,6 +165,7 @@ class ShadersHelper:
         glBindVertexArray(0)
 
     def bind_depth_texture(self, size):
+        """Create depth texture for shadow map."""
         width, height = size
         texture_type = GL_TEXTURE_2D
         self.__depth_map_fbo = glGenFramebuffers(1)
@@ -190,6 +198,7 @@ class ShadersHelper:
         glBindTexture(GL_TEXTURE_2D, self.__textures_ids[i])
 
     def bind_fbo(self):
+        """Rebind depth map FBO for current program and shaders."""
         glBindFramebuffer(GL_FRAMEBUFFER, self.__depth_map_fbo)
 
     def create_float_texture(self, data, size, dimensions=2, components=3):
@@ -238,6 +247,7 @@ class ShadersHelper:
         self.__textures.append(dimensions)
 
     def link_texture(self, name, number):
+        """Link the texture to shaders."""
         location = glGetUniformLocation(self.__program, name)
         assert location >= 0
         glUniform1i(location, number)
