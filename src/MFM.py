@@ -1,7 +1,9 @@
+from os.path import isfile
+
 from scipy.io import loadmat
 from numpy.random import rand, randn
 from numpy.linalg import norm
-from numpy import array, fabs, floor
+from numpy import array, fabs, floor, load
 
 from .Face import Face
 from .View import View
@@ -21,7 +23,16 @@ def init(path=None):
     """
     global __model, __dimensions, __ev_normalized
 
-    __model = loadmat(path if path is not None else DEFAULT_MODEL_PATH)
+    path = path if path is not None else DEFAULT_MODEL_PATH
+    path_npz = '%s.npz'%path
+    if isfile(path_npz):
+        # savez('mfm.npz', **{x: y for x, y in model.items()
+        #                     if x in ['shapeEV', 'shapePC', 'tl', 'shapeMU']})
+        __model = load('%s.npz'%path)
+    elif isfile(path_npz):
+        __model = loadmat(path)
+    else:
+        raise IOError('Morphable Model Face file `%s` was not found'%path)
 
     __ev_normalized = __model['shapeEV'].flatten() / __model['shapeEV'].min()
 
