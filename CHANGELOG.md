@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Using shadow mapping.
 
 ## [0.5.5] - 2016-11-03
 ### Added

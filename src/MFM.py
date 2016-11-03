@@ -29,7 +29,7 @@ def init(path=None):
         # savez('mfm.npz', **{x: y for x, y in model.items()
         #                     if x in ['shapeEV', 'shapePC', 'tl', 'shapeMU']})
         __model = load('%s.npz'%path)
-    elif isfile(path_npz):
+    elif isfile(path):
         __model = loadmat(path)
     else:
         raise IOError('Morphable Model Face file `%s` was not found'%path)
