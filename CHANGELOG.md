@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Using shadow mapping.
 
+### Fixed
+- MFM loading from `.npz` and `.mat` file.
+
 ## [0.5.5] - 2016-11-03
 ### Added
 - Ability to load MFM from `.npz` file.
