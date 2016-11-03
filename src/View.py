@@ -73,7 +73,7 @@ class View:
         self.__sh.use_shaders()
         self.__sh.link_texture('principal_components', 0)
         self.__sh.link_texture('depth_map', 1)
-        self.__bind_texture()
+        self.__bind_pca_texture()
         self.__sh.bind_depth_texture(self.__size)
 
     def get_size(self):
@@ -230,7 +230,11 @@ class View:
             glActiveTexture(GL_TEXTURE1)
             self.__sh.bind_texture(1)
 
-    def __bind_texture(self):
+    def __bind_pca_texture(self):
+        """Bind texture with principal components.
+
+        Needed for shaders to calculate Face model.
+        """
         size = View.__principal_components.size // 3
         data = View.__principal_components.transpose() * View.__deviations
 
