@@ -82,27 +82,33 @@ class View:
 
     @property
     def light(self):
+        """Get light direction."""
         return self.__light
 
     @light.setter
     def light(self, light):
+        """Set light direction."""
         self.__light = light
 
     @property
     def rotation(self):
+        """Get model rotation."""
         return self.__rotation
 
     @rotation.setter
     def rotation(self, rotation):
+        """Set model rotation."""
         self.__need_rotation = True
         self.__rotation = rotation
 
     @property
     def face(self):
+        """Get current Face."""
         return self.__face
 
     @face.setter
     def face(self, face):
+        """Set current Face."""
         self.__face = face
 
     def redraw(self, callback=None):
@@ -133,14 +139,17 @@ class View:
 
     @staticmethod
     def set_principal_components(principal_components):
+        """Set principal components for Face calculation."""
         View.__principal_components = principal_components
 
     @staticmethod
     def set_deviations(deviations):
+        """Get principal components deviations."""
         View.__deviations = deviations
 
     @staticmethod
     def set_mean_face(mean_face):
+        """Set mean Face for modelling."""
         View.__mean_face = mean_face
 
     def __display(self):
@@ -166,7 +175,7 @@ class View:
         glLoadMatrixf(rotation_matrix.flatten())
 
         glDisable(GL_CULL_FACE)
-        self.prepare_shaders(rotation_matrix, self.__light_matrix, True)
+        self.__prepare_shaders(rotation_matrix, self.__light_matrix, True)
         self.__sh.bind_fbo()
         glClear(GL_DEPTH_BUFFER_BIT)
         glDrawElements(GL_TRIANGLES, View.__triangles.size,
@@ -182,7 +191,7 @@ class View:
         glCullFace(GL_FRONT)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         self.__sh.change_shader(vertex=0, fragment=0)
-        self.prepare_shaders(rotation_matrix, self.__light_matrix, False)
+        self.__prepare_shaders(rotation_matrix, self.__light_matrix, False)
         self.__sh.bind_buffer()
         self.__sh.use_shaders()
         glDrawElements(GL_TRIANGLES, View.__triangles.size,
@@ -193,7 +202,9 @@ class View:
         if self.__callback is not None:
             self.__callback()
 
-    def prepare_shaders(self, rotation_matrix=None, light_matrix=None, depth=True):
+    def __prepare_shaders(self, rotation_matrix=None, light_matrix=None,
+                          depth=True):
+        """Generic shaders preparation method for depth map and final scene."""
         self.__sh.add_attribute(0, self.__mean_face, 'mean_position')
         self.__sh.bind_buffer()
 
