@@ -181,9 +181,9 @@ class ShadersHelper:
         glTexParameteri(texture_type, GL_TEXTURE_WRAP_S, GL_REPEAT)
         glTexParameteri(texture_type, GL_TEXTURE_WRAP_T, GL_REPEAT)
 
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_COMPARE_MODE,
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE,
                         GL_COMPARE_REF_TO_TEXTURE)
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_COMPARE_FUNC,
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC,
                         GL_LESS)
 
 
