@@ -25,11 +25,11 @@ def init(path=None):
 
     path = path if path is not None else DEFAULT_MODEL_PATH
     path_npz = '%s.npz'%path
-    if isfile(path):
+    if isfile(path_npz):
         # savez('mfm.npz', **{x: y for x, y in model.items()
         #                     if x in ['shapeEV', 'shapePC', 'tl', 'shapeMU']})
         __model = load('%s.npz'%path)
-    elif isfile(path_npz):
+    elif isfile(path):
         __model = loadmat(path)
     else:
         raise IOError('Morphable Model Face file `%s` was not found'%path)
