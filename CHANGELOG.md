@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Ability to load MFM from `.npz` file.
+- Error if MFM file was not found.
 
 ## [0.5.4] - 2016-11-02
 ### Fixed
