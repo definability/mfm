@@ -36,10 +36,12 @@ class Face:
 
     @property
     def directed_light(self):
+        """Get directed light vector."""
         return self.__directed_light
 
     @directed_light.setter
     def directed_light(self, directed_light):
+        """Set directed light vector."""
         directed_light = array(directed_light)
         if directed_light.shape != (3,):
             raise ValueError(ERROR_TEXT['LIGHT_DIRECTION']
@@ -48,22 +50,27 @@ class Face:
 
     @property
     def ambient_light(self):
+        """Get ambient light."""
         return self.__ambient_light
 
     @ambient_light.setter
     def ambient_light(self, ambient_light):
+        """Set ambient light."""
         self.__ambient_light = ambient_light
 
     @property
     def light(self):
+        """Get light vector."""
         return concatenate((self.directed_light, [self.ambient_light]))
 
     @property
     def coefficients(self):
+        """Get array of Face coefficients."""
         return self.__coefficients
 
     @staticmethod
     def from_array(parameters):
+        """Create Face from array of parameters."""
         coefficients = parameters[:-4]
         ambient_light = parameters[-4]
         directed_light = parameters[-3:]
