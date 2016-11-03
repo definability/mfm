@@ -195,7 +195,15 @@ class ShadersHelper:
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
 
     def bind_texture(self, i):
-        glBindTexture(GL_TEXTURE_2D, self.__textures_ids[i])
+        """Rebind texture for current program and shaders."""
+        dimensions = self.__textures[i]
+        if dimensions == 1:
+            texture_type = GL_TEXTURE_1D
+        elif dimensions == 2:
+            texture_type = GL_TEXTURE_2D
+        elif dimensions == 3:
+            texture_type = GL_TEXTURE_3D
+        glBindTexture(texture_type, self.__textures_ids[i])
 
     def bind_fbo(self):
         """Rebind depth map FBO for current program and shaders."""
