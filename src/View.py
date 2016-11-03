@@ -158,6 +158,9 @@ class View:
 
         glLoadMatrixf(self.__light_matrix.flatten())
         glLoadIdentity()
+        SIDE_LENGTH = 2.0
+        glOrtho(-SIDE_LENGTH, SIDE_LENGTH, -SIDE_LENGTH, SIDE_LENGTH,
+                -2 * SIDE_LENGTH, 2 * SIDE_LENGTH)
         light = self.__face.directed_light
         gluLookAt(-light[0], -light[1], light[2], 0.0, 0.0, 0.0, 0.0, 1.0, 0.0)
         self.__light_matrix = array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
