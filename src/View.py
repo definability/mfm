@@ -153,6 +153,7 @@ class View:
         View.__mean_face = mean_face
 
     def __get_rotation_matrix(self, coordinates, side_length):
+        """Get rotation matrix from specific point of view and scale."""
         assert len(coordinates) == 3
         glLoadIdentity()
         glOrtho(-side_length, side_length, -side_length, side_length,
