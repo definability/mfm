@@ -1,5 +1,5 @@
 
-from numpy import array, zeros, concatenate
+from numpy import array, zeros, concatenate, sin, cos
 
 ERROR_TEXT = {
     'VERTICES_SIZE': "Size of vertices array should be a multiple of three, "
@@ -39,6 +39,18 @@ class Face:
         """Get directed light vector."""
         return self.__directed_light
 
+    @property
+    def directed_light_cartesian(self):
+        """Get directed light vector from spherical coordinates."""
+        theta = self.__directed_light[0]
+        phi = self.__directed_light[1]
+        r = self.__directed_light[2]
+        return array([
+            r * sin(theta) * cos(phi),
+            r * sin(theta) * sin(phi),
+            r * cos(theta)
+        ])
+
     @directed_light.setter
     def directed_light(self, directed_light):
         """Set directed light vector."""
@@ -62,6 +74,12 @@ class Face:
     def light(self):
         """Get light vector."""
         return concatenate((self.directed_light, [self.ambient_light]))
+
+    @property
+    def light_cartesian(self):
+        """Get light from spherical coordinates."""
+        return concatenate((self.directed_light_cartesian,
+                            [self.ambient_light]))
 
     @property
     def coefficients(self):
