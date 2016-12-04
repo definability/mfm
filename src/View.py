@@ -54,7 +54,6 @@ class View:
         self.__light_matrix = zeros((4, 4), dtype='f')
 
         self.__init_display()
-        self.__adjust_viewport()
         self.__enable_depth_test()
 
         glEnableClientState(GL_COLOR_ARRAY)
@@ -271,15 +270,6 @@ class View:
         glutInitWindowPosition(0, 0)
         glutInit(sys.argv)
         glutCreateWindow(b"Morphable face model")
-
-    def __adjust_viewport(self):
-        """Initialize rotation matrix and viwport box."""
-        glMatrixMode(GL_MODELVIEW)
-        glLoadIdentity()
-
-        SIDE_LENGTH = .5
-        glOrtho(-SIDE_LENGTH, SIDE_LENGTH, -SIDE_LENGTH, SIDE_LENGTH,
-                -2 * SIDE_LENGTH, 2 * SIDE_LENGTH)
 
     def __enable_depth_test(self):
         """Enable depth test and faces culling.
