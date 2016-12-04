@@ -26,7 +26,7 @@ from OpenGL.GLUT import glutInitDisplayMode, glutLeaveMainLoop, glutDisplayFunc
 
 from OpenGL.GLU import gluLookAt
 
-from numpy import zeros, ones, array, concatenate
+from numpy import zeros, ones, array, concatenate, sin, cos
 
 from .ShadersHelper import ShadersHelper
 
@@ -48,8 +48,7 @@ class View:
                                     dtype='f')
 
         self.__light = None
-        self.__rotation = (0., 0., 0.)
-        self.__need_rotation = True
+        self.__rotation = array([0., 0., 0.])
         self.__face = None
         self.__light_matrix = zeros((4, 4), dtype='f')
 
@@ -98,8 +97,7 @@ class View:
     @rotation.setter
     def rotation(self, rotation):
         """Set model rotation."""
-        self.__need_rotation = True
-        self.__rotation = rotation
+        self.__rotation += rotation
 
     @property
     def face(self):
@@ -164,10 +162,15 @@ class View:
 
     def __display(self):
         """Render the model by existent vertices, colors and triangles."""
-        if self.__need_rotation:
-            glRotatef(1., *self.__rotation)
-            self.__need_rotation = False
-        rotation_matrix = array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
+        phi = - self.__rotation[0] * .01
+        theta = self.__rotation[1] * .01
+        r = abs(self.__rotation[2]) * 0.1 + 1
+        cartesian_rotation = (
+            sin(theta) * cos(phi),
+            sin(theta) * sin(phi),
+            cos(theta)
+        )
+        rotation_matrix = self.__get_rotation_matrix(cartesian_rotation, .5 * r)
 
         # GET SHADOWS
         glEnable(GL_POLYGON_OFFSET_FILL)
