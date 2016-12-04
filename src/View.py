@@ -226,7 +226,8 @@ class View:
 
         self.__sh.use_shaders()
 
-        self.__sh.bind_uniform_matrix(light_matrix.dot(rotation_matrix), 'light_matrix')
+        self.__sh.bind_uniform_matrix(light_matrix.dot(rotation_matrix),
+                                      'light_matrix')
         if not depth:
             self.__sh.bind_uniform_matrix(rotation_matrix, 'rotation_matrix')
             self.__sh.bind_uniform_vector(self.__face.light_cartesian,
