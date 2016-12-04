@@ -152,6 +152,15 @@ class View:
         """Set mean Face for modelling."""
         View.__mean_face = mean_face
 
+    def __get_rotation_matrix(self, coordinates, side_length):
+        assert len(coordinates) == 3
+        glLoadIdentity()
+        glOrtho(-side_length, side_length, -side_length, side_length,
+                -4 * side_length, 4 * side_length)
+        x, y, z = coordinates
+        gluLookAt(x, y, z, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0)
+        return array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
+
     def __display(self):
         """Render the model by existent vertices, colors and triangles."""
         if self.__need_rotation:
