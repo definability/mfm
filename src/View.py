@@ -174,15 +174,9 @@ class View:
         glPolygonOffset(3, 0)
         self.__sh.change_shader(vertex=1, fragment=1)
 
-        glLoadMatrixf(self.__light_matrix.flatten())
-        glLoadIdentity()
-        SIDE_LENGTH = 2.0
-        glOrtho(-SIDE_LENGTH, SIDE_LENGTH, -SIDE_LENGTH, SIDE_LENGTH,
-                -2 * SIDE_LENGTH, 2 * SIDE_LENGTH)
-        light = self.__face.directed_light
-        gluLookAt(-light[0], -light[1], light[2], 0.0, 0.0, 0.0, 0.0, 1.0, 0.0)
-        self.__light_matrix = array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
-        glLoadMatrixf(rotation_matrix.flatten())
+        light = self.__face.directed_light_cartesian
+        self.__light_matrix = self.__get_rotation_matrix(
+            (light[0], light[1], -light[2]), 2.0)
 
         glDisable(GL_CULL_FACE)
         self.__prepare_shaders(rotation_matrix, self.__light_matrix, True)
@@ -223,7 +217,7 @@ class View:
         self.__sh.bind_uniform_matrix(light_matrix.dot(rotation_matrix), 'light_matrix')
         if not depth:
             self.__sh.bind_uniform_matrix(rotation_matrix, 'rotation_matrix')
-            self.__sh.bind_uniform_vector(self.__face.light,
+            self.__sh.bind_uniform_vector(self.__face.light_cartesian,
                                           'light_vector')
         coefficients_amount = len(self.__face.coefficients)
         indices = -ones(199, dtype='i')
