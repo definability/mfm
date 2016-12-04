@@ -50,6 +50,7 @@ class View:
         self.__light = None
         self.__rotation = array([0., 0., 0.])
         self.__face = None
+        self.__model_matrix = zeros((4, 4), dtype='f')
         self.__light_matrix = zeros((4, 4), dtype='f')
 
         self.__init_display()
@@ -162,6 +163,16 @@ class View:
 
     def __display(self):
         """Render the model by existent vertices, colors and triangles."""
+        self.__rotate_model()
+        self.__generate_shadows()
+        self.__generate_model()
+
+        glutSwapBuffers()
+        if self.__callback is not None:
+            self.__callback()
+
+    def __rotate_model(self):
+        """Update model rotation matrix."""
         phi = - self.__rotation[0] * .01
         theta = self.__rotation[1] * .01
         r = abs(self.__rotation[2]) * 0.1 + 1
@@ -170,9 +181,11 @@ class View:
             sin(theta) * sin(phi),
             cos(theta)
         )
-        rotation_matrix = self.__get_rotation_matrix(cartesian_rotation, .5 * r)
+        self.__model_matrix = self.__get_rotation_matrix(
+            cartesian_rotation, .5 * r)
 
-        # GET SHADOWS
+    def __generate_shadows(self):
+        """Generate shadow matrix for rotated model."""
         glEnable(GL_POLYGON_OFFSET_FILL)
         glPolygonOffset(3, 0)
         self.__sh.change_shader(vertex=1, fragment=1)
@@ -182,7 +195,7 @@ class View:
             (light[0], light[1], -light[2]), 2.0)
 
         glDisable(GL_CULL_FACE)
-        self.__prepare_shaders(rotation_matrix, self.__light_matrix, True)
+        self.__prepare_shaders(self.__model_matrix, self.__light_matrix, True)
         self.__sh.bind_fbo()
         glClear(GL_DEPTH_BUFFER_BIT)
         glDrawElements(GL_TRIANGLES, View.__triangles.size,
@@ -192,22 +205,18 @@ class View:
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
         self.__sh.clear()
 
-        # RENDER
-        # glViewport(0, 0, self.__width, self.__height)
+    def __generate_model(self):
+        """Generate rotated model with shadows."""
         glEnable(GL_CULL_FACE)
         glCullFace(GL_FRONT)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         self.__sh.change_shader(vertex=0, fragment=0)
-        self.__prepare_shaders(rotation_matrix, self.__light_matrix, False)
+        self.__prepare_shaders(self.__model_matrix, self.__light_matrix, False)
         self.__sh.bind_buffer()
         self.__sh.use_shaders()
         glDrawElements(GL_TRIANGLES, View.__triangles.size,
                        GL_UNSIGNED_SHORT, View.__triangles)
         self.__sh.clear()
-
-        glutSwapBuffers()
-        if self.__callback is not None:
-            self.__callback()
 
     def __prepare_shaders(self, rotation_matrix=None, light_matrix=None,
                           depth=True):
