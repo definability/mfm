@@ -16,6 +16,9 @@ ERROR_TEXT = {
 
 class Face:
 
+    LIGHT_COMPONENTS_COUNT = 3
+    DIRECTION_COMPONENTS_COUNT = 3
+
     def __init__(self, ambient_light=0, directed_light=None,
                  coefficients=None):
         """Create new Face."""
