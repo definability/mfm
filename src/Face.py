@@ -49,7 +49,7 @@ class Face:
         if coefficients is None:
             self.__coefficients = array([], dtype='f')
         else:
-            self.__coefficients = coefficients
+            self.__coefficients = array(coefficients, dtype='f')
 
     @property
     def directed_light(self):
