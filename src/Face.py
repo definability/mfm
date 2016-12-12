@@ -59,13 +59,23 @@ class Face:
     @property
     def directed_light_cartesian(self):
         """Get directed light vector from spherical coordinates."""
-        theta = self.__directed_light[0]
-        phi = self.__directed_light[1]
-        r = self.__directed_light[2]
+        phi = self.__directed_light[0]
+        theta = self.__directed_light[1]
+        if False:
+            sin_theta = sin(theta)
+            cos_theta = cos(theta)
+            sin_phi = sin(phi)
+            cos_phi = cos(phi)
+        else:
+            sin_theta = theta
+            cos_theta = (1 - theta**2)**.5
+            sin_phi = phi
+            cos_phi = (1 - phi**2)**.5
+        r = 1. #self.__directed_light[2]
         return array([
-            r * sin(theta) * cos(phi),
-            r * sin(theta) * sin(phi),
-            r * cos(theta)
+            r * sin_theta * cos_phi,
+            r * sin_theta * sin_phi,
+            r * cos_theta
         ])
 
     @directed_light.setter
