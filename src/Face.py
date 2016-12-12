@@ -106,7 +106,7 @@ class Face:
     def light_cartesian(self):
         """Get light from spherical coordinates."""
         return concatenate((self.directed_light_cartesian,
-                            [self.ambient_light]))
+                            [self.directed_light[2]]))
 
     @property
     def coefficients(self):
