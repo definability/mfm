@@ -61,7 +61,6 @@ class BruteForceFitter(ModelFitter):
     def start(self):
         self.__loop = 0
         self.__face = self._initial_face
-
         self.__parameters = self._initial_face.as_array
 
         self.request_face(self.__face, 'init')
