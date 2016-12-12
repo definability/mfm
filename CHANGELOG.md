@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - `Face` PC `cefficients` should have type of `NumPy` `array`.
 
+### Changed
+- `Face` save saves entire `Face` as `NumPy` `array` to file.
+
 ### Removed
 - `Face` ambient light as an image option.
 
