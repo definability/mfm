@@ -123,9 +123,7 @@ class Face:
     @staticmethod
     def from_array(parameters):
         """Create Face from array of parameters."""
-        coefficients = parameters[:-4]
-        ambient_light = parameters[-4]
-        directed_light = parameters[-3:]
+        coefficients = parameters[Face.NON_PCS_SLICE]
+        directed_light = parameters[Face.LIGHT_COMPONENTS_SLICE]
         return Face(coefficients=coefficients,
-                    directed_light=directed_light,
-                    ambient_light=ambient_light)
+                    directed_light=directed_light)
