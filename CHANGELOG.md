@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - `Face` PC `cefficients` should have type of `NumPy` `array`.
 
+### Removed
+- `Face` ambient light as an image option.
+
 ## [0.6.0] - 2016-11-03
 ### Changed
 - Using shadow mapping.
