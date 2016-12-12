@@ -144,7 +144,5 @@ class Model:
         image.putdata(pixels)
         image.save(filename + '.png')
         image.close()
-        with open(filename + '.light.npy', 'wb') as f:
-            light = list(self.__face.directed_light)
-            light.append(self.__face.ambient_light)
-            save(f, light)
+        with open(filename + '.array.npy', 'wb') as f:
+            save(f, self.__face.as_array)
