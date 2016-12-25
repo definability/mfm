@@ -101,10 +101,12 @@ class Model:
 
         Adds (not sets) rotation value for given axis.
         """
-        self.__rotations[axis] = value
-        rotation = (self.__rotations['x'], self.__rotations['y'],
-                    self.__rotations['z'])
-        self.__view.rotation = rotation
+        if direction is not None:
+            x, y, z = self.__face.position
+            self.__face.position = (
+                x + direction['x'],
+                y + direction['y'],
+                z + direction['z'])
 
     def change_light(self, direction=None, intensity=None):
         """Change light parameters.
