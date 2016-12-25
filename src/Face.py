@@ -1,5 +1,5 @@
 
-from numpy import array, zeros, concatenate, sin, cos
+from numpy import array, zeros, concatenate
 
 ERROR_TEXT = {
     'VERTICES_SIZE': "Size of vertices array should be a multiple of three, "
@@ -9,21 +9,24 @@ ERROR_TEXT = {
     'TRIANGLES_VERTICES': "Each triangle should contain 3 vertices, "
                           "but {} provided",
     'LIGHT_DIRECTION': "Light should be represented by 3D vector, "
-                       "but array of shape {} provided"
+                       "but array of shape {} provided",
+    'POSITION': "Position should be represented by 3D vector, "
+                "but array of shape {} provided"
 }
 
 
 
 class Face:
+    """Class to represent Face instances."""
 
     LIGHT_COMPONENTS_COUNT = 3
     DIRECTION_COMPONENTS_COUNT = 0 # 3
     NON_PCS_COUNT = LIGHT_COMPONENTS_COUNT + DIRECTION_COMPONENTS_COUNT
 
     DIRECTION_COMPONENTS_START = - (LIGHT_COMPONENTS_COUNT
-        + DIRECTION_COMPONENTS_COUNT)
+                                    + DIRECTION_COMPONENTS_COUNT)
     DIRECTION_COMPONENTS_END = (DIRECTION_COMPONENTS_START
-        + DIRECTION_COMPONENTS_COUNT)
+                                + DIRECTION_COMPONENTS_COUNT)
     LIGHT_COMPONENTS_START = DIRECTION_COMPONENTS_END
     LIGHT_COMPONENTS_END = LIGHT_COMPONENTS_START + LIGHT_COMPONENTS_COUNT
 
@@ -34,10 +37,11 @@ class Face:
                                        DIRECTION_COMPONENTS_END or None)
 
     def __init__(self, ambient_light=0, directed_light=None,
-                 coefficients=None):
+                 position=None, coefficients=None):
         """Create new Face."""
         self.__directed_light = None
         self.__ambient_light = None
+        self.__position = None
 
         self.ambient_light = ambient_light
 
@@ -46,10 +50,36 @@ class Face:
         else:
             self.directed_light = directed_light
 
+        if position is None:
+            self.position = zeros(3, dtype='f')
+        else:
+            self.position = position
+
         if coefficients is None:
             self.__coefficients = array([], dtype='f')
         else:
             self.__coefficients = array(coefficients, dtype='f')
+
+    @property
+    def position(self):
+        """Get position."""
+        return self.__position
+
+    @property
+    def position_cartesian(self):
+        """Get directed light vector from spherical coordinates."""
+        phi = self.__position[0]
+        theta = self.__position[1]
+        return spherical_to_cartesian(phi, theta)
+
+    @position.setter
+    def position(self, position):
+        """Set position vector."""
+        position = array(position)
+        if position.shape != (3,):
+            raise ValueError(ERROR_TEXT['POSITION']
+                             .format(position.shape))
+        self.__position = position
 
     @property
     def directed_light(self):
