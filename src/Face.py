@@ -143,6 +143,7 @@ class Face:
 
     @property
     def as_array(self):
+        """Get NumPy array representation of the Face."""
         result = zeros(self.coefficients.size + Face.NON_PCS_COUNT, dtype='f')
         result[Face.NON_PCS_SLICE] = self.coefficients
         result[Face.LIGHT_COMPONENTS_SLICE] = self.directed_light
