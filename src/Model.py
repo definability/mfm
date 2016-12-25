@@ -96,29 +96,38 @@ class Model:
     def generate_face(self):
         return MFM.get_face()
 
-    def rotate(self, axis, value):
+    def rotate(self, direction=None, check_constraints=False):
         """Rotate camera of the viewport.
 
         Adds (not sets) rotation value for given axis.
         """
         if direction is not None:
             x, y, z = self.__face.position
-            self.__face.position = (
-                x + direction['x'],
-                y + direction['y'],
-                z + direction['z'])
+            new_x = x + direction['x']
+            new_y = y + direction['y']
+            new_z = z + direction['z']
+            if check_constraints and (
+                   (new_x < -1 or new_x > 1)
+                   or (new_y < -1 or new_y > 1)):
+               return
+            self.__face.position = (new_x, new_y, new_z)
 
-    def change_light(self, direction=None, intensity=None):
+    def change_light(self, direction=None, intensity=None,
+                     check_constraints=False):
         """Change light parameters.
 
         Set vector for directed light and intensity for ambient light.
         """
         if direction is not None:
             x, y, z = self.__face.directed_light
-            self.__face.directed_light = (
-                x + direction['x'],
-                y + direction['y'],
-                z + direction['z'])
+            new_x = x + direction['x']
+            new_y = y + direction['y']
+            new_z = z + direction['z']
+            if check_constraints and (
+                   (new_x < -1 or new_x > 1)
+                   or (new_y < -1 or new_y > 1)):
+               return
+            self.__face.directed_light = (new_x, new_y, new_z)
         if intensity is not None:
             constant_light = self.__face.get_constant_light()
             constant_light += intensity
