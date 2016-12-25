@@ -48,7 +48,6 @@ class View:
                                     dtype='f')
 
         self.__light = None
-        self.__rotation = array([0., 0., 0.])
         self.__face = None
         self.__model_matrix = zeros((4, 4), dtype='f')
         self.__light_matrix = zeros((4, 4), dtype='f')
@@ -88,16 +87,6 @@ class View:
     def light(self, light):
         """Set light direction."""
         self.__light = light
-
-    @property
-    def rotation(self):
-        """Get model rotation."""
-        return self.__rotation
-
-    @rotation.setter
-    def rotation(self, rotation):
-        """Set model rotation."""
-        self.__rotation += rotation
 
     @property
     def face(self):
