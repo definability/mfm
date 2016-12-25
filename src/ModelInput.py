@@ -86,9 +86,3 @@ class ModelInput:
         else:
             return
         self.__model.redraw()
-
-    def __rotate(self, commands, key, release):
-        """Process rotation keys."""
-        assert key in commands
-        axis, value = commands[key]
-        self.__model.rotate(axis, 0. if release else value)
