@@ -14,6 +14,19 @@ ERROR_TEXT = {
                 "but array of shape {} provided"
 }
 
+def spherical_to_cartesian(sin_phi, sin_theta, radius=1.0):
+    """Convert spherical coordinates to cartesian.
+
+    Given sinus of polar and azimuthal angle, and radial distance,
+    calculate cartesian coordinates of the point.
+    """
+    cos_theta = (1 - sin_theta**2)**.5
+    cos_phi = (1 - sin_phi**2)**.5
+    return array([
+        radius * sin_theta * cos_phi,
+        radius * sin_theta * sin_phi,
+        radius * cos_theta
+    ])
 
 
 class Face:
@@ -91,22 +104,7 @@ class Face:
         """Get directed light vector from spherical coordinates."""
         phi = self.__directed_light[0]
         theta = self.__directed_light[1]
-        if False:
-            sin_theta = sin(theta)
-            cos_theta = cos(theta)
-            sin_phi = sin(phi)
-            cos_phi = cos(phi)
-        else:
-            sin_theta = theta
-            cos_theta = (1 - theta**2)**.5
-            sin_phi = phi
-            cos_phi = (1 - phi**2)**.5
-        r = 1. #self.__directed_light[2]
-        return array([
-            r * sin_theta * cos_phi,
-            r * sin_theta * sin_phi,
-            r * cos_theta
-        ])
+        return spherical_to_cartesian(theta, phi)
 
     @directed_light.setter
     def directed_light(self, directed_light):
