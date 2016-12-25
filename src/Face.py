@@ -33,7 +33,7 @@ class Face:
     """Class to represent Face instances."""
 
     LIGHT_COMPONENTS_COUNT = 3
-    DIRECTION_COMPONENTS_COUNT = 0 # 3
+    DIRECTION_COMPONENTS_COUNT = 3
     NON_PCS_COUNT = LIGHT_COMPONENTS_COUNT + DIRECTION_COMPONENTS_COUNT
 
     DIRECTION_COMPONENTS_START = - (LIGHT_COMPONENTS_COUNT
@@ -146,6 +146,7 @@ class Face:
         """Get NumPy array representation of the Face."""
         result = zeros(self.coefficients.size + Face.NON_PCS_COUNT, dtype='f')
         result[Face.NON_PCS_SLICE] = self.coefficients
+        result[Face.DIRECTION_COMPONENTS_SLICE] = self.position
         result[Face.LIGHT_COMPONENTS_SLICE] = self.directed_light
         return result
 
@@ -153,6 +154,8 @@ class Face:
     def from_array(parameters):
         """Create Face from array of parameters."""
         coefficients = parameters[Face.NON_PCS_SLICE]
+        position = parameters[Face.DIRECTION_COMPONENTS_SLICE]
         directed_light = parameters[Face.LIGHT_COMPONENTS_SLICE]
         return Face(coefficients=coefficients,
-                    directed_light=directed_light)
+                    directed_light=directed_light,
+                    position=position)
