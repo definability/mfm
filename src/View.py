@@ -161,16 +161,9 @@ class View:
 
     def __rotate_model(self):
         """Update model rotation matrix."""
-        phi = - self.__rotation[0] * .01
-        theta = self.__rotation[1] * .01
-        r = abs(self.__rotation[2]) * 0.1 + 1
-        cartesian_rotation = (
-            sin(theta) * cos(phi),
-            sin(theta) * sin(phi),
-            cos(theta)
-        )
         self.__model_matrix = self.__get_rotation_matrix(
-            cartesian_rotation, .5 * r)
+            self.__face.position_cartesian,
+            (1 + self.__face.position[2]) * 0.5)
 
     def __generate_shadows(self):
         """Generate shadow matrix for rotated model."""
