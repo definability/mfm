@@ -43,7 +43,7 @@ class ModelInput:
             }
             axis, value = ModelInput.__rotation_keys[key]
             position[axis] = value
-            self.__model.rotate(direction=position)
+            self.__model.rotate(direction=position, check_constraints=True)
         else:
             return
         self.__model.redraw()
@@ -58,7 +58,7 @@ class ModelInput:
             }
             axis, value = ModelInput.__rotation_keys[key]
             position[axis] = value
-            self.__model.rotate(direction=position)
+            self.__model.rotate(direction=position, check_constraints=True)
         elif key in ModelInput.__light_keys and not release:
             directed_light = {
                 'x': 0.,
@@ -67,7 +67,8 @@ class ModelInput:
             }
             axis, value = ModelInput.__light_keys[key]
             directed_light[axis] = value
-            self.__model.change_light(direction=directed_light)
+            self.__model.change_light(direction=directed_light,
+                                      check_constraints=True)
         elif key == b'r' and not release:
             self.__model.face = self.__model.generate_face()
             self.__model.redraw()
