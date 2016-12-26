@@ -3,11 +3,16 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- `Face` rotation parameters.
+- `Face` convertion to `NumPy` `array`.
+
 ### Fixed
 - `Face` PC `cefficients` should have type of `NumPy` `array`.
 
 ### Changed
 - `Face` save saves entire `Face` as `NumPy` `array` to file.
+- `Face` rotation and light are represented in spherical coordinates.
 
 ### Removed
 - `Face` ambient light as an image option.
