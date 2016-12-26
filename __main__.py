@@ -33,7 +33,7 @@ initial_face = Face(coefficients=coefficients,
 
 model_filename = get_datafile_path(fitting_settings['input']['input_image'])
 image = Image.open(model_filename).convert('L')
-original_data = array((image.getdata())).astype('f') / 255
+original_data = array(image.getdata()).astype('f') / 255
 image_data = original_data.reshape(image.size)[::-1, :].flatten()
 image.close()
 
