@@ -186,7 +186,6 @@ class ShadersHelper:
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC,
                         GL_LESS)
 
-
         glBindFramebuffer(GL_FRAMEBUFFER, self.__depth_map_fbo)
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
                                GL_TEXTURE_2D, depth_map, 0)
