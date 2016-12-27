@@ -19,7 +19,7 @@ class ModelFitter:
         self.__pcs = dimensions
         self._dimensions = (dimensions
             + Face.LIGHT_COMPONENTS_COUNT
-            # + Face.DIRECTION_COMPONENTS_COUNT
+            + Face.DIRECTION_COMPONENTS_COUNT
         )
         self.__callback = callback
 
