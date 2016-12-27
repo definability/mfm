@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.7.0] - 2016-12-27
 ### Added
 - `Face` rotation parameters.
 - `Face` convertion to `NumPy` `array`.
@@ -518,7 +520,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.6.0...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/char-lie/mfm/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/char-lie/mfm/compare/v0.5.5...v0.6.0
 [0.5.5]: https://github.com/char-lie/mfm/compare/v0.5.4...v0.5.5
 [0.5.4]: https://github.com/char-lie/mfm/compare/v0.5.3...v0.5.4
