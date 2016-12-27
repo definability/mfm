@@ -13,6 +13,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - `Face` save saves entire `Face` as `NumPy` `array` to file.
 - `Face` rotation and light are represented in spherical coordinates.
+- `ModelFitter` calculates `Face` dimensions got from constants.
+- Fitters work with new `Face` and `ModelFitter`
+    - Batch gradient descent;
+    - Brute force;
+    - Gibbs sampler;
+    - Monte-Carlo;
+    - Nelder-Mead.
 
 ### Removed
 - `Face` ambient light as an image option.
