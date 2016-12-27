@@ -5,19 +5,18 @@ from os.path import join
 from OpenGL.GLUT import GLUT_KEY_LEFT, GLUT_KEY_RIGHT
 from OpenGL.GLUT import GLUT_KEY_DOWN, GLUT_KEY_UP
 
-from OpenGL.GLUT import glutSpecialUpFunc, glutSpecialFunc, glutKeyboardUpFunc
-from OpenGL.GLUT import glutKeyboardFunc
+from OpenGL.GLUT import glutSpecialFunc, glutKeyboardUpFunc, glutKeyboardFunc
 
 
 class ModelInput:
     """Process input and trigger needed methods of Model."""
     __rotation_keys = {
-        GLUT_KEY_UP: ('x', -1.),
-        GLUT_KEY_DOWN: ('x', 1.),
-        GLUT_KEY_RIGHT: ('y', -1.),
-        GLUT_KEY_LEFT: ('y', 1.),
-        b'z': ('z', -1.),
-        b'a': ('z', 1.)
+        GLUT_KEY_UP:    ('x', -.1),
+        GLUT_KEY_DOWN:  ('x', .1),
+        GLUT_KEY_RIGHT: ('y', -.1),
+        GLUT_KEY_LEFT:  ('y', .1),
+        b'z':           ('z', -.1),
+        b'a':           ('z', .1)
     }
     __light_keys = {
         b'h': ('x', .1),
@@ -32,13 +31,19 @@ class ModelInput:
 
         glutKeyboardFunc(lambda key, x, y: self.__handle_key(key, False))
         glutKeyboardUpFunc(lambda key, x, y: self.__handle_key(key, True))
-        glutSpecialFunc(lambda key, x, y: self.__handle_special(key, False))
-        glutSpecialUpFunc(lambda key, x, y: self.__handle_special(key, True))
+        glutSpecialFunc(lambda key, x, y: self.__handle_special(key))
 
-    def __handle_special(self, key, release=False):
+    def __handle_special(self, key):
         """Process special keys of the keyboard."""
         if key in ModelInput.__rotation_keys:
-            self.__rotate(ModelInput.__rotation_keys, key, release)
+            position = {
+                'x': 0.,
+                'y': 0.,
+                'z': 0.
+            }
+            axis, value = ModelInput.__rotation_keys[key]
+            position[axis] = value
+            self.__model.rotate(direction=position, check_constraints=True)
         else:
             return
         self.__model.redraw()
@@ -46,7 +51,14 @@ class ModelInput:
     def __handle_key(self, key, release=False):
         """Process alphanumerical keys of the keyboard."""
         if key in ModelInput.__rotation_keys:
-            self.__rotate(ModelInput.__rotation_keys, key, release)
+            position = {
+                'x': 0.,
+                'y': 0.,
+                'z': 0.
+            }
+            axis, value = ModelInput.__rotation_keys[key]
+            position[axis] = value
+            self.__model.rotate(direction=position, check_constraints=True)
         elif key in ModelInput.__light_keys and not release:
             directed_light = {
                 'x': 0.,
@@ -55,7 +67,8 @@ class ModelInput:
             }
             axis, value = ModelInput.__light_keys[key]
             directed_light[axis] = value
-            self.__model.change_light(direction=directed_light)
+            self.__model.change_light(direction=directed_light,
+                                      check_constraints=True)
         elif key == b'r' and not release:
             self.__model.face = self.__model.generate_face()
             self.__model.redraw()
@@ -74,9 +87,3 @@ class ModelInput:
         else:
             return
         self.__model.redraw()
-
-    def __rotate(self, commands, key, release):
-        """Process rotation keys."""
-        assert key in commands
-        axis, value = commands[key]
-        self.__model.rotate(axis, 0. if release else value)

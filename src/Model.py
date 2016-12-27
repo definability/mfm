@@ -1,3 +1,4 @@
+"""Model of the MVC application."""
 from enum import Enum
 
 from OpenGL.GLUT import glutMainLoop
@@ -45,10 +46,12 @@ class Model:
 
     @property
     def face(self):
+        """Get current Face."""
         return self.__face
 
     @face.setter
     def face(self, face):
+        """Set current Face."""
         self.__face = face
         self.__view.face = face
 
@@ -93,30 +96,41 @@ class Model:
         else:
             self.__now_processing = False
 
-    def generate_face(self):
+    @staticmethod
+    def generate_face():
+        """Get new random Face instance."""
         return MFM.get_face()
 
-    def rotate(self, axis, value):
+    def rotate(self, direction=None, check_constraints=False):
         """Rotate camera of the viewport.
 
         Adds (not sets) rotation value for given axis.
         """
-        self.__rotations[axis] = value
-        rotation = (self.__rotations['x'], self.__rotations['y'],
-                    self.__rotations['z'])
-        self.__view.rotation = rotation
+        if direction is not None:
+            x, y, z = self.__face.position
+            new_x = x + direction['x']
+            new_y = y + direction['y']
+            new_z = z + direction['z']
+            if check_constraints and ((new_x < -1 or new_x > 1)
+                                      or (new_y < -1 or new_y > 1)):
+                return
+            self.__face.position = (new_x, new_y, new_z)
 
-    def change_light(self, direction=None, intensity=None):
+    def change_light(self, direction=None, intensity=None,
+                     check_constraints=False):
         """Change light parameters.
 
         Set vector for directed light and intensity for ambient light.
         """
         if direction is not None:
             x, y, z = self.__face.directed_light
-            self.__face.directed_light = (
-                x + direction['x'],
-                y + direction['y'],
-                z + direction['z'])
+            new_x = x + direction['x']
+            new_y = y + direction['y']
+            new_z = z + direction['z']
+            if check_constraints and ((new_x < -1 or new_x > 1)
+                                      or (new_y < -1 or new_y > 1)):
+                return
+            self.__face.directed_light = (new_x, new_y, new_z)
         if intensity is not None:
             constant_light = self.__face.get_constant_light()
             constant_light += intensity
@@ -144,7 +158,5 @@ class Model:
         image.putdata(pixels)
         image.save(filename + '.png')
         image.close()
-        with open(filename + '.light.npy', 'wb') as f:
-            light = list(self.__face.directed_light)
-            light.append(self.__face.ambient_light)
-            save(f, light)
+        with open(filename + '.array.npy', 'wb') as f:
+            save(f, self.__face.as_array)

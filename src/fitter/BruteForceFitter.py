@@ -27,7 +27,9 @@ class BruteForceFitter(ModelFitter):
         Sequence `levels` contains indices of parameters
         which should be fitted.
         """
-        dimensions += 4
+        super(BruteForceFitter, self).__init__(
+            image, dimensions, model, initial_face, callback)
+
         if steps is None:
             self.__steps = ones(dimensions, dtype='i')
         else:
@@ -55,18 +57,12 @@ class BruteForceFitter(ModelFitter):
         self.__directions = []
         self.__face = None
 
-        super(BruteForceFitter, self).__init__(image, dimensions-4, model,
-                                               initial_face, callback)
-        self._dimensions += 4
 
     def start(self):
         self.__loop = 0
         self.__face = self._initial_face
+        self.__parameters = self._initial_face.as_array
 
-        self.__parameters = zeros(self._dimensions, dtype='f')
-        self.__parameters[-4] = self.__face.ambient_light
-        self.__parameters[-3:] = self.__face.directed_light
-        self.__parameters[:-4] = self.__face.coefficients
         self.request_face(self.__face, 'init')
 
         self.__errors = {}
@@ -127,11 +123,7 @@ class BruteForceFitter(ModelFitter):
         change_on = self.__inc_index()
         if change_on == -1:
             result = self.__convert_parameters()
-
-            parameters = zeros(self._dimensions, dtype='f')
-            parameters[-4] = self._initial_face.ambient_light
-            parameters[-3:] = self._initial_face.directed_light
-            parameters[:-4] = self._initial_face.coefficients
+            parameters = self._initial_face.as_array
             parameters[self.__levels] = result[-1][0]
             self.__face = Face.from_array(parameters)
             self.request_face(self.__face, 'finish')

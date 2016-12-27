@@ -1,8 +1,8 @@
 from PIL import Image
 from numpy import zeros
 
-from .ModelFitter import ModelFitter
 from src import Face
+from .ModelFitter import ModelFitter
 
 
 class BGDFitter(ModelFitter):
@@ -10,6 +10,7 @@ class BGDFitter(ModelFitter):
     def __init__(self, image, dimensions=199, model=None,
                  dx=.1, step=100., max_loops=10, callback=None,
                  initial_face=None, light_dx=.1):
+        super(BGDFitter, self).__init__(image, dimensions, model, initial_face)
 
         self.__dx = dx
         self.__light_dx = light_dx
@@ -25,12 +26,10 @@ class BGDFitter(ModelFitter):
         self.__loop = 0
         self.__max_loops = max_loops
 
-        super(BGDFitter, self).__init__(image, dimensions, model, initial_face)
-
     def start(self):
         self.__face = self._initial_face
 
-        derivatives_size = self._dimensions + 4
+        derivatives_size = self._dimensions
         self.__derivatives = zeros(derivatives_size, dtype='f')
         self.__left_derivatives = zeros(derivatives_size, dtype='f')
         self.__right_derivatives = zeros(derivatives_size, dtype='f')
@@ -57,16 +56,13 @@ class BGDFitter(ModelFitter):
         self.__current_step = -5
         coefficients = (
             self.__face.coefficients
-            - self.__step * self.__derivatives[:self._dimensions])
+            - self.__step * self.__derivatives[:-Face.NON_PCS_COUNT])
         directed_light = (
             self.__face.directed_light
-            - self.__step * self.__derivatives[-3:] / 50)
-        ambient_light = (
-            self.__face.ambient_light
-            - self.__step * self.__derivatives[-4] / 50)
+            - self.__step * self.__derivatives[Face.LIGHT_COMPONENTS_SLICE]
+            / 50)
         self.__face = Face(coefficients=coefficients,
-                           directed_light=directed_light,
-                           ambient_light=ambient_light)
+                           directed_light=directed_light)
         # print(self.__derivatives)
         self.request_face(self.__face, 'start_iteration')
 
@@ -74,9 +70,7 @@ class BGDFitter(ModelFitter):
         if step == 'start':
             shadows = image
             self.__derivatives[param] = self.get_image_deviation(shadows)
-
             face = self.__derivative_face(param, self.__dx)
-
             self.request_face(face, 'right_derivative')
         elif 'derivative' in step:
             shadows = image
@@ -105,23 +99,13 @@ class BGDFitter(ModelFitter):
             self.request_face(face, action)
 
     def __derivative_face(self, param, dx):
-        ambient_light = self.__face.ambient_light
-
-        directed_light = self.__face.directed_light.copy()
-
-        coefficients = self.__face.coefficients.copy()
-
+        params = self.__face.as_array
         if param >= 0:
-            coefficients[param] += dx
-        elif param == -4:
-            ambient_light += self.__light_dx
+            params[param] += dx
         else:
-            directed_light[param+3] += self.__light_dx
-        # print(coefficients)
+            params[param] += self.__light_dx
 
-        return Face(coefficients=coefficients,
-                    directed_light=directed_light,
-                    ambient_light=ambient_light)
+        return Face.from_array(params)
 
     def __derivative(self, y0, y1, dx):
         return (y1 - y0) / dx

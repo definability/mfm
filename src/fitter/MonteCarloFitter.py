@@ -1,7 +1,7 @@
 from math import pi
 from decimal import Decimal
 
-from numpy import array, unique, zeros, std, log, mean, isnan, nonzero
+from numpy import array, unique, std, log, mean, isnan, nonzero
 from numpy.random import randn
 
 from src import Face
@@ -18,11 +18,12 @@ class MonteCarloFitter(ModelFitter):
         - iterating_parameters  Parameters to integrate by
                                 in addition to parameters to estimate.
         """
+        super(MonteCarloFitter, self).__init__(image, dimensions, model,
+                                               initial_face, callback)
+
         assert len(estimating_parameters) > 0
         if iterating_parameters is None:
             iterating_parameters = list(range(dimensions))
-
-        dimensions += 4
 
         self.__iterating_parameters = unique(
             estimating_parameters + iterating_parameters)
@@ -33,10 +34,6 @@ class MonteCarloFitter(ModelFitter):
         self.__image = image
         self.__values = []
         self.__steps = steps
-
-        super(MonteCarloFitter, self).__init__(image, dimensions - 4, model,
-                                               initial_face, callback)
-        self._dimensions += 4
 
     def start(self):
         self.__parameters = []
@@ -90,13 +87,9 @@ class MonteCarloFitter(ModelFitter):
                 Decimal(float(p[i]))*Decimal(diff).exp()
                 for diff, p in zip(normalized_differences, self.__parameters))
             for i in self.__estimating_parameters]
-        face = self._initial_face
-        parameters = zeros(self._dimensions, dtype='f')
-        parameters[-4] = face.ambient_light
-        parameters[-3:] = face.directed_light
-        parameters[:-4] = face.coefficients
+        parameters = self._initial_face.as_array
         parameters[self.__estimating_parameters] = params
-        self.finish(face)
+        self.finish(Face.from_array(parameters))
 
     def __get_iterations_count(self, values):
         """Estimate number of iterations.
@@ -125,11 +118,7 @@ class MonteCarloFitter(ModelFitter):
 
         Based on needed parameters to iterate by and initial Face.
         """
-        face = self._initial_face
-        parameters = zeros(self._dimensions, dtype='f')
-        parameters[-4] = face.ambient_light
-        parameters[-3:] = face.directed_light
-        parameters[:-4] = face.coefficients
+        parameters = self._initial_face.as_array
         parameters[self.__iterating_parameters] = randn(
             len(self.__iterating_parameters))
         self.__parameters.append(parameters)

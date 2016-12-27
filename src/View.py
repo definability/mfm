@@ -4,13 +4,13 @@ from math import ceil
 from OpenGL.GL import GL_LESS, GL_TRUE, GL_DEPTH_TEST, GL_STENCIL_TEST
 from OpenGL.GL import GL_COLOR_ARRAY, GL_VERTEX_ARRAY, GL_TRIANGLES
 from OpenGL.GL import GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT
-from OpenGL.GL import GL_UNSIGNED_SHORT, GL_FLOAT, GL_MODELVIEW
+from OpenGL.GL import GL_UNSIGNED_SHORT, GL_FLOAT
 from OpenGL.GL import GL_CULL_FACE, GL_FRONT, GL_MODELVIEW_MATRIX
 
-from OpenGL.GL import glMatrixMode, glLoadIdentity, glOrtho, glRotatef
+from OpenGL.GL import glLoadIdentity, glOrtho
 from OpenGL.GL import glDepthMask, glDepthFunc, glCullFace, glDisable
 from OpenGL.GL import glEnable, glClearColor, glEnableClientState, glClear
-from OpenGL.GL import glDrawElements, glGetFloatv, glLoadMatrixf, glFinish
+from OpenGL.GL import glDrawElements, glGetFloatv, glFinish
 from OpenGL.GL import glActiveTexture, glBindFramebuffer
 from OpenGL.GL import GL_TEXTURE0, GL_TEXTURE1, GL_FRAMEBUFFER
 
@@ -48,13 +48,11 @@ class View:
                                     dtype='f')
 
         self.__light = None
-        self.__rotation = (0., 0., 0.)
-        self.__need_rotation = True
         self.__face = None
+        self.__model_matrix = zeros((4, 4), dtype='f')
         self.__light_matrix = zeros((4, 4), dtype='f')
 
         self.__init_display()
-        self.__adjust_viewport()
         self.__enable_depth_test()
 
         glEnableClientState(GL_COLOR_ARRAY)
@@ -89,17 +87,6 @@ class View:
     def light(self, light):
         """Set light direction."""
         self.__light = light
-
-    @property
-    def rotation(self):
-        """Get model rotation."""
-        return self.__rotation
-
-    @rotation.setter
-    def rotation(self, rotation):
-        """Set model rotation."""
-        self.__need_rotation = True
-        self.__rotation = rotation
 
     @property
     def face(self):
@@ -152,30 +139,45 @@ class View:
         """Set mean Face for modelling."""
         View.__mean_face = mean_face
 
+    @staticmethod
+    def __get_rotation_matrix(coordinates, side_length):
+        """Get rotation matrix from specific point of view and scale."""
+        assert len(coordinates) == 3
+        glLoadIdentity()
+        glOrtho(-side_length, side_length, -side_length, side_length,
+                -4 * side_length, 4 * side_length)
+        x, y, z = coordinates
+        gluLookAt(x, y, z, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0)
+        return array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
+
     def __display(self):
         """Render the model by existent vertices, colors and triangles."""
-        if self.__need_rotation:
-            glRotatef(1., *self.__rotation)
-            self.__need_rotation = False
-        rotation_matrix = array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
+        self.__rotate_model()
+        self.__generate_shadows()
+        self.__generate_model()
 
-        # GET SHADOWS
+        glutSwapBuffers()
+        if self.__callback is not None:
+            self.__callback()
+
+    def __rotate_model(self):
+        """Update model rotation matrix."""
+        self.__model_matrix = self.__get_rotation_matrix(
+            self.__face.position_cartesian,
+            (1 + self.__face.position[2]) * 0.5)
+
+    def __generate_shadows(self):
+        """Generate shadow matrix for rotated model."""
         glEnable(GL_POLYGON_OFFSET_FILL)
         glPolygonOffset(3, 0)
         self.__sh.change_shader(vertex=1, fragment=1)
 
-        glLoadMatrixf(self.__light_matrix.flatten())
-        glLoadIdentity()
-        SIDE_LENGTH = 2.0
-        glOrtho(-SIDE_LENGTH, SIDE_LENGTH, -SIDE_LENGTH, SIDE_LENGTH,
-                -2 * SIDE_LENGTH, 2 * SIDE_LENGTH)
-        light = self.__face.directed_light
-        gluLookAt(-light[0], -light[1], light[2], 0.0, 0.0, 0.0, 0.0, 1.0, 0.0)
-        self.__light_matrix = array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
-        glLoadMatrixf(rotation_matrix.flatten())
+        light = self.__face.directed_light_cartesian
+        self.__light_matrix = self.__get_rotation_matrix(
+            (light[0], light[1], -light[2]), 2.0)
 
         glDisable(GL_CULL_FACE)
-        self.__prepare_shaders(rotation_matrix, self.__light_matrix, True)
+        self.__prepare_shaders(self.__model_matrix, self.__light_matrix, True)
         self.__sh.bind_fbo()
         glClear(GL_DEPTH_BUFFER_BIT)
         glDrawElements(GL_TRIANGLES, View.__triangles.size,
@@ -185,22 +187,18 @@ class View:
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
         self.__sh.clear()
 
-        # RENDER
-        # glViewport(0, 0, self.__width, self.__height)
+    def __generate_model(self):
+        """Generate rotated model with shadows."""
         glEnable(GL_CULL_FACE)
         glCullFace(GL_FRONT)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         self.__sh.change_shader(vertex=0, fragment=0)
-        self.__prepare_shaders(rotation_matrix, self.__light_matrix, False)
+        self.__prepare_shaders(self.__model_matrix, self.__light_matrix, False)
         self.__sh.bind_buffer()
         self.__sh.use_shaders()
         glDrawElements(GL_TRIANGLES, View.__triangles.size,
                        GL_UNSIGNED_SHORT, View.__triangles)
         self.__sh.clear()
-
-        glutSwapBuffers()
-        if self.__callback is not None:
-            self.__callback()
 
     def __prepare_shaders(self, rotation_matrix=None, light_matrix=None,
                           depth=True):
@@ -210,10 +208,11 @@ class View:
 
         self.__sh.use_shaders()
 
-        self.__sh.bind_uniform_matrix(light_matrix.dot(rotation_matrix), 'light_matrix')
+        self.__sh.bind_uniform_matrix(light_matrix.dot(rotation_matrix),
+                                      'light_matrix')
         if not depth:
             self.__sh.bind_uniform_matrix(rotation_matrix, 'rotation_matrix')
-            self.__sh.bind_uniform_vector(self.__face.light,
+            self.__sh.bind_uniform_vector(self.__face.light_cartesian,
                                           'light_vector')
         coefficients_amount = len(self.__face.coefficients)
         indices = -ones(199, dtype='i')
@@ -254,15 +253,6 @@ class View:
         glutInitWindowPosition(0, 0)
         glutInit(sys.argv)
         glutCreateWindow(b"Morphable face model")
-
-    def __adjust_viewport(self):
-        """Initialize rotation matrix and viwport box."""
-        glMatrixMode(GL_MODELVIEW)
-        glLoadIdentity()
-
-        SIDE_LENGTH = .5
-        glOrtho(-SIDE_LENGTH, SIDE_LENGTH, -SIDE_LENGTH, SIDE_LENGTH,
-                -2 * SIDE_LENGTH, 2 * SIDE_LENGTH)
 
     def __enable_depth_test(self):
         """Enable depth test and faces culling.

@@ -1,3 +1,4 @@
+"""Singleton module for Morphable Face Model manipulations."""
 from os.path import isfile
 
 from scipy.io import loadmat
@@ -10,9 +11,9 @@ from .View import View
 
 DEFAULT_MODEL_PATH = '01_MorphableModel.mat'
 
-__model = None
-__ev_normalized = None
-__dimensions = None
+__MODEL = None
+__EV_NORMALIZED = None
+__DIMENSIONS = None
 
 
 def init(path=None):
@@ -21,28 +22,28 @@ def init(path=None):
     Loads information from MatLAB file, chaches triangles, principal components
     and other immutable values used by any Face.
     """
-    global __model, __dimensions, __ev_normalized
+    global __MODEL, __DIMENSIONS, __EV_NORMALIZED
 
     path = path if path is not None else DEFAULT_MODEL_PATH
-    path_npz = '%s.npz'%path
+    path_npz = '%s.npz' % path
     if isfile(path_npz):
         # savez('mfm.npz', **{x: y for x, y in model.items()
         #                     if x in ['shapeEV', 'shapePC', 'tl', 'shapeMU']})
-        __model = load('%s.npz'%path)
+        __MODEL = load('%s.npz' % path)
     elif isfile(path):
-        __model = loadmat(path)
+        __MODEL = loadmat(path)
     else:
-        raise IOError('Morphable Model Face file `%s` was not found'%path)
+        raise IOError('Morphable Model Face file `%s` was not found' % path)
 
-    __ev_normalized = __model['shapeEV'].flatten() / __model['shapeEV'].min()
+    __EV_NORMALIZED = __MODEL['shapeEV'].flatten() / __MODEL['shapeEV'].min()
 
-    principal_components = __model['shapePC'].astype('f')
-    triangles = (__model['tl'] - 1).flatten()
+    principal_components = __MODEL['shapePC'].astype('f')
+    triangles = (__MODEL['tl'] - 1).flatten()
 
-    __dimensions = principal_components.shape[1]
+    __DIMENSIONS = principal_components.shape[1]
 
-    mean_shape = __model['shapeMU'].astype('f')
-    pc_deviations = __model['shapeEV'].astype('f')
+    mean_shape = __MODEL['shapeMU'].astype('f')
+    pc_deviations = __MODEL['shapeEV'].astype('f')
 
     View.set_triangles(triangles)
     View.set_principal_components(principal_components)
@@ -61,7 +62,7 @@ def get_multipliers(scale=1):
     Values will be normalized to the smallest one
     and multiplied by given number.
     """
-    return floor(scale * __ev_normalized**.5).astype('i')
+    return floor(scale * __EV_NORMALIZED**.5).astype('i')
 
 
 def get_face(coefficients=None, directed_light=None, ambient_light=None):
@@ -72,7 +73,7 @@ def get_face(coefficients=None, directed_light=None, ambient_light=None):
     - if light parameters not provided, random will be chosen.
     """
     if coefficients is None:
-        coefficients = randn(__dimensions)
+        coefficients = randn(__DIMENSIONS)
     if directed_light is None:
         directed_light = array([__random_cos(), __random_cos(),
                                 fabs(__random_cos())])

@@ -1,17 +1,17 @@
-from PIL import Image
-from numpy import ones, zeros, linspace, argmin, nonzero, exp, array
-# from numpy import column_stack
+from numpy import ones, zeros, linspace, argmin, exp, array
 from numpy.random import rand
 
-from .ModelFitter import ModelFitter
 from src import Face
+from .ModelFitter import ModelFitter
 
 
 class GibbsSamplerFitter(ModelFitter):
     def __init__(self, image, dimensions=199, model=None, steps=None,
                  max_loops=1, determined_loops=0,
                  initial_face=None, callback=None):
-        dimensions += 4
+        super(GibbsSamplerFitter, self).__init__(image, dimensions, model,
+                                                 initial_face, callback)
+
         self.__steps = ones(dimensions, dtype='i') if steps is None else steps
         self.__current_step = None
         self.__parameters = zeros(dimensions, dtype='f')
@@ -21,19 +21,13 @@ class GibbsSamplerFitter(ModelFitter):
         self.__loop = 0
         self.__max_loops = max_loops
         self.__determined_loops = determined_loops
-
-        super(GibbsSamplerFitter, self).__init__(image, dimensions - 4, model,
-                                                 initial_face, callback)
-        self._dimensions += 4
+        self.__face = None
 
     def start(self):
         self.__loop = 0
 
         self.__face = self._initial_face
-        self.__parameters = zeros(self._dimensions, dtype='f')
-        self.__parameters[-4] = self.__face.ambient_light
-        self.__parameters[-3:] = self.__face.directed_light
-        self.__parameters[:-4] = self.__face.coefficients
+        self.__parameters = self.__face.as_array
 
         self.request_face(self.__face, 'init')
         self.__get_parameter(0)

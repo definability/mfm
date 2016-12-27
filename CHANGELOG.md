@@ -3,6 +3,26 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- `Face` rotation parameters.
+- `Face` convertion to `NumPy` `array`.
+
+### Fixed
+- `Face` PC `cefficients` should have type of `NumPy` `array`.
+
+### Changed
+- `Face` save saves entire `Face` as `NumPy` `array` to file.
+- `Face` rotation and light are represented in spherical coordinates.
+- `ModelFitter` calculates `Face` dimensions got from constants.
+- Fitters work with new `Face` and `ModelFitter`
+    - Batch gradient descent;
+    - Brute force;
+    - Gibbs sampler;
+    - Monte-Carlo;
+    - Nelder-Mead.
+
+### Removed
+- `Face` ambient light as an image option.
 
 ## [0.6.0] - 2016-11-03
 ### Changed

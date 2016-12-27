@@ -16,20 +16,23 @@ class ModelFitter:
         """
         self.__image = array(image)
         self.__model = model
-        self._dimensions = dimensions
+        self.__pcs = dimensions
+        self._dimensions = (dimensions
+                            + Face.LIGHT_COMPONENTS_COUNT
+                            + Face.DIRECTION_COMPONENTS_COUNT)
         self.__callback = callback
 
         self._initial_face = initial_face
         if self._initial_face is None:
             self._initial_face = Face(
-                coefficients=zeros(self._dimensions, dtype='f'),
+                coefficients=zeros(self.__pcs, dtype='f'),
                 directed_light=(0, 0, 0),
                 ambient_light=0.5
             )
         coefficients = self._initial_face.coefficients
-        if len(coefficients) != self._dimensions:
-            correct_coefficients = zeros(self._dimensions, dtype='f')
-            count = min(len(coefficients), self._dimensions)
+        if len(coefficients) != self.__pcs:
+            correct_coefficients = zeros(self.__pcs, dtype='f')
+            count = min(len(coefficients), self.__pcs)
             correct_coefficients[:count] = coefficients[:count]
             self._initial_face = Face(
                 coefficients=correct_coefficients,
