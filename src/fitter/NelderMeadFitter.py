@@ -1,19 +1,19 @@
-# from PIL import Image
-from numpy import mean, argsort, concatenate  # , zeros
-# from numpy.random import randn
+from numpy import mean, argsort, concatenate
 from numpy.linalg import norm
 
-from .ModelFitter import ModelFitter
 from src import Face
+from .ModelFitter import ModelFitter
 
 
 class NelderMeadFitter(ModelFitter):
     def __init__(self, image, dimensions=199, model=None, offset=1.,
                  initial_face=None, callback=None):
-        dimensions += 4
+        super(NelderMeadFitter, self).__init__(image, dimensions, model,
+                                               initial_face)
+
         self.__step = None
-        self.__parameters = [None] * (dimensions)
-        self.__errors = [None] * (dimensions)
+        self.__parameters = [None] * (self._dimensions)
+        self.__errors = [None] * (self._dimensions)
         self.__normals = None
         self.__offset = offset
 
@@ -31,10 +31,6 @@ class NelderMeadFitter(ModelFitter):
         self.__gamma = 2.
         self.__rho = .5
         self.__sigma = .5
-
-        super(NelderMeadFitter, self).__init__(image, dimensions-4, model,
-                                               initial_face)
-        self._dimensions += 4
 
     def start(self):
         self.__initiate_parameters()
