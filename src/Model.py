@@ -1,3 +1,4 @@
+"""Model of the MVC application."""
 from enum import Enum
 
 from OpenGL.GLUT import glutMainLoop
@@ -45,10 +46,12 @@ class Model:
 
     @property
     def face(self):
+        """Get current Face."""
         return self.__face
 
     @face.setter
     def face(self, face):
+        """Set current Face."""
         self.__face = face
         self.__view.face = face
 
@@ -93,7 +96,9 @@ class Model:
         else:
             self.__now_processing = False
 
-    def generate_face(self):
+    @staticmethod
+    def generate_face():
+        """Get new random Face instance."""
         return MFM.get_face()
 
     def rotate(self, direction=None, check_constraints=False):
@@ -106,10 +111,9 @@ class Model:
             new_x = x + direction['x']
             new_y = y + direction['y']
             new_z = z + direction['z']
-            if check_constraints and (
-                   (new_x < -1 or new_x > 1)
-                   or (new_y < -1 or new_y > 1)):
-               return
+            if check_constraints and ((new_x < -1 or new_x > 1)
+                                      or (new_y < -1 or new_y > 1)):
+                return
             self.__face.position = (new_x, new_y, new_z)
 
     def change_light(self, direction=None, intensity=None,
@@ -123,10 +127,9 @@ class Model:
             new_x = x + direction['x']
             new_y = y + direction['y']
             new_z = z + direction['z']
-            if check_constraints and (
-                   (new_x < -1 or new_x > 1)
-                   or (new_y < -1 or new_y > 1)):
-               return
+            if check_constraints and ((new_x < -1 or new_x > 1)
+                                      or (new_y < -1 or new_y > 1)):
+                return
             self.__face.directed_light = (new_x, new_y, new_z)
         if intensity is not None:
             constant_light = self.__face.get_constant_light()

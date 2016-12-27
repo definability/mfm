@@ -14,6 +14,7 @@ ERROR_TEXT = {
                 "but array of shape {} provided"
 }
 
+
 def spherical_to_cartesian(sin_phi, sin_theta, radius=1.0):
     """Convert spherical coordinates to cartesian.
 
