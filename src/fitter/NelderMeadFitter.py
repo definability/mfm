@@ -1,10 +1,8 @@
-# from PIL import Image
-from numpy import mean, argsort, concatenate  # , zeros
-# from numpy.random import randn
+from numpy import mean, argsort, concatenate
 from numpy.linalg import norm
 
-from .ModelFitter import ModelFitter
 from src import Face
+from .ModelFitter import ModelFitter
 
 
 class NelderMeadFitter(ModelFitter):

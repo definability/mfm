@@ -1,10 +1,8 @@
-from PIL import Image
-from numpy import ones, zeros, linspace, argmin, nonzero, exp, array
-# from numpy import column_stack
+from numpy import ones, zeros, linspace, argmin, exp, array
 from numpy.random import rand
 
-from .ModelFitter import ModelFitter
 from src import Face
+from .ModelFitter import ModelFitter
 
 
 class GibbsSamplerFitter(ModelFitter):
@@ -23,6 +21,7 @@ class GibbsSamplerFitter(ModelFitter):
         self.__loop = 0
         self.__max_loops = max_loops
         self.__determined_loops = determined_loops
+        self.__face = None
 
     def start(self):
         self.__loop = 0

@@ -1,8 +1,8 @@
 from PIL import Image
 from numpy import zeros
 
-from .ModelFitter import ModelFitter
 from src import Face
+from .ModelFitter import ModelFitter
 
 
 class BGDFitter(ModelFitter):

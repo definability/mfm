@@ -1,7 +1,7 @@
 from math import pi
 from decimal import Decimal
 
-from numpy import array, unique, zeros, std, log, mean, isnan, nonzero
+from numpy import array, unique, std, log, mean, isnan, nonzero
 from numpy.random import randn
 
 from src import Face
