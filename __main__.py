@@ -58,6 +58,7 @@ def construct_chain(configuration_filename, model):
 
     return FittersChain(fitters, image_data, model, initial_face=initial_face)
 
+
 def setup_application(configuration_filename=None):
     MFM.init()
     view = View((500, 500))
@@ -68,6 +69,7 @@ def setup_application(configuration_filename=None):
         model.start()
     else:
         model.start(construct_chain(configuration_filename, model))
+
 
 if __name__ == '__main__':
     arguments = parse_command_line_arguments()
