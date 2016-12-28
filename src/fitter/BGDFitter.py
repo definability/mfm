@@ -65,6 +65,7 @@ class BGDFitter(ModelFitter):
             / 50)
         self.__face = Face(coefficients=coefficients,
                            directed_light=directed_light)
+        logging.debug('Derivatives: %s', self.__derivatives)
         self.request_face(self.__face, 'start_iteration')
 
     def __get_derivative(self, param, step, image):
