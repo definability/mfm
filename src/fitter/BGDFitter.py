@@ -1,3 +1,5 @@
+import logging
+
 from PIL import Image
 from numpy import zeros
 
@@ -63,7 +65,6 @@ class BGDFitter(ModelFitter):
             / 50)
         self.__face = Face(coefficients=coefficients,
                            directed_light=directed_light)
-        # print(self.__derivatives)
         self.request_face(self.__face, 'start_iteration')
 
     def __get_derivative(self, param, step, image):
@@ -120,4 +121,4 @@ class BGDFitter(ModelFitter):
         image.close()
         if self.__callback is not None:
             self.__callback(self.__face)
-        # print('Finished')
+        logging.debug('Finished')
