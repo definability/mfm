@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Logging setup via command line arguments.
+
+### Changed
+- Fitting configuration file became optional.
 
 ## [0.7.0] - 2016-12-27
 ### Added
