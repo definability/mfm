@@ -1,3 +1,5 @@
+import logging
+
 from numpy import ones, zeros, linspace, argmin, exp, array
 from numpy.random import rand
 
@@ -35,6 +37,8 @@ class GibbsSamplerFitter(ModelFitter):
     def __get_parameter(self, i):
         self.__current_step = i
 
+        logging.debug('Fitting parameter %d with %d values',
+                      i, self.__steps[i])
         if self.__steps[i] % 2 == 0:
             self.__values = linspace(-4, 4, self.__steps[i] + 1, dtype='f')
         else:
@@ -87,10 +91,11 @@ class GibbsSamplerFitter(ModelFitter):
 
         self.__parameters[self.__current_step] = self.__values[best_index]
         self.__face = Face.from_array(self.__parameters)
-        print('{}.{}: Error of the best is {} ({})'.format(
-            self.__loop, self.__current_step, self.__errors[best_index],
-            min(self.__errors)))
+        logging.debug('%d.%d: Error of the best is %f (%f)',
+                      self.__loop, self.__current_step,
+                      self.__errors[best_index], min(self.__errors))
 
+        logging.debug('STEP %d of %d', self.__current_step, self._dimensions)
         if self.__current_step + 1 == self._dimensions \
                 and self.__loop + 1 >= self.__max_loops:
             self.request_face(self.__face)

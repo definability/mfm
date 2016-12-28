@@ -1,3 +1,5 @@
+import logging
+
 from numpy import mean, argsort, concatenate
 from numpy.linalg import norm
 
@@ -43,7 +45,7 @@ class NelderMeadFitter(ModelFitter):
             self._initial_face.directed_light
         ))
         for i in range(len(self.__parameters)):
-            # print('Initial step {} of {}'.format(i, self._dimensions))
+            logging.debug('Initial step %d of %d', i, self._dimensions)
             # self.__parameters[i] = randn(self._dimensions) * 1
             # self.__parameters[i] = zeros(self._dimensions)
             # self.__parameters[i][:i] = self.__offset
@@ -57,22 +59,23 @@ class NelderMeadFitter(ModelFitter):
 
     def receive_image(self, image, index=None):
         error = self.get_image_deviation(image)
-        # print('Received image for step', self.__step, 'with error', error)
+        logging.debug('Received image for step %d with error %f',
+                      self.__step, error)
 
         if self.__step in ['reflection', 'expansion', 'contraction']:
             setattr(self, self.__step + '_error', error)
             getattr(self, 'calculate_' + getattr(self, self.__step)())()
 
         elif self.__step == 'shrink' and index == self._dimensions:
-            # print('{} items left'.format(
-            #     sum(1 if e is None else 0 for e in self.__errors)))
+            logging.debug('%d items left',
+                          sum(1 if e is None else 0 for e in self.__errors))
             self.end_error = error
             if None not in self.__errors:
                 self.__sort_parameters()
                 getattr(self, 'calculate_' + getattr(self, self.__step)())()
         elif self.__step == 'shrink':
-            # print('{} items left'.format(
-            #     sum(1 if e is None else 0 for e in self.__errors)))
+            logging.debug('%d items left',
+                          sum(1 if e is None else 0 for e in self.__errors))
             self.__errors[index] = error
             if None not in self.__errors and self.end_error is not None:
                 self.__sort_parameters()
@@ -81,26 +84,25 @@ class NelderMeadFitter(ModelFitter):
         elif self.__step == 'start' and index == self._dimensions:
             self.end_error = error
             if None not in self.__errors:
-                # print('Started reflection')
+                logging.debug('Started reflection')
                 self.__sort_parameters()
                 self.calculate_reflection()
             else:
-                # print('{} items left'.format(
-                #     sum(1 if e is None else 0 for e in self.__errors)))
-                pass
+                logging.debug(
+                    '%d items left',
+                    sum(1 if e is None else 0 for e in self.__errors))
         elif self.__step == 'start':
             self.__errors[index] = error
             if None not in self.__errors and self.end_error is not None:
-                # print('Started reflection')
+                logging.debug('Started reflection')
                 self.__sort_parameters()
                 self.calculate_reflection()
             elif None in self.__errors:
-                # print('{} items left'.format(
-                #     sum(1 if e is None else 0 for e in self.__errors)))
-                pass
+                logging.debug(
+                    '%d items left',
+                    sum(1 if e is None else 0 for e in self.__errors))
             else:
-                # print('One item left')
-                pass
+                logging.debug('One item left')
 
     def __sort_parameters(self):
         indices = argsort(self.__errors + [self.end_error])
@@ -121,7 +123,6 @@ class NelderMeadFitter(ModelFitter):
 
         self.__parameters = parameters
         self.__errors = errors
-        # # print(self.__errors)
 
     def calculate_centroid(self):
         self.__centroid = mean(self.__parameters, axis=0)
@@ -142,8 +143,9 @@ class NelderMeadFitter(ModelFitter):
         elif self.reflection_error >= self.__errors[-1]:
             return 'contraction'
         else:
-            # print('R, E1, En:', self.reflection_error,
-            #       self.__errors[0], self.__errors[-1])
+            logging.debug(
+                'R, E1, En: %f, %f, %f',
+                self.reflection_error, self.__errors[0], self.__errors[-1])
             self.__end = self.__reflection
             self.end_error = self.reflection_error
             return 'reflection'
@@ -198,18 +200,12 @@ class NelderMeadFitter(ModelFitter):
 
     def calculate_finish(self):
         self.__step = 'finish'
-        # print(self.__parameters[0])
-        # print(self.__errors[0])
-        # print(self.__light)
-
-        img = self.__normals.dot(self.__light)[::-1]
-        image = Image.new('L', (500, 500))
-        image.putdata((img*255).astype('i'))
-        image.save('img.png')
+        logging.debug(self.__parameters[0])
+        logging.debug(self.__errors[0])
 
     def __finished(self):
         s = 0.
         for i in range(1, len(self.__parameters)):
             s += norm(self.__parameters[i] - self.__parameters[i-1])
-        # print('Perimeter is', s)
-        return s < 50.
+        logging.debug('Perimeter is %f, error is %f', s, self.__errors[0])
+        return s < .2
