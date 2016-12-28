@@ -1,5 +1,6 @@
 import argparse
 import json
+import logging
 
 from PIL import Image
 from numpy import array
@@ -8,13 +9,25 @@ from src import MFM, Model, ModelInput, View, Face
 from src.fitter import FittersChain
 from data import get_datafile_path
 
+LOGGER_LEVELS_COUNT = 6
+LOGGER_LEVELS_STEP = 10
+LOGGER_LEVELS = [logging.getLevelName(i*LOGGER_LEVELS_STEP)
+                 for i in range(LOGGER_LEVELS_COUNT)]
+
 parser = argparse.ArgumentParser(
     description='Morphable Face Model fitting application')
 parser.add_argument(
     '--config', metavar='config', type=str, required=True,
     help='specify configuration file for fitting procedure')
+parser.add_argument('-l', '--log', help='set logger level', type=str.upper,
+                    default='WARNING', choices=LOGGER_LEVELS)
 
 args = parser.parse_args()
+
+logging.basicConfig(
+    level=getattr(logging, args.log),
+    format=' '.join(['[%(asctime)s]', '[%(levelname)8s]',
+                     '[%(module)s:%(funcName)s]', '%(message)s']))
 
 fitting_settings = None
 with open(args.config) as config:
