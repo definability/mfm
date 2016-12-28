@@ -205,12 +205,6 @@ class NelderMeadFitter(ModelFitter):
         self.__step = 'finish'
         logging.debug(self.__parameters[0])
         logging.debug(self.__errors[0])
-        logging.debug(self.__light)
-
-        # img = self.__normals.dot(self.__light)[::-1]
-        # image = Image.new('L', (500, 500))
-        # image.putdata((img*255).astype('i'))
-        # image.save('img.png')
 
     def __finished(self):
         s = 0.
