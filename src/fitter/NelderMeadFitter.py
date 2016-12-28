@@ -91,7 +91,6 @@ class NelderMeadFitter(ModelFitter):
                 logging.debug(
                     '%d items left',
                     sum(1 if e is None else 0 for e in self.__errors))
-                pass
         elif self.__step == 'start':
             self.__errors[index] = error
             if None not in self.__errors and self.end_error is not None:
@@ -102,10 +101,8 @@ class NelderMeadFitter(ModelFitter):
                 logging.debug(
                     '%d items left',
                     sum(1 if e is None else 0 for e in self.__errors))
-                pass
             else:
                 logging.debug('One item left')
-                pass
 
     def __sort_parameters(self):
         indices = argsort(self.__errors + [self.end_error])
