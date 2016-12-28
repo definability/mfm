@@ -62,7 +62,6 @@ class Model:
 
     def redraw(self, callback=None):
         """Trigger rendering procedure."""
-        # print('redrawing')
         self.__view.redraw(callback)
 
     def request_image(self, face, callback):
@@ -85,7 +84,6 @@ class Model:
             self.__on_draw_callbacks.append((face, callback))
 
     def __on_redraw(self, callback):
-        # print('redraw callback')
         img = array(self.__view.get_image())
         img = img.reshape(img.size//4, 4)
         callback(img)
