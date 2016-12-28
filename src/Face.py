@@ -1,3 +1,4 @@
+import logging
 
 from numpy import array, zeros, concatenate
 
@@ -157,6 +158,19 @@ class Face:
         coefficients = parameters[Face.NON_PCS_SLICE]
         position = parameters[Face.DIRECTION_COMPONENTS_SLICE]
         directed_light = parameters[Face.LIGHT_COMPONENTS_SLICE]
+
+        float_format = '{:>6.04}'
+        light_format = ', '.join([float_format] * len(directed_light))
+        direction_format = ', '.join([float_format] * len(position))
+        coefficients_format = ', '.join([float_format] * len(coefficients))
+
+        format_str = ''
+        format_str += 'Light: <' + light_format + '>;'
+        format_str += ' Direction: <' + direction_format + '>;'
+        format_str += ' Coefficients: <' + coefficients_format + '>'
+        logging.debug(format_str.format(*directed_light, *position,
+                                        *coefficients))
+
         return Face(coefficients=coefficients,
                     directed_light=directed_light,
                     position=position)
