@@ -90,7 +90,7 @@ class NelderMeadFitter(ModelFitter):
             else:
                 logging.debug(
                     '%d items left',
-                    sum(1 if e is None else 0 for e in self.__errors)))
+                    sum(1 if e is None else 0 for e in self.__errors))
                 pass
         elif self.__step == 'start':
             self.__errors[index] = error
@@ -101,7 +101,7 @@ class NelderMeadFitter(ModelFitter):
             elif None in self.__errors:
                 logging.debug(
                     '%d items left',
-                    sum(1 if e is None else 0 for e in self.__errors)))
+                    sum(1 if e is None else 0 for e in self.__errors))
                 pass
             else:
                 logging.debug('One item left')
