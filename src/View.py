@@ -100,7 +100,6 @@ class View:
 
     def redraw(self, callback=None):
         """Trigger redisplay and trigger callback after render."""
-        # print('Set callback to', callback)
         self.__callback = callback
         glutPostRedisplay()
 
