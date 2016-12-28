@@ -168,8 +168,9 @@ class Face:
         format_str += 'Light: <' + light_format + '>;'
         format_str += ' Direction: <' + direction_format + '>;'
         format_str += ' Coefficients: <' + coefficients_format + '>'
-        logging.debug(format_str.format(*directed_light, *position,
-                                        *coefficients))
+        logging.debug(
+            format_str.format(directed_light.tolist() + position.tolist()
+                              + coefficients.tolist()))
 
         return Face(coefficients=coefficients,
                     directed_light=directed_light,
