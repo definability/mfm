@@ -7,7 +7,7 @@ with open(join(dirname(__file__), 'README.md')) as f:
 
 setup(
     name='MFM',
-    version='0.7.0',
+    version='0.7.1',
     license='MIT',
     description='Morphable Face Model fitting application',
     long_description=long_description,
