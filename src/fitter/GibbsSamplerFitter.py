@@ -37,7 +37,8 @@ class GibbsSamplerFitter(ModelFitter):
     def __get_parameter(self, i):
         self.__current_step = i
 
-        logging.debug('Fitting parameter %d with %d values', i, self.__steps[i])
+        logging.debug('Fitting parameter %d with %d values',
+                      i, self.__steps[i])
         if self.__steps[i] % 2 == 0:
             self.__values = linspace(-4, 4, self.__steps[i] + 1, dtype='f')
         else:
