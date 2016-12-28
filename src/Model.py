@@ -55,7 +55,7 @@ class Model:
         self.__face = face
         self.__view.face = face
 
-    def start(self, fitter):
+    def start(self, fitter=None):
         """Start main application loop."""
         self.__fitter = fitter
         glutMainLoop()
@@ -142,7 +142,8 @@ class Model:
 
     def optimize(self):
         """Start the fitting procedure."""
-        self.__fitter.start()
+        if self.__fitter is not None:
+            self.__fitter.start()
 
     def save_image(self, filename):
         """Render current viewport state to file.
