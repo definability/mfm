@@ -54,7 +54,6 @@ class MonteCarloFitter(ModelFitter):
             - 0.5 * self.__image.size * log(2 * pi * variance)
             )
         if difference.size == 0 or variance == 0 or isnan(power):
-            # print('Zero Parameters:', self.__parameters[index])
             self.request_face(self.__generate_face_parameters(), index)
             return
         self.__differences[index] = power
