@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Removed
+- `ShadersHelper` `bind_uniform_ints` method in favor of `bind_uniform_array`.
+- `ShadersHelper` `bind_uniform_floats` method in favor of `bind_uniform_array`.
+
+### Added
+- `ShadersHelper` `bind_uniform_array` method.
 
 ## [0.7.1] - 2016-12-28
 ### Added
