@@ -189,12 +189,12 @@ class ShadersHelper:
     def bind_uniform_array(self, data, name):
         """Bind uniform array."""
         if data.dtype.kind == 'i':
-            glUniformBinder = glUniform1iv
+            uniform_binder = glUniform1iv
         elif data.dtype.kind == 'f':
-            glUniformBinder = glUniform1fv
+            uniform_binder = glUniform1fv
         location = glGetUniformLocation(self.__program, name)
         assert location >= 0
-        glUniformBinder(location, data.size, data.flatten())
+        uniform_binder(location, data.size, data.flatten())
 
     def bind_buffer(self):
         """Prepare attributes and bind them."""
