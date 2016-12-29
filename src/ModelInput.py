@@ -33,14 +33,17 @@ class ModelInput:
         glutKeyboardUpFunc(lambda key, x, y: self.__handle_key(key, True))
         glutSpecialFunc(lambda key, x, y: self.__handle_special(key))
 
+    def __get_initial_rotation(self):
+        return {
+            'x': 0.,
+            'y': 0.,
+            'z': 0.
+        }
+
     def __handle_special(self, key):
         """Process special keys of the keyboard."""
         if key in ModelInput.__rotation_keys:
-            position = {
-                'x': 0.,
-                'y': 0.,
-                'z': 0.
-            }
+            position = self.__get_initial_rotation()
             axis, value = ModelInput.__rotation_keys[key]
             position[axis] = value
             self.__model.rotate(direction=position, check_constraints=True)
@@ -51,20 +54,12 @@ class ModelInput:
     def __handle_key(self, key, release=False):
         """Process alphanumerical keys of the keyboard."""
         if key in ModelInput.__rotation_keys:
-            position = {
-                'x': 0.,
-                'y': 0.,
-                'z': 0.
-            }
+            position = self.__get_initial_rotation()
             axis, value = ModelInput.__rotation_keys[key]
             position[axis] = value
             self.__model.rotate(direction=position, check_constraints=True)
         elif key in ModelInput.__light_keys and not release:
-            directed_light = {
-                'x': 0.,
-                'y': 0.,
-                'z': 0.
-            }
+            directed_light = self.__get_initial_rotation()
             axis, value = ModelInput.__light_keys[key]
             directed_light[axis] = value
             self.__model.change_light(direction=directed_light,
