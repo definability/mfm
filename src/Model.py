@@ -17,12 +17,9 @@ def safe_add(direction, direction_delta, check_constraints=False):
     new_x = x + direction_delta['x']
     new_y = y + direction_delta['y']
     new_z = z + direction_delta['z']
-    if check_constraints and not (
-            -1 <= new_x <= 1
-            and -1 <= new_y <= 1
-            and -1 <= new_z <= 1):
-        return direction
-    return (new_x, new_y, new_z)
+    if not check_constraints or (-1 <= new_x <= 1 and -1 <= new_y <= 1):
+        return (new_x, new_y, new_z)
+    return direction
 
 
 class Texture(Enum):
@@ -122,7 +119,8 @@ class Model:
         Adds (not sets) rotation value for given axis.
         """
         if direction is not None:
-            self.__face.position = safe_add(self.__face.position, direction)
+            self.__face.position = safe_add(self.__face.position, direction,
+                                            check_constraints)
 
     def change_light(self, direction=None, intensity=None,
                      check_constraints=False):
@@ -132,7 +130,7 @@ class Model:
         """
         if direction is not None:
             self.__face.directed_light = safe_add(self.__face.directed_light,
-                                                  direction)
+                                                  direction, check_constraints)
         if intensity is not None:
             constant_light = self.__face.get_constant_light()
             constant_light += intensity
