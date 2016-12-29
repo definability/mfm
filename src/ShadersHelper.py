@@ -142,17 +142,15 @@ class ShadersHelper:
         assert location >= 0
         glUniform4f(location, *data.flatten())
 
-    def bind_uniform_floats(self, data, name):
-        """Bind uniform float array."""
+    def bind_uniform_array(self, data, name):
+        """Bind uniform array."""
+        if data.dtype.kind == 'i':
+            glUniformBinder = glUniform1iv
+        elif data.dtype.kind == 'f':
+            glUniformBinder = glUniform1fv
         location = glGetUniformLocation(self.__program, name)
         assert location >= 0
-        glUniform1fv(location, data.size, data.flatten())
-
-    def bind_uniform_ints(self, data, name):
-        """Bind uniform int array."""
-        location = glGetUniformLocation(self.__program, name)
-        assert location >= 0
-        glUniform1iv(location, data.size, data.flatten())
+        glUniformBinder(location, data.size, data.flatten())
 
     def bind_buffer(self):
         """Prepare attributes and bind them."""

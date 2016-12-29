@@ -216,11 +216,11 @@ class View:
         coefficients_amount = len(self.__face.coefficients)
         indices = -ones(199, dtype='i')
         indices[:coefficients_amount] = array(range(coefficients_amount))
-        self.__sh.bind_uniform_ints(indices, 'indices')
+        self.__sh.bind_uniform_array(indices, 'indices')
 
         coefficients = zeros(199, dtype='f')
         coefficients[:coefficients_amount] = self.__face.coefficients
-        self.__sh.bind_uniform_floats(coefficients, 'coefficients')
+        self.__sh.bind_uniform_array(coefficients, 'coefficients')
 
         glActiveTexture(GL_TEXTURE0)
         self.__sh.bind_texture(0)
