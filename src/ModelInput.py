@@ -53,32 +53,42 @@ class ModelInput:
 
     def __handle_key(self, key, release=False):
         """Process alphanumerical keys of the keyboard."""
+        need_redraw = False
+        need_redraw |= self.__handle_alphanumerical_move(key, release)
+        need_redraw |= self.__handle_application_control(key, release)
+        if need_redraw:
+            self.__model.redraw()
+
+    def __handle_alphanumerical_move(self, key, release=False):
         if key in ModelInput.__rotation_keys:
             position = self.__get_initial_rotation()
             axis, value = ModelInput.__rotation_keys[key]
             position[axis] = value
             self.__model.rotate(direction=position, check_constraints=True)
+            return True
         elif key in ModelInput.__light_keys and not release:
             directed_light = self.__get_initial_rotation()
             axis, value = ModelInput.__light_keys[key]
             directed_light[axis] = value
             self.__model.change_light(direction=directed_light,
                                       check_constraints=True)
-        elif key == b'r' and not release:
+            return True
+        return False
+
+    def __handle_application_control(self, key, release=False):
+        if key == b'r' and not release:
             self.__model.face = self.__model.generate_face()
             self.__model.redraw()
-            return
+            return True
         elif key == b'q' and not release:
             self.__model.close()
-            return
+            return True
         elif key == b's' and not release:
             t = datetime.now()
             timestamp = int(mktime(t.timetuple()) * 1E6 + t.microsecond)
             self.__model.save_image(join('output', str(timestamp)))
-            return
+            return True
         elif key == b'o' and not release:
             self.__model.optimize()
-            return
-        else:
-            return
-        self.__model.redraw()
+            return True
+        return False
