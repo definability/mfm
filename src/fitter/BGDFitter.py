@@ -39,19 +39,14 @@ class BGDFitter(ModelFitter):
         self.__next_iteration()
 
     def receive_image(self, image, index=None):
-        if index == 'start_iteration':
-            shadows = image
-            index = 'start'
-            if self.__loop >= self.__max_loops:
-                self.__finish(shadows)
-                return
-        if index == 'start' and self.__current_step >= self._dimensions - 1:
+        if index != 'start':
+            self.__get_derivative(self.__current_step, index, image)
+        elif self.__loop >= self.__max_loops:
+            self.__finish(image)
+        elif self.__current_step >= self._dimensions - 1:
             self.__next_iteration()
-            return
-        elif index == 'start':
+        else:
             self.__current_step += 1
-
-        self.__get_derivative(self.__current_step, index, image)
 
     def __next_iteration(self):
         self.__loop += 1
@@ -66,39 +61,39 @@ class BGDFitter(ModelFitter):
         self.__face = Face(coefficients=coefficients,
                            directed_light=directed_light)
         logging.debug('Derivatives: %s', self.__derivatives)
-        self.request_face(self.__face, 'start_iteration')
+        self.request_face(self.__face, 'start')
 
     def __get_derivative(self, param, step, image):
         if step == 'start':
-            shadows = image
-            self.__derivatives[param] = self.get_image_deviation(shadows)
+            self.__derivatives[param] = self.get_image_deviation(image)
             face = self.__derivative_face(param, self.__dx)
             self.request_face(face, 'right_derivative')
         elif 'derivative' in step:
-            shadows = image
+            self.__calculate_derivative(param, step, image)
 
-            face = self.__face
-            dx = self.__dx if param >= 0 else self.__light_dx
+    def __calculate_derivative(self, param, step, image):
+        face = self.__face
+        dx = self.__dx if param >= 0 else self.__light_dx
 
-            if 'right' in step:
-                face = self.__derivative_face(param, -self.__dx)
+        if 'right' in step:
+            face = self.__derivative_face(param, -self.__dx)
 
-                action = 'left_derivative'
-                self.__right_derivatives[param] = self.__derivative(
-                    self.__derivatives[param],
-                    self.get_image_deviation(shadows),
-                    dx)
-            elif 'left' in step:
-                action = 'start'
-                self.__left_derivatives[param] = self.__derivative(
-                    self.get_image_deviation(shadows),
-                    self.__derivatives[param],
-                    dx)
-                self.__derivatives[param] = (
-                    0.5 * (self.__left_derivatives[param]
-                           + self.__right_derivatives[param]))
+            action = 'left_derivative'
+            self.__right_derivatives[param] = self.__derivative(
+                self.__derivatives[param],
+                self.get_image_deviation(image),
+                dx)
+        elif 'left' in step:
+            action = 'start'
+            self.__left_derivatives[param] = self.__derivative(
+                self.get_image_deviation(image),
+                self.__derivatives[param],
+                dx)
+            self.__derivatives[param] = (
+                0.5 * (self.__left_derivatives[param]
+                       + self.__right_derivatives[param]))
 
-            self.request_face(face, action)
+        self.request_face(face, action)
 
     def __derivative_face(self, param, dx):
         params = self.__face.as_array
