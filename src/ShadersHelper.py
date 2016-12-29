@@ -33,6 +33,7 @@ from shaders import get_shader_path
 
 
 def get_texture_type(dimensions):
+    """Get texture type by dimensionality."""
     if dimensions == 1:
         return GL_TEXTURE_1D
     elif dimensions == 2:
@@ -42,6 +43,7 @@ def get_texture_type(dimensions):
 
 
 def get_texture_constructor(dimensions):
+    """Get texture constructor by dimensionality."""
     if dimensions == 1:
         return glTexImage1D
     elif dimensions == 2:
@@ -51,6 +53,7 @@ def get_texture_constructor(dimensions):
 
 
 def get_color_internal_format(components):
+    """Get OpenGL internal color format by components count."""
     if components == 1:
         return GL_R32F
     elif components == 2:
@@ -62,6 +65,7 @@ def get_color_internal_format(components):
 
 
 def get_color_format(components):
+    """Get OpenGL color format by components count."""
     if components == 1:
         return GL_RED
     elif components == 2:
