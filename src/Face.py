@@ -83,9 +83,7 @@ class Face:
     @property
     def position_cartesian(self):
         """Get directed light vector from spherical coordinates."""
-        phi = self.__position[0]
-        theta = self.__position[1]
-        return spherical_to_cartesian(phi, theta)
+        return spherical_to_cartesian(self.__position[0], self.__position[1])
 
     @position.setter
     def position(self, position):
@@ -104,9 +102,8 @@ class Face:
     @property
     def directed_light_cartesian(self):
         """Get directed light vector from spherical coordinates."""
-        phi = self.__directed_light[0]
-        theta = self.__directed_light[1]
-        return spherical_to_cartesian(theta, phi)
+        return spherical_to_cartesian(self.__directed_light[0],
+                                      self.__directed_light[1])
 
     @directed_light.setter
     def directed_light(self, directed_light):
