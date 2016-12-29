@@ -61,48 +61,27 @@ class NelderMeadFitter(ModelFitter):
         error = self.get_image_deviation(image)
         logging.debug('Received image for step %d with error %f',
                       self.__step, error)
+        logging.debug('%d items left',
+                      sum(1 if e is None else 0 for e in self.__errors))
 
         if self.__step in ['reflection', 'expansion', 'contraction']:
             setattr(self, self.__step + '_error', error)
             getattr(self, 'calculate_' + getattr(self, self.__step)())()
 
-        elif self.__step == 'shrink' and index == self._dimensions:
-            logging.debug('%d items left',
-                          sum(1 if e is None else 0 for e in self.__errors))
+        if index == self._dimensions:
             self.end_error = error
-            if None not in self.__errors:
-                self.__sort_parameters()
-                getattr(self, 'calculate_' + getattr(self, self.__step)())()
-        elif self.__step == 'shrink':
-            logging.debug('%d items left',
-                          sum(1 if e is None else 0 for e in self.__errors))
+        else:
             self.__errors[index] = error
-            if None not in self.__errors and self.end_error is not None:
-                self.__sort_parameters()
-                getattr(self, 'calculate_' + getattr(self, self.__step)())()
 
-        elif self.__step == 'start' and index == self._dimensions:
-            self.end_error = error
-            if None not in self.__errors:
-                logging.debug('Started reflection')
-                self.__sort_parameters()
-                self.calculate_reflection()
-            else:
-                logging.debug(
-                    '%d items left',
-                    sum(1 if e is None else 0 for e in self.__errors))
+        if None in self.__errors or self.end_error is None:
+            return
+
+        self.__sort_parameters()
+
+        if self.__step == 'shrink':
+            self.calculate_shrink()
         elif self.__step == 'start':
-            self.__errors[index] = error
-            if None not in self.__errors and self.end_error is not None:
-                logging.debug('Started reflection')
-                self.__sort_parameters()
-                self.calculate_reflection()
-            elif None in self.__errors:
-                logging.debug(
-                    '%d items left',
-                    sum(1 if e is None else 0 for e in self.__errors))
-            else:
-                logging.debug('One item left')
+            self.calculate_reflection()
 
     def __sort_parameters(self):
         indices = argsort(self.__errors + [self.end_error])
