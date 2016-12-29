@@ -91,32 +91,15 @@ class ShadersHelper:
         self.__depth_map_fbo = None
         self.__attributes = []
 
-        if not isinstance(vertex, list):
-            vertex = [vertex]
-        for v in vertex:
-            self.__load_shader(get_shader_path(v), GL_VERTEX_SHADER)
-        if not isinstance(fragment, list):
-            fragment = [fragment]
-        for f in fragment:
-            self.__load_shader(get_shader_path(f), GL_FRAGMENT_SHADER)
+        self.__initiate_shaders(vertex, fragment)
 
         self.change_shader(0, 0)
 
         glLinkProgram(self.__program)
         assert glGetProgramiv(self.__program, GL_LINK_STATUS) == GL_TRUE
 
-        self.__vao_id = glGenVertexArrays(1)
-        glBindVertexArray(self.__vao_id)
-        if number_of_buffers == 1:
-            self.__vbo_id = [glGenBuffers(number_of_buffers)]
-        elif number_of_buffers > 1:
-            self.__vbo_id = glGenBuffers(number_of_buffers)
-
-        if number_of_textures == 1:
-            self.__textures_ids = [glGenTextures(1)]
-        elif number_of_textures > 1:
-            self.__textures_ids = glGenTextures(number_of_textures)
-        self.__textures = []
+        self.__initiate_buffers(number_of_buffers)
+        self.__initiate_textures(number_of_textures)
 
     def change_shader(self, vertex=None, fragment=None):
         """Change vertex and fragment shader of current program.
@@ -145,6 +128,34 @@ class ShadersHelper:
         self.__current_shaders[shader_type] = shader_id
         glAttachShader(self.__program, shader_id)
         return True
+
+    def __initiate_shaders(self, vertex, fragment):
+        """Load initial vertex and fragment shaders."""
+        if not isinstance(vertex, list):
+            vertex = [vertex]
+        for v in vertex:
+            self.__load_shader(get_shader_path(v), GL_VERTEX_SHADER)
+        if not isinstance(fragment, list):
+            fragment = [fragment]
+        for f in fragment:
+            self.__load_shader(get_shader_path(f), GL_FRAGMENT_SHADER)
+
+    def __initiate_buffers(self, number_of_buffers):
+        """Generate VAO and VBO buffers."""
+        self.__vao_id = glGenVertexArrays(1)
+        glBindVertexArray(self.__vao_id)
+        if number_of_buffers == 1:
+            self.__vbo_id = [glGenBuffers(number_of_buffers)]
+        elif number_of_buffers > 1:
+            self.__vbo_id = glGenBuffers(number_of_buffers)
+
+    def __initiate_textures(self, number_of_textures):
+        """Generate textures."""
+        if number_of_textures == 1:
+            self.__textures_ids = [glGenTextures(1)]
+        elif number_of_textures > 1:
+            self.__textures_ids = glGenTextures(number_of_textures)
+        self.__textures = []
 
     def __load_shader(self, shader_filename, shader_type):
         """Load shader of specific type from file."""
