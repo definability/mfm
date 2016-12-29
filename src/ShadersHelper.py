@@ -32,6 +32,46 @@ from numpy import concatenate
 from shaders import get_shader_path
 
 
+def get_texture_type(dimensions):
+    if dimensions == 1:
+        return GL_TEXTURE_1D
+    elif dimensions == 2:
+        return GL_TEXTURE_2D
+    elif dimensions == 3:
+        return GL_TEXTURE_3D
+
+
+def get_texture_constructor(dimensions):
+    if dimensions == 1:
+        return glTexImage1D
+    elif dimensions == 2:
+        return glTexImage2D
+    elif dimensions == 3:
+        return glTexImage3D
+
+
+def get_color_internal_format(components):
+    if components == 1:
+        return GL_R32F
+    elif components == 2:
+        return GL_RG32F
+    elif components == 3:
+        return GL_RGB32F
+    elif components == 4:
+        return GL_RGBA32F
+
+
+def get_color_format(components):
+    if components == 1:
+        return GL_RED
+    elif components == 2:
+        return GL_RG
+    elif components == 3:
+        return GL_RGB
+    elif components == 4:
+        return GL_RGBA
+
+
 class ShadersHelper:
     """Helper class to work with program and shaders."""
 
@@ -214,28 +254,10 @@ class ShadersHelper:
         components: dimensionality of texture element
                     number or 2D, 3D, 4D vector.
         """
-        if dimensions == 1:
-            texture_type = GL_TEXTURE_1D
-            texture_store = glTexImage1D
-        elif dimensions == 2:
-            texture_type = GL_TEXTURE_2D
-            texture_store = glTexImage2D
-        elif dimensions == 3:
-            texture_type = GL_TEXTURE_3D
-            texture_store = glTexImage3D
-
-        if components == 1:
-            internal_format = GL_R32F
-            texture_format = GL_RED
-        if components == 2:
-            internal_format = GL_RG32F
-            texture_format = GL_RG
-        if components == 3:
-            internal_format = GL_RGB32F
-            texture_format = GL_RGB
-        if components == 4:
-            internal_format = GL_RGBA32F
-            texture_format = GL_RGBA
+        texture_type = get_texture_type(dimensions)
+        texture_constructor = get_texture_constructor(dimensions)
+        internal_format = get_color_internal_format(components)
+        texture_format = get_color_format(components)
 
         glBindTexture(texture_type, self.__textures_ids[len(self.__textures)])
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
@@ -244,7 +266,7 @@ class ShadersHelper:
         # within enumerable arguments
         params = ([texture_type, 0, internal_format]
                   + list(size) + [0, texture_format, GL_FLOAT, data.flatten()])
-        texture_store(*params)
+        texture_constructor(*params)
 
         glTexParameterf(texture_type, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
         glTexParameterf(texture_type, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
