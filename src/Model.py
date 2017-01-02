@@ -1,6 +1,4 @@
 """Model of the MVC application."""
-from enum import Enum
-
 from OpenGL.GLUT import glutMainLoop
 from PIL import Image
 from numpy import save, array
@@ -22,15 +20,6 @@ def safe_add(direction, direction_delta, check_constraints=False):
     return direction
 
 
-class Texture(Enum):
-    """Enumerate of Face textures.
-
-    Face can be displayed in single mode:
-    - shadow map;
-    """
-    light = 0
-
-
 class Model:
     """Main processor of the application.
 
@@ -47,8 +36,6 @@ class Model:
         self.__fitter = None
         self.__on_draw_callbacks = []
         self.__now_processing = False
-
-        self.__texture = Texture.light
 
         self.__rotations = {
             'x': 0.,
