@@ -27,7 +27,6 @@ setup(
     install_requires=[
         'argparse==1.1.0',
         'cairocffi==0.7.2',
-        'enum34==1.1.6',
         'Pillow==3.2.0',
         'PyOpenGL==3.1.0',
     ],
