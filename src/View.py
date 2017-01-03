@@ -29,6 +29,8 @@ from OpenGL.GLU import gluLookAt
 from numpy import zeros, ones, array, concatenate
 
 from .ShadersHelper import ShadersHelper
+from .normals import get_normals
+from .face import calculate_face, init_face_calculator
 
 
 class View:
@@ -36,6 +38,7 @@ class View:
 
     __triangles = None
     __principal_components = None
+    __principal_components_flattened = None
     __deviations = None
     __mean_face = None
 
@@ -127,6 +130,7 @@ class View:
     def set_principal_components(principal_components):
         """Set principal components for Face calculation."""
         View.__principal_components = principal_components
+        View.__principal_components_flattened = principal_components.flatten()
 
     @staticmethod
     def set_deviations(deviations):
@@ -137,6 +141,13 @@ class View:
     def set_mean_face(mean_face):
         """Set mean Face for modelling."""
         View.__mean_face = mean_face
+
+    @staticmethod
+    def finalize_initialization():
+        init_face_calculator(
+            View.__mean_face,
+            View.__principal_components_flattened,
+            View.__deviations)
 
     @staticmethod
     def __get_rotation_matrix(coordinates, side_length):
