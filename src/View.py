@@ -26,7 +26,7 @@ from OpenGL.GLUT import glutInitDisplayMode, glutLeaveMainLoop, glutDisplayFunc
 
 from OpenGL.GLU import gluLookAt
 
-from numpy import zeros, ones, array, concatenate
+from numpy import zeros, array
 
 from .ShadersHelper import ShadersHelper
 from .normals import get_normals
