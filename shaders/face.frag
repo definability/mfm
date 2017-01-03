@@ -1,4 +1,4 @@
-#version 420
+#version 110
 
 in float shadow;
 

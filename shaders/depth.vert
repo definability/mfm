@@ -1,4 +1,4 @@
-#version 300 es
+#version 100
 
 in vec3 face_vertices;
 
