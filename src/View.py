@@ -64,17 +64,16 @@ class View:
         glClearColor(1., 1., 1., 0.)
 
         self.__sh = ShadersHelper(['face.vert', 'depth.vert'],
-                                  ['face.frag', 'depth.frag'], 1, 2)
+                                  ['face.frag', 'depth.frag'], 2, 1)
 
         glutDisplayFunc(self.__display)
         self.__callback = None
 
-        self.__sh.add_attribute(0, self.__mean_face, 'mean_position')
+        self.__sh.add_attribute(0, array([]), 'face_vertices')
+        self.__sh.add_attribute(1, array([]), 'normal_vector')
         self.__sh.bind_buffer()
         self.__sh.use_shaders()
-        self.__sh.link_texture('principal_components', 0)
-        self.__sh.link_texture('depth_map', 1)
-        self.__bind_pca_texture()
+        self.__sh.link_texture('depth_map', 0)
         self.__sh.bind_depth_texture(self.__size)
 
     def get_size(self):
@@ -222,36 +221,10 @@ class View:
             self.__sh.bind_uniform_matrix(rotation_matrix, 'rotation_matrix')
             self.__sh.bind_uniform_vector(self.__face.light_cartesian,
                                           'light_vector')
-        coefficients_amount = len(self.__face.coefficients)
-        indices = -ones(199, dtype='i')
-        indices[:coefficients_amount] = array(range(coefficients_amount))
-        self.__sh.bind_uniform_array(indices, 'indices')
 
-        coefficients = zeros(199, dtype='f')
-        coefficients[:coefficients_amount] = self.__face.coefficients
-        self.__sh.bind_uniform_array(coefficients, 'coefficients')
-
-        glActiveTexture(GL_TEXTURE0)
-        self.__sh.bind_texture(0)
         if not depth:
-            glActiveTexture(GL_TEXTURE1)
-            self.__sh.bind_texture(1)
-
-    def __bind_pca_texture(self):
-        """Bind texture with principal components.
-
-        Needed for shaders to calculate Face model.
-        """
-        size = View.__principal_components.size // 3
-        data = View.__principal_components.transpose() * View.__deviations
-
-        columns = 2**13
-        rows = ceil(size / columns)
-
-        padding = [0] * (rows * columns - size) * 3
-        data = concatenate((data.flatten(), padding))
-
-        self.__sh.create_float_texture(data, (columns, rows), 2, 3)
+            glActiveTexture(GL_TEXTURE0)
+            self.__sh.bind_texture(0)
 
     def __init_display(self):
         """Initialize the viewport with specified size."""
