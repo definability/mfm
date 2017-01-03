@@ -100,6 +100,7 @@ class View:
     def face(self, face):
         """Set current Face."""
         self.__face = face
+        self.__face_vertices = calculate_face(self.__face.coefficients)
 
     def redraw(self, callback=None):
         """Trigger redisplay and trigger callback after render."""
