@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Rotating camera instead of model (rotation doesn't affect shadows).
+- Smooth shadows.
 
 ### Removed
 - `Texture` enumerate from `Model` module as not used.
