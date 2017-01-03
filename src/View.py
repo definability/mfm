@@ -165,36 +165,34 @@ class View:
             self.__face.position_cartesian,
             (1 + self.__face.position[2]) * 0.5)
 
-    def __generate_shadows(self):
-        """Generate shadow matrix for rotated model."""
-        glEnable(GL_POLYGON_OFFSET_FILL)
-        glPolygonOffset(3, 0)
-        self.__sh.change_shader(vertex=1, fragment=1)
-
         light = self.__face.directed_light_cartesian
         self.__light_matrix = self.__get_rotation_matrix(
-            (light[0], light[1], -light[2]), 2.0)
+            (light[0], light[1], light[2]), 1.0)
 
+    def __generate_shadows(self):
+        """Generate shadow matrix for rotated model."""
         glDisable(GL_CULL_FACE)
+        glEnable(GL_POLYGON_OFFSET_FILL)
+        glPolygonOffset(3, 0)
+
+        self.__sh.change_shader(vertex=1, fragment=1)
         self.__prepare_shaders(self.__model_matrix, self.__light_matrix, True)
         self.__sh.bind_fbo()
         glClear(GL_DEPTH_BUFFER_BIT)
         glDrawElements(GL_TRIANGLES, View.__triangles.size,
                        GL_UNSIGNED_SHORT, View.__triangles)
         glFinish()
-
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
         self.__sh.clear()
 
     def __generate_model(self):
         """Generate rotated model with shadows."""
         glEnable(GL_CULL_FACE)
-        glCullFace(GL_FRONT)
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+
         self.__sh.change_shader(vertex=0, fragment=0)
         self.__prepare_shaders(self.__model_matrix, self.__light_matrix, False)
         self.__sh.bind_buffer()
-        self.__sh.use_shaders()
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glDrawElements(GL_TRIANGLES, View.__triangles.size,
                        GL_UNSIGNED_SHORT, View.__triangles)
         self.__sh.clear()
@@ -260,6 +258,7 @@ class View:
         """
         glDepthMask(GL_TRUE)
         glDepthFunc(GL_LESS)
+        glCullFace(GL_FRONT)
 
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_STENCIL_TEST)
