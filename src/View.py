@@ -52,6 +52,7 @@ class View:
 
         self.__light = None
         self.__face = None
+        self.__face_vertices = None
         self.__model_matrix = zeros((4, 4), dtype='f')
         self.__light_matrix = zeros((4, 4), dtype='f')
 
@@ -210,14 +211,17 @@ class View:
     def __prepare_shaders(self, rotation_matrix=None, light_matrix=None,
                           depth=True):
         """Generic shaders preparation method for depth map and final scene."""
-        self.__sh.add_attribute(0, self.__mean_face, 'mean_position')
+        self.__sh.add_attribute(0, self.__face_vertices, 'face_vertices')
         self.__sh.bind_buffer()
 
         self.__sh.use_shaders()
 
-        self.__sh.bind_uniform_matrix(light_matrix.dot(rotation_matrix),
-                                      'light_matrix')
+        self.__sh.bind_uniform_matrix(light_matrix, 'light_matrix')
         if not depth:
+            face = self.__face_vertices.reshape(self.__mean_face.size // 3, 3)
+            normals = get_normals(face, View.__triangles.flatten())
+            self.__sh.add_attribute(1, normals, 'normal_vector')
+
             self.__sh.bind_uniform_matrix(rotation_matrix, 'rotation_matrix')
             self.__sh.bind_uniform_vector(self.__face.light_cartesian,
                                           'light_vector')
