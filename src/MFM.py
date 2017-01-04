@@ -4,7 +4,7 @@ from os.path import isfile
 from scipy.io import loadmat
 from numpy.random import rand, randn
 from numpy.linalg import norm
-from numpy import array, fabs, floor, load
+from numpy import array, fabs, floor, load, pi
 
 from .Face import Face
 from .View import View
@@ -48,6 +48,8 @@ def init(path=None):
     AXES_ORDER = (2, 0, 1)
     mean_shape = __swap_axes(mean_shape, AXES_ORDER)
     principal_components = __swap_axes(principal_components, AXES_ORDER)
+
+    Face.set_initial_rotation(theta=pi/2)
 
     View.set_triangles(triangles)
     View.set_principal_components(principal_components)
