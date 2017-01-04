@@ -5,6 +5,7 @@ python:
   - "3.3"
   - "3.4"
   - "3.5"
+  - "3.6-dev"
 before_install:
   - sh ./scripts/install-conda.sh
   - export PATH="$HOME/miniconda/bin:$PATH"
