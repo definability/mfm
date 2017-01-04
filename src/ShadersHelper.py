@@ -27,7 +27,7 @@ from OpenGL.GL import glDetachShader, glGenFramebuffers
 
 from OpenGL.arrays.vbo import VBO
 
-from numpy import concatenate
+from numpy import array
 
 from shaders import get_shader_path
 
@@ -209,7 +209,7 @@ class ShadersHelper:
 
     def bind_buffer(self):
         """Prepare attributes and bind them."""
-        VBO(concatenate(self.__attributes)).bind()
+        VBO(array(self.__attributes)).bind()
 
     def clear(self):
         """Unbind all bound entities and clear cache."""
