@@ -11,10 +11,10 @@ from OpenGL.GLUT import glutSpecialFunc, glutKeyboardUpFunc, glutKeyboardFunc
 class ModelInput:
     """Process input and trigger needed methods of Model."""
     __rotation_keys = {
-        GLUT_KEY_UP:    ('x', -.1),
-        GLUT_KEY_DOWN:  ('x', .1),
-        GLUT_KEY_RIGHT: ('y', -.1),
-        GLUT_KEY_LEFT:  ('y', .1),
+        GLUT_KEY_UP:    ('y', .1),
+        GLUT_KEY_DOWN:  ('y', -.1),
+        GLUT_KEY_RIGHT: ('x', -.1),
+        GLUT_KEY_LEFT:  ('x', .1),
         b'z':           ('z', -.1),
         b'a':           ('z', .1)
     }
