@@ -186,7 +186,7 @@ class Face:
         format_str += ' Coefficients: <' + coefficients_format + '>'
         logging.debug(
             format_str.format(*(directed_light.tolist() + position.tolist()
-                              + coefficients.tolist())))
+                                + coefficients.tolist())))
 
         return Face(coefficients=coefficients,
                     directed_light=directed_light,
