@@ -63,7 +63,6 @@ def __swap_axes(points, axes_order):
     vertices = points.shape[0] // 3
     return (points.reshape(vertices, 3, points.shape[1])[:, axes_order, ...]
             .reshape(*points.shape))
-    return points
 
 
 def __random_cos():
