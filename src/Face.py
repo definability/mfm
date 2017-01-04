@@ -1,6 +1,6 @@
 import logging
 
-from numpy import array, zeros, concatenate, sin, cos, arcsin, arccos
+from numpy import array, zeros, concatenate, sin, cos, arcsin
 
 ERROR_TEXT = {
     'VERTICES_SIZE': "Size of vertices array should be a multiple of three, "
