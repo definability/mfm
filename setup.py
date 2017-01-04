@@ -33,8 +33,7 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6'
+        'Programming Language :: Python :: 3.5'
     ],
     packages=[join('src', p) for p in find_packages('src')] + \
              [join('tests', p) for p in find_packages('tests')] + \
