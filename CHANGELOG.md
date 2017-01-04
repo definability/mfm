@@ -3,8 +3,27 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- `libs` package (`C` modules) which were removed in [0.3.0]
+  - `face`;
+    - `calculate_face`;
+    - `calculate_row`;
+  - `normals`;
+    - `get_normals`.
+
+### Fixed
+- Flat shadows moved from its place on model when had to stay fixed.
+- Shadow map model was projected instead of being rotated.
+
+### Changed
+- Rotating camera instead of model (rotation doesn't affect shadows)
+  - allows to not recalculate shadows on rotation;
+  - simplifies visual check of proper movement rendering.
+- Smooth shadows.
+
 ### Removed
 - `Texture` enumerate from `Model` module as not used.
+- Shape and normals calculations from shaders in favor of `C` modules.
 
 ## [0.7.2] - 2016-12-29
 ### Removed

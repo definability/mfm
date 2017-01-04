@@ -26,9 +26,11 @@ from OpenGL.GLUT import glutInitDisplayMode, glutLeaveMainLoop, glutDisplayFunc
 
 from OpenGL.GLU import gluLookAt
 
-from numpy import zeros, ones, array, concatenate
+from numpy import zeros, array
 
 from .ShadersHelper import ShadersHelper
+from .normals import get_normals
+from .face import calculate_face, init_face_calculator
 
 
 class View:
@@ -36,6 +38,7 @@ class View:
 
     __triangles = None
     __principal_components = None
+    __principal_components_flattened = None
     __deviations = None
     __mean_face = None
 
@@ -49,6 +52,7 @@ class View:
 
         self.__light = None
         self.__face = None
+        self.__face_vertices = None
         self.__model_matrix = zeros((4, 4), dtype='f')
         self.__light_matrix = zeros((4, 4), dtype='f')
 
@@ -61,17 +65,16 @@ class View:
         glClearColor(1., 1., 1., 0.)
 
         self.__sh = ShadersHelper(['face.vert', 'depth.vert'],
-                                  ['face.frag', 'depth.frag'], 1, 2)
+                                  ['face.frag', 'depth.frag'], 2, 1)
 
         glutDisplayFunc(self.__display)
         self.__callback = None
 
-        self.__sh.add_attribute(0, self.__mean_face, 'mean_position')
+        self.__sh.add_attribute(0, array([]), 'face_vertices')
+        self.__sh.add_attribute(1, array([]), 'normal_vector')
         self.__sh.bind_buffer()
         self.__sh.use_shaders()
-        self.__sh.link_texture('principal_components', 0)
-        self.__sh.link_texture('depth_map', 1)
-        self.__bind_pca_texture()
+        self.__sh.link_texture('depth_map', 0)
         self.__sh.bind_depth_texture(self.__size)
 
     def get_size(self):
@@ -97,6 +100,7 @@ class View:
     def face(self, face):
         """Set current Face."""
         self.__face = face
+        self.__face_vertices = calculate_face(self.__face.coefficients)
 
     def redraw(self, callback=None):
         """Trigger redisplay and trigger callback after render."""
@@ -127,6 +131,7 @@ class View:
     def set_principal_components(principal_components):
         """Set principal components for Face calculation."""
         View.__principal_components = principal_components
+        View.__principal_components_flattened = principal_components.flatten()
 
     @staticmethod
     def set_deviations(deviations):
@@ -137,6 +142,13 @@ class View:
     def set_mean_face(mean_face):
         """Set mean Face for modelling."""
         View.__mean_face = mean_face
+
+    @staticmethod
+    def finalize_initialization():
+        init_face_calculator(
+            View.__mean_face,
+            View.__principal_components_flattened,
+            View.__deviations)
 
     @staticmethod
     def __get_rotation_matrix(coordinates, side_length):
@@ -165,36 +177,34 @@ class View:
             self.__face.position_cartesian,
             (1 + self.__face.position[2]) * 0.5)
 
-    def __generate_shadows(self):
-        """Generate shadow matrix for rotated model."""
-        glEnable(GL_POLYGON_OFFSET_FILL)
-        glPolygonOffset(3, 0)
-        self.__sh.change_shader(vertex=1, fragment=1)
-
         light = self.__face.directed_light_cartesian
         self.__light_matrix = self.__get_rotation_matrix(
-            (light[0], light[1], -light[2]), 2.0)
+            (light[0], light[1], light[2]), 1.0)
 
+    def __generate_shadows(self):
+        """Generate shadow matrix for rotated model."""
         glDisable(GL_CULL_FACE)
+        glEnable(GL_POLYGON_OFFSET_FILL)
+        glPolygonOffset(3, 0)
+
+        self.__sh.change_shader(vertex=1, fragment=1)
         self.__prepare_shaders(self.__model_matrix, self.__light_matrix, True)
         self.__sh.bind_fbo()
         glClear(GL_DEPTH_BUFFER_BIT)
         glDrawElements(GL_TRIANGLES, View.__triangles.size,
                        GL_UNSIGNED_SHORT, View.__triangles)
         glFinish()
-
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
         self.__sh.clear()
 
     def __generate_model(self):
         """Generate rotated model with shadows."""
         glEnable(GL_CULL_FACE)
-        glCullFace(GL_FRONT)
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+
         self.__sh.change_shader(vertex=0, fragment=0)
         self.__prepare_shaders(self.__model_matrix, self.__light_matrix, False)
         self.__sh.bind_buffer()
-        self.__sh.use_shaders()
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glDrawElements(GL_TRIANGLES, View.__triangles.size,
                        GL_UNSIGNED_SHORT, View.__triangles)
         self.__sh.clear()
@@ -202,47 +212,24 @@ class View:
     def __prepare_shaders(self, rotation_matrix=None, light_matrix=None,
                           depth=True):
         """Generic shaders preparation method for depth map and final scene."""
-        self.__sh.add_attribute(0, self.__mean_face, 'mean_position')
+        self.__sh.add_attribute(0, self.__face_vertices, 'face_vertices')
         self.__sh.bind_buffer()
 
         self.__sh.use_shaders()
 
-        self.__sh.bind_uniform_matrix(light_matrix.dot(rotation_matrix),
-                                      'light_matrix')
+        self.__sh.bind_uniform_matrix(light_matrix, 'light_matrix')
         if not depth:
+            face = self.__face_vertices.reshape(self.__mean_face.size // 3, 3)
+            normals = get_normals(face, View.__triangles.flatten())
+            self.__sh.add_attribute(1, normals, 'normal_vector')
+
             self.__sh.bind_uniform_matrix(rotation_matrix, 'rotation_matrix')
             self.__sh.bind_uniform_vector(self.__face.light_cartesian,
                                           'light_vector')
-        coefficients_amount = len(self.__face.coefficients)
-        indices = -ones(199, dtype='i')
-        indices[:coefficients_amount] = array(range(coefficients_amount))
-        self.__sh.bind_uniform_array(indices, 'indices')
 
-        coefficients = zeros(199, dtype='f')
-        coefficients[:coefficients_amount] = self.__face.coefficients
-        self.__sh.bind_uniform_array(coefficients, 'coefficients')
-
-        glActiveTexture(GL_TEXTURE0)
-        self.__sh.bind_texture(0)
         if not depth:
-            glActiveTexture(GL_TEXTURE1)
-            self.__sh.bind_texture(1)
-
-    def __bind_pca_texture(self):
-        """Bind texture with principal components.
-
-        Needed for shaders to calculate Face model.
-        """
-        size = View.__principal_components.size // 3
-        data = View.__principal_components.transpose() * View.__deviations
-
-        columns = 2**13
-        rows = ceil(size / columns)
-
-        padding = [0] * (rows * columns - size) * 3
-        data = concatenate((data.flatten(), padding))
-
-        self.__sh.create_float_texture(data, (columns, rows), 2, 3)
+            glActiveTexture(GL_TEXTURE0)
+            self.__sh.bind_texture(0)
 
     def __init_display(self):
         """Initialize the viewport with specified size."""
@@ -260,6 +247,7 @@ class View:
         """
         glDepthMask(GL_TRUE)
         glDepthFunc(GL_LESS)
+        glCullFace(GL_FRONT)
 
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_STENCIL_TEST)

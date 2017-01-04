@@ -49,6 +49,7 @@ def init(path=None):
     View.set_principal_components(principal_components)
     View.set_deviations(pc_deviations)
     View.set_mean_face(mean_shape)
+    View.finalize_initialization()
 
 
 def __random_cos():
