@@ -11,8 +11,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - `normals`;
     - `get_normals`.
 
+### Fixed
+- Flat shadows moved from its place on model when had to stay fixed.
+- Shadow map model was projected instead of being rotated.
+
 ### Changed
-- Rotating camera instead of model (rotation doesn't affect shadows).
+- Rotating camera instead of model (rotation doesn't affect shadows)
+  - allows to not recalculate shadows on rotation;
+  - simplifies visual check of proper movement rendering.
 - Smooth shadows.
 
 ### Removed
