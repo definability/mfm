@@ -145,6 +145,7 @@ class View:
 
     @staticmethod
     def finalize_initialization():
+        """Initialize C methods."""
         init_face_calculator(
             View.__mean_face,
             View.__principal_components_flattened,
