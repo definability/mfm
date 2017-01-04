@@ -1,6 +1,6 @@
 import logging
 
-from numpy import array, zeros, concatenate
+from numpy import array, zeros, concatenate, sin, cos, arcsin, arccos
 
 ERROR_TEXT = {
     'VERTICES_SIZE': "Size of vertices array should be a multiple of three, "
@@ -16,14 +16,18 @@ ERROR_TEXT = {
 }
 
 
-def spherical_to_cartesian(sin_phi, sin_theta, radius=1.0):
+def spherical_to_cartesian(phi, theta, radius=1.0):
     """Convert spherical coordinates to cartesian.
 
     Given sinus of polar and azimuthal angle, and radial distance,
     calculate cartesian coordinates of the point.
     """
-    cos_theta = (1 - sin_theta**2)**.5
-    cos_phi = (1 - sin_phi**2)**.5
+    sin_phi = sin(phi)
+    sin_theta = sin(theta)
+
+    cos_phi = cos(phi)
+    cos_theta = cos(theta)
+
     return array([
         radius * sin_theta * cos_phi,
         radius * sin_theta * sin_phi,
@@ -86,7 +90,9 @@ class Face:
     @property
     def position_cartesian(self):
         """Get directed light vector from spherical coordinates."""
-        return spherical_to_cartesian(self.__position[0], self.__position[1])
+        phi = arcsin(self.__position[0]) + Face.__initial_phi
+        theta = arcsin(self.__position[1]) + Face.__initial_theta
+        return spherical_to_cartesian(phi, theta)
 
     @position.setter
     def position(self, position):
@@ -105,8 +111,9 @@ class Face:
     @property
     def directed_light_cartesian(self):
         """Get directed light vector from spherical coordinates."""
-        return spherical_to_cartesian(self.__directed_light[0],
-                                      self.__directed_light[1])
+        phi = arcsin(self.__directed_light[0]) + Face.__initial_phi
+        theta = arcsin(self.__directed_light[1]) + Face.__initial_theta
+        return spherical_to_cartesian(phi, theta)
 
     @directed_light.setter
     def directed_light(self, directed_light):
