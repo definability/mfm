@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.8.1] - 2017-01-04
 ### Added
 - `set_initial_rotation` method to `Face`.
 - Default `pylint` configuration file.
@@ -567,7 +569,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.8.0...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.8.1...HEAD
+[0.8.1]: https://github.com/char-lie/mfm/compare/v0.8.0...v0.8.1
 [0.8.0]: https://github.com/char-lie/mfm/compare/v0.7.2...v0.8.0
 [0.7.2]: https://github.com/char-lie/mfm/compare/v0.7.1...v0.7.2
 [0.7.1]: https://github.com/char-lie/mfm/compare/v0.7.0...v0.7.1
