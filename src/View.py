@@ -159,7 +159,7 @@ class View:
         glOrtho(-side_length, side_length, -side_length, side_length,
                 -4 * side_length, 4 * side_length)
         x, y, z = coordinates
-        gluLookAt(x, y, z, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0)
+        gluLookAt(x, y, z, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0)
         return array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
 
     def __display(self):
