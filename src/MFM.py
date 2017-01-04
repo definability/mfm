@@ -4,7 +4,7 @@ from os.path import isfile
 from scipy.io import loadmat
 from numpy.random import rand, randn
 from numpy.linalg import norm
-from numpy import array, fabs, floor, load
+from numpy import array, fabs, floor, load, pi
 
 from .Face import Face
 from .View import View
@@ -45,11 +45,24 @@ def init(path=None):
     mean_shape = __MODEL['shapeMU'].astype('f')
     pc_deviations = __MODEL['shapeEV'].astype('f')
 
+    AXES_ORDER = (2, 0, 1)
+    mean_shape = __swap_axes(mean_shape, AXES_ORDER)
+    principal_components = __swap_axes(principal_components, AXES_ORDER)
+
+    Face.set_initial_rotation(theta=pi/2)
+
     View.set_triangles(triangles)
     View.set_principal_components(principal_components)
     View.set_deviations(pc_deviations)
     View.set_mean_face(mean_shape)
     View.finalize_initialization()
+
+
+def __swap_axes(points, axes_order):
+    """Swap axes of 3D points."""
+    vertices = points.shape[0] // 3
+    return (points.reshape(vertices, 3, points.shape[1])[:, axes_order, ...]
+            .reshape(*points.shape))
 
 
 def __random_cos():

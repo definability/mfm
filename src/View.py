@@ -1,5 +1,4 @@
 import sys
-from math import ceil
 
 from OpenGL.GL import GL_LESS, GL_TRUE, GL_DEPTH_TEST, GL_STENCIL_TEST
 from OpenGL.GL import GL_COLOR_ARRAY, GL_VERTEX_ARRAY, GL_TRIANGLES
@@ -12,7 +11,7 @@ from OpenGL.GL import glDepthMask, glDepthFunc, glCullFace, glDisable
 from OpenGL.GL import glEnable, glClearColor, glEnableClientState, glClear
 from OpenGL.GL import glDrawElements, glGetFloatv, glFinish
 from OpenGL.GL import glActiveTexture, glBindFramebuffer
-from OpenGL.GL import GL_TEXTURE0, GL_TEXTURE1, GL_FRAMEBUFFER
+from OpenGL.GL import GL_TEXTURE0, GL_FRAMEBUFFER
 
 from OpenGL.GL import glReadBuffer, glReadPixels, GL_RGBA, glPolygonOffset
 from OpenGL.GL import GL_POLYGON_OFFSET_FILL
@@ -145,6 +144,7 @@ class View:
 
     @staticmethod
     def finalize_initialization():
+        """Initialize C methods."""
         init_face_calculator(
             View.__mean_face,
             View.__principal_components_flattened,
@@ -158,7 +158,7 @@ class View:
         glOrtho(-side_length, side_length, -side_length, side_length,
                 -4 * side_length, 4 * side_length)
         x, y, z = coordinates
-        gluLookAt(x, y, z, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0)
+        gluLookAt(x, y, z, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0)
         return array(glGetFloatv(GL_MODELVIEW_MATRIX), dtype='f')
 
     def __display(self):
