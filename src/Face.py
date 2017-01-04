@@ -51,6 +51,9 @@ class Face:
     DIRECTION_COMPONENTS_SLICE = slice(DIRECTION_COMPONENTS_START,
                                        DIRECTION_COMPONENTS_END or None)
 
+    __initial_phi = 0.0
+    __initial_theta = 0.0
+
     def __init__(self, ambient_light=0, directed_light=None,
                  position=None, coefficients=None):
         """Create new Face."""
@@ -148,6 +151,15 @@ class Face:
         result[Face.DIRECTION_COMPONENTS_SLICE] = self.position
         result[Face.LIGHT_COMPONENTS_SLICE] = self.directed_light
         return result
+
+    @staticmethod
+    def set_initial_rotation(phi=0.0, theta=0.0):
+        """Set initial rotation of Face.
+
+        Given angles will be added to light and rotation vector.
+        """
+        Face.__initial_phi = phi
+        Face.__initial_theta = theta
 
     @staticmethod
     def from_array(parameters):
