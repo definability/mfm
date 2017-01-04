@@ -3,6 +3,14 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- `set_initial_rotation` method to `Face`.
+- Default `pylint` configuration file.
+
+### Fixed
+- `ModelInput` application control keys processing.
+- Face rotation axis should located vertically in the model.
+- `Face` logging.
 
 ## [0.8.0] - 2017-01-04
 ### Added
@@ -12,6 +20,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
     - `calculate_row`;
   - `normals`;
     - `get_normals`.
+- `finalize_initialization` method to `View`.
 
 ### Fixed
 - Flat shadows moved from its place on model when had to stay fixed.
