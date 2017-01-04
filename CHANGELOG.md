@@ -19,7 +19,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Rotating camera instead of model (rotation doesn't affect shadows)
   - allows to not recalculate shadows on rotation;
   - simplifies visual check of proper movement rendering.
-- Smooth shadows.
+- Using smooth shadows.
 
 ### Removed
 - `Texture` enumerate from `Model` module as not used.
