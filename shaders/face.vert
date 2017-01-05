@@ -19,14 +19,18 @@ void main(void) {
     light_projection.xyz += light_projection.w;
     light_projection.w *= 2.0;
 
-    shadow = 0.0;
-    shadow += textureProjOffset(depth_map, light_projection, ivec2(-1, -1));
-    shadow += textureProjOffset(depth_map, light_projection, ivec2(-1, 1));
-    shadow += textureProjOffset(depth_map, light_projection, ivec2(1, -1));
-    shadow += textureProjOffset(depth_map, light_projection, ivec2(1, 1));
-    shadow += textureProjOffset(depth_map, light_projection, ivec2(0, 0));
-    shadow = shadow < 3.0? shadow / 5.0 : 1.0;
+    float nl_cosine = - dot(light_vector.xyz, normal_vector);
 
-    float color = max(-dot(light_vector.xyz, normal_vector), 0.0);
+    shadow = 0.0;
+    if (nl_cosine > 0.0) {
+        shadow += textureProjOffset(depth_map, light_projection, ivec2(-1, -1));
+        shadow += textureProjOffset(depth_map, light_projection, ivec2(-1, 1));
+        shadow += textureProjOffset(depth_map, light_projection, ivec2(1, -1));
+        shadow += textureProjOffset(depth_map, light_projection, ivec2(1, 1));
+        shadow += textureProjOffset(depth_map, light_projection, ivec2(0, 0));
+        shadow = shadow < 3.0? shadow / 5.0 : 1.0;
+    }
+
+    float color = max(nl_cosine, 0.0);
     shadow = color * max(shadow, light_vector.a);
 }
