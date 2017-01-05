@@ -31,6 +31,6 @@ void main(void) {
         shadow = shadow < 3.0? shadow / 5.0 : 1.0;
     }
 
-    float color = max(nl_cosine, 0.0);
+    float color = max(nl_cosine + light_vector.a, 0.0) / (1.0 + light_vector.a);
     shadow = color * max(shadow, light_vector.a);
 }
