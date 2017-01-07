@@ -14,6 +14,13 @@ ERROR_TEXT = {
 }
 
 
+def process_vector3d(value, name):
+    value = array(value)
+    if value.shape != (3,):
+        raise ValueError(ERROR_TEXT['3D_VECTOR'].format(name, value.shape))
+    return value
+
+
 def spherical_to_cartesian(phi, theta, radius=1.0):
     """Convert spherical coordinates to cartesian.
 
