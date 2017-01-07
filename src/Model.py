@@ -16,7 +16,7 @@ def safe_add(direction, direction_delta, check_constraints=False):
     new_y = y + direction_delta['y']
     new_z = z + direction_delta['z']
     if not check_constraints or (-1 <= new_x <= 1 and -1 <= new_y <= 1):
-        return (new_x, new_y, new_z)
+        return new_x, new_y, new_z
     return direction
 
 
