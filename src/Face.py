@@ -114,11 +114,7 @@ class Face:
     @position.setter
     def position(self, position):
         """Set position vector."""
-        position = array(position)
-        if position.shape != (3,):
-            raise ValueError(ERROR_TEXT['3D_VECTOR']
-                             .format('Position', position.shape))
-        self.__position = position
+        self.__position = process_vector3d(position, 'Position')
 
     @property
     def scale(self):
@@ -128,11 +124,7 @@ class Face:
     @scale.setter
     def scale(self, scale):
         """Set scales for axes."""
-        scale = array(scale)
-        if scale.shape != (3,):
-            raise ValueError(ERROR_TEXT['3D_VECTOR']
-                             .format('Scale', scale.shape))
-        self.__scale = scale
+        self.__scale = process_vector3d(scale, 'Shape')
 
     @property
     def directed_light(self):
@@ -153,7 +145,7 @@ class Face:
         if directed_light.shape != (3,):
             raise ValueError(ERROR_TEXT['3D_VECTOR']
                              .format('Light', directed_light.shape))
-        self.__directed_light = directed_light
+        self.__directed_light = process_vector3d(directed_light, 'Light')
 
     @property
     def ambient_light(self):
