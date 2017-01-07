@@ -115,6 +115,20 @@ class Face:
         self.__position = position
 
     @property
+    def scale(self):
+        """Get scale."""
+        return self.__scale
+
+    @scale.setter
+    def scale(self, scale):
+        """Set scales for axes."""
+        scale = array(scale)
+        if scale.shape != (3,):
+            raise ValueError(ERROR_TEXT['3D_VECTOR']
+                             .format('Scale', scale.shape))
+        self.__scale = scale
+
+    @property
     def directed_light(self):
         """Get directed light vector."""
         return self.__directed_light
