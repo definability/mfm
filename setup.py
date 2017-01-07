@@ -36,7 +36,6 @@ setup(
         'Programming Language :: Python :: 3.5'
     ],
     packages=[join('src', p) for p in find_packages('src')] + \
-             [join('tests', p) for p in find_packages('tests')] + \
              ['data', 'shaders'],
     install_requires=[
         'argparse==1.1.0',
