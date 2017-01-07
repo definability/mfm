@@ -203,6 +203,7 @@ class Face:
 
         float_format = '{:>6.04}'
         vector_3d_format = ', '.join([float_format] * 3)
+        coefficients_format = ', '.join([float_format] * len(coefficients))
 
         format_str = ''
         format_str += 'Light: <' + vector_3d_format + '>;'
