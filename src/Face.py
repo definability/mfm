@@ -138,10 +138,6 @@ class Face:
     @directed_light.setter
     def directed_light(self, directed_light):
         """Set directed light vector."""
-        directed_light = array(directed_light)
-        if directed_light.shape != (3,):
-            raise ValueError(ERROR_TEXT['3D_VECTOR']
-                             .format('Light', directed_light.shape))
         self.__directed_light = process_vector3d(directed_light, 'Light')
 
     @property
