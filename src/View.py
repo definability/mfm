@@ -107,7 +107,7 @@ class View:
         vertices -= vertices.mean(axis=0)
 
         scales = vertices.max(axis=0) - vertices.min(axis=0)
-        vertices /= scales
+        vertices /= scales * self.__face.scale
 
         self.__face_vertices = vertices.reshape(self.__face_vertices.size, 1)
 
