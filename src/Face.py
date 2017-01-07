@@ -174,13 +174,11 @@ class Face:
         directed_light = parameters[Face.LIGHT_COMPONENTS_SLICE]
 
         float_format = '{:>6.04}'
-        light_format = ', '.join([float_format] * len(directed_light))
-        direction_format = ', '.join([float_format] * len(position))
-        coefficients_format = ', '.join([float_format] * len(coefficients))
+        vector_3d_format = ', '.join([float_format] * 3)
 
         format_str = ''
-        format_str += 'Light: <' + light_format + '>;'
-        format_str += ' Direction: <' + direction_format + '>;'
+        format_str += 'Light: <' + vector_3d_format + '>;'
+        format_str += ' Direction: <' + vector_3d_format + '>;'
         format_str += ' Coefficients: <' + coefficients_format + '>'
         logging.debug(
             format_str.format(*(directed_light.tolist() + position.tolist()
