@@ -1,6 +1,6 @@
 import logging
 
-from numpy import array, zeros, concatenate, sin, cos, arcsin
+from numpy import array, zeros, ones, concatenate, sin, cos, arcsin
 
 ERROR_TEXT = {
     'VERTICES_SIZE': "Size of vertices array should be a multiple of three, "
@@ -9,10 +9,8 @@ ERROR_TEXT = {
                        "but array with shape {} provided",
     'TRIANGLES_VERTICES': "Each triangle should contain 3 vertices, "
                           "but {} provided",
-    'LIGHT_DIRECTION': "Light should be represented by 3D vector, "
-                       "but array of shape {} provided",
-    'POSITION': "Position should be represented by 3D vector, "
-                "but array of shape {} provided"
+    '3D_VECTOR': "{} should be represented by 3D vector, "
+                 "but array of shape {} provided"
 }
 
 
@@ -40,12 +38,17 @@ class Face:
 
     LIGHT_COMPONENTS_COUNT = 3
     DIRECTION_COMPONENTS_COUNT = 3
-    NON_PCS_COUNT = LIGHT_COMPONENTS_COUNT + DIRECTION_COMPONENTS_COUNT
+    SCALE_COMPONENTS_COUNT = 2
+    NON_PCS_COUNT = (
+        LIGHT_COMPONENTS_COUNT + DIRECTION_COMPONENTS_COUNT
+        + SCALE_COMPONENTS_COUNT)
 
     DIRECTION_COMPONENTS_START = - (LIGHT_COMPONENTS_COUNT
                                     + DIRECTION_COMPONENTS_COUNT)
     DIRECTION_COMPONENTS_END = (DIRECTION_COMPONENTS_START
                                 + DIRECTION_COMPONENTS_COUNT)
+    SCALE_COMPONENTS_START = DIRECTION_COMPONENTS_END
+    SCALE_COMPONENTS_END = SCALE_COMPONENTS_START + SCALE_COMPONENTS_COUNT
     LIGHT_COMPONENTS_START = DIRECTION_COMPONENTS_END
     LIGHT_COMPONENTS_END = LIGHT_COMPONENTS_START + LIGHT_COMPONENTS_COUNT
 
@@ -54,16 +57,19 @@ class Face:
                                    LIGHT_COMPONENTS_END or None)
     DIRECTION_COMPONENTS_SLICE = slice(DIRECTION_COMPONENTS_START,
                                        DIRECTION_COMPONENTS_END or None)
+    SCALE_COMPONENTS_SLICE = slice(SCALE_COMPONENTS_START,
+                                   SCALE_COMPONENTS_END or None)
 
     __initial_phi = 0.0
     __initial_theta = 0.0
 
     def __init__(self, ambient_light=0, directed_light=None,
-                 position=None, coefficients=None):
+                 position=None, scale=None, coefficients=None):
         """Create new Face."""
         self.__directed_light = None
         self.__ambient_light = None
         self.__position = None
+        self.__scale = None
 
         self.ambient_light = ambient_light
 
@@ -76,6 +82,11 @@ class Face:
             self.position = zeros(3, dtype='f')
         else:
             self.position = position
+
+        if scale is None:
+            self.scale = ones(3, dtype='f')
+        else:
+            self.scale = scale
 
         if coefficients is None:
             self.__coefficients = array([], dtype='f')
@@ -99,9 +110,23 @@ class Face:
         """Set position vector."""
         position = array(position)
         if position.shape != (3,):
-            raise ValueError(ERROR_TEXT['POSITION']
-                             .format(position.shape))
+            raise ValueError(ERROR_TEXT['3D_VECTOR']
+                             .format('Position', position.shape))
         self.__position = position
+
+    @property
+    def scale(self):
+        """Get scale."""
+        return self.__scale
+
+    @scale.setter
+    def scale(self, scale):
+        """Set scales for axes."""
+        scale = array(scale)
+        if scale.shape != (3,):
+            raise ValueError(ERROR_TEXT['3D_VECTOR']
+                             .format('Scale', scale.shape))
+        self.__scale = scale
 
     @property
     def directed_light(self):
@@ -120,8 +145,8 @@ class Face:
         """Set directed light vector."""
         directed_light = array(directed_light)
         if directed_light.shape != (3,):
-            raise ValueError(ERROR_TEXT['LIGHT_DIRECTION']
-                             .format(directed_light.shape))
+            raise ValueError(ERROR_TEXT['3D_VECTOR']
+                             .format('Light', directed_light.shape))
         self.__directed_light = directed_light
 
     @property
@@ -174,20 +199,22 @@ class Face:
         coefficients = parameters[Face.NON_PCS_SLICE]
         position = parameters[Face.DIRECTION_COMPONENTS_SLICE]
         directed_light = parameters[Face.LIGHT_COMPONENTS_SLICE]
+        scale = parameters[Face.SCALE_COMPONENTS_SLICE]
 
         float_format = '{:>6.04}'
-        light_format = ', '.join([float_format] * len(directed_light))
-        direction_format = ', '.join([float_format] * len(position))
-        coefficients_format = ', '.join([float_format] * len(coefficients))
+        vector_3d_format = ', '.join([float_format] * 3)
 
         format_str = ''
-        format_str += 'Light: <' + light_format + '>;'
-        format_str += ' Direction: <' + direction_format + '>;'
+        format_str += 'Light: <' + vector_3d_format + '>;'
+        format_str += ' Direction: <' + vector_3d_format + '>;'
+        format_str += ' Scale: <' + vector_3d_format + '>;'
         format_str += ' Coefficients: <' + coefficients_format + '>'
-        logging.debug(
-            format_str.format(*(directed_light.tolist() + position.tolist()
-                                + coefficients.tolist())))
+
+        components = (directed_light.tolist() + position.tolist()
+                      + scale.tolist() + coefficients.tolist())
+        logging.debug(format_str.format(*components))
 
         return Face(coefficients=coefficients,
                     directed_light=directed_light,
+                    scale=scale,
                     position=position)
