@@ -12,7 +12,7 @@ uniform vec4 light_vector;
 layout(binding=0) uniform sampler2DShadow depth_map;
 
 void main(void) {
-    vec4 source_position = vec4(face_vertices, 246006.0);
+    vec4 source_position = vec4(face_vertices, 1.0);
     gl_Position = rotation_matrix * source_position;
 
     vec4 light_projection = light_matrix * source_position;
