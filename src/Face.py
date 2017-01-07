@@ -80,19 +80,16 @@ class Face:
         self.ambient_light = ambient_light
 
         if directed_light is None:
-            self.directed_light = zeros(3, dtype='f')
-        else:
-            self.directed_light = directed_light
+            directed_light = zeros(3, dtype='f')
+        self.__directed_light = process_vector3d(directed_light, 'Light')
 
         if position is None:
-            self.position = zeros(3, dtype='f')
-        else:
-            self.position = position
+            position = zeros(3, dtype='f')
+        self.__position = process_vector3d(position, 'Position')
 
         if scale is None:
-            self.scale = ones(3, dtype='f')
-        else:
-            self.scale = scale
+            scale = ones(3, dtype='f')
+        self.__scale = process_vector3d(scale, 'Scale')
 
         if coefficients is None:
             self.__coefficients = array([], dtype='f')
