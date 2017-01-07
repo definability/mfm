@@ -1,5 +1,4 @@
 """Model of the MVC application."""
-from OpenGL.GLUT import glutMainLoop
 from PIL import Image
 from numpy import save, array
 
@@ -59,7 +58,7 @@ class Model:
     def start(self, fitter=None):
         """Start main application loop."""
         self.__fitter = fitter
-        glutMainLoop()
+        self.__view.start()
 
     def redraw(self, callback=None):
         """Trigger rendering procedure."""
