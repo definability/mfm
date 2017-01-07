@@ -1,6 +1,6 @@
 import logging
 
-from numpy import array, zeros, concatenate, sin, cos, arcsin
+from numpy import array, zeros, ones, concatenate, sin, cos, arcsin
 
 ERROR_TEXT = {
     'VERTICES_SIZE': "Size of vertices array should be a multiple of three, "
@@ -69,6 +69,7 @@ class Face:
         self.__directed_light = None
         self.__ambient_light = None
         self.__position = None
+        self.__scale = None
 
         self.ambient_light = ambient_light
 
@@ -81,6 +82,11 @@ class Face:
             self.position = zeros(3, dtype='f')
         else:
             self.position = position
+
+        if scale is None:
+            self.scale = ones(3, dtype='f')
+        else:
+            self.scale = scale
 
         if coefficients is None:
             self.__coefficients = array([], dtype='f')
