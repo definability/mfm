@@ -199,6 +199,7 @@ class Face:
         coefficients = parameters[Face.NON_PCS_SLICE]
         position = parameters[Face.DIRECTION_COMPONENTS_SLICE]
         directed_light = parameters[Face.LIGHT_COMPONENTS_SLICE]
+        scale = parameters[Face.SCALE_COMPONENTS_SLICE]
 
         float_format = '{:>6.04}'
         vector_3d_format = ', '.join([float_format] * 3)
@@ -213,4 +214,5 @@ class Face:
 
         return Face(coefficients=coefficients,
                     directed_light=directed_light,
+                    scale=scale,
                     position=position)
