@@ -99,7 +99,18 @@ class View:
     def face(self, face):
         """Set current Face."""
         self.__face = face
+
         self.__face_vertices = calculate_face(self.__face.coefficients)
+
+        vertices_count = self.__face_vertices.size // 3
+        vertices = self.__face_vertices.reshape(vertices_count, 3)
+
+        scales = vertices.max(axis=0) - vertices.min(axis=0)
+        vertices /= scales
+
+        vertices -= self.__face_vertices.mean(axis=0)
+
+        self.__face_vertices = vertices.reshape(self.__face_vertices.size, 1)
 
     def redraw(self, callback=None):
         """Trigger redisplay and trigger callback after render."""
