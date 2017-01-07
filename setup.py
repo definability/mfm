@@ -47,13 +47,14 @@ setup(
         'dev': [
             'flake8==2.6.2',
             'pylint==1.5.5',
-            'pytest==3.0.5',
         ]
     },
     setup_requires=[
         'pytest-runner'
     ],
     tests_require=[
-        'pytest'
+        'pytest',
+        'coverage',
+        'coveralls',
     ]
 )
