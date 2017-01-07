@@ -181,6 +181,7 @@ class Face:
         result[Face.NON_PCS_SLICE] = self.coefficients
         result[Face.DIRECTION_COMPONENTS_SLICE] = self.position
         result[Face.LIGHT_COMPONENTS_SLICE] = self.directed_light
+        result[Face.SCALE_COMPONENTS_SLICE] = self.scale
         return result
 
     @staticmethod
