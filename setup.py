@@ -46,8 +46,14 @@ setup(
     extras_require={
         'dev': [
             'flake8==2.6.2',
-            'pylint==1.5.5'
+            'pylint==1.5.5',
+            'pytest==3.0.5',
         ]
     },
-    test_suite='tests'
+    setup_requires=[
+        'pytest-runner'
+    ],
+    tests_require=[
+        'pytest'
+    ]
 )
