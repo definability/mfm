@@ -54,7 +54,7 @@ setup(
     ],
     tests_require=[
         'pytest==3.0.5',
-        'coverage==4.3.1',
+        'pytest-cov==2.4.0',
         'coveralls==1.1',
     ]
 )
