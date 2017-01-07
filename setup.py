@@ -50,11 +50,11 @@ setup(
         ]
     },
     setup_requires=[
-        'pytest-runner'
+        'pytest-runner==2.9'
     ],
     tests_require=[
-        'pytest',
-        'coverage',
-        'coveralls',
+        'pytest==3.0.5',
+        'coverage==4.3.1',
+        'coveralls==1.1',
     ]
 )
