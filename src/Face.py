@@ -64,7 +64,7 @@ class Face:
     __initial_theta = 0.0
 
     def __init__(self, ambient_light=0, directed_light=None,
-                 position=None, coefficients=None):
+                 position=None, scale=None, coefficients=None):
         """Create new Face."""
         self.__directed_light = None
         self.__ambient_light = None
