@@ -207,10 +207,12 @@ class Face:
         format_str = ''
         format_str += 'Light: <' + vector_3d_format + '>;'
         format_str += ' Direction: <' + vector_3d_format + '>;'
+        format_str += ' Scale: <' + vector_3d_format + '>;'
         format_str += ' Coefficients: <' + coefficients_format + '>'
-        logging.debug(
-            format_str.format(*(directed_light.tolist() + position.tolist()
-                                + coefficients.tolist())))
+
+        components = (directed_light.tolist() + position.tolist()
+                      + scale.tolist() + coefficients.tolist())
+        logging.debug(format_str.format(*components))
 
         return Face(coefficients=coefficients,
                     directed_light=directed_light,
