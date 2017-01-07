@@ -9,10 +9,8 @@ ERROR_TEXT = {
                        "but array with shape {} provided",
     'TRIANGLES_VERTICES': "Each triangle should contain 3 vertices, "
                           "but {} provided",
-    'LIGHT_DIRECTION': "Light should be represented by 3D vector, "
-                       "but array of shape {} provided",
-    'POSITION': "Position should be represented by 3D vector, "
-                "but array of shape {} provided"
+    '3D_VECTOR': "{} should be represented by 3D vector, "
+                 "but array of shape {} provided"
 }
 
 
@@ -99,8 +97,8 @@ class Face:
         """Set position vector."""
         position = array(position)
         if position.shape != (3,):
-            raise ValueError(ERROR_TEXT['POSITION']
-                             .format(position.shape))
+            raise ValueError(ERROR_TEXT['3D_VECTOR']
+                             .format('Position', position.shape))
         self.__position = position
 
     @property
@@ -120,8 +118,8 @@ class Face:
         """Set directed light vector."""
         directed_light = array(directed_light)
         if directed_light.shape != (3,):
-            raise ValueError(ERROR_TEXT['LIGHT_DIRECTION']
-                             .format(directed_light.shape))
+            raise ValueError(ERROR_TEXT['3D_VECTOR']
+                             .format('Light', directed_light.shape))
         self.__directed_light = directed_light
 
     @property
