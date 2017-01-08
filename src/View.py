@@ -18,7 +18,7 @@ from OpenGL.GL import GL_POLYGON_OFFSET_FILL
 
 from OpenGL.GLUT import GLUT_DEPTH, GLUT_RGB, GLUT_ALPHA, GLUT_DOUBLE
 
-from OpenGL.GLUT import glutSwapBuffers
+from OpenGL.GLUT import glutSwapBuffers, glutMainLoop
 from OpenGL.GLUT import glutInitWindowSize, glutPostRedisplay
 from OpenGL.GLUT import glutCreateWindow, glutInit, glutInitWindowPosition
 from OpenGL.GLUT import glutInitDisplayMode, glutLeaveMainLoop, glutDisplayFunc
@@ -249,6 +249,14 @@ class View:
         glutInitWindowPosition(0, 0)
         glutInit(sys.argv)
         glutCreateWindow(b"Morphable face model")
+
+    def start(self):
+        """Run main loop.
+
+        Blocking operation.
+        Should be executed after all initial actions.
+        """
+        glutMainLoop()
 
     def __enable_depth_test(self):
         """Enable depth test and faces culling.

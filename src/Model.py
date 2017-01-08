@@ -1,5 +1,4 @@
 """Model of the MVC application."""
-from OpenGL.GLUT import glutMainLoop
 from PIL import Image
 from numpy import save, array
 
@@ -20,7 +19,7 @@ def safe_add(direction, direction_delta, check_constraints=False):
     return direction
 
 
-class Model:
+class Model(object):
     """Main processor of the application.
 
     Makes calculations for Faces, works with Fitters and requests
@@ -59,7 +58,7 @@ class Model:
     def start(self, fitter=None):
         """Start main application loop."""
         self.__fitter = fitter
-        glutMainLoop()
+        self.__view.start()
 
     def redraw(self, callback=None):
         """Trigger rendering procedure."""
@@ -119,9 +118,7 @@ class Model:
             self.__face.directed_light = safe_add(self.__face.directed_light,
                                                   direction, check_constraints)
         if intensity is not None:
-            constant_light = self.__face.get_constant_light()
-            constant_light += intensity
-            self.__face.ambient_light = constant_light
+            self.__face.ambient_light += intensity
 
     def close(self):
         """Close the viewport"""

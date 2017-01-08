@@ -36,10 +36,9 @@ setup(
         'Programming Language :: Python :: 3.5'
     ],
     packages=[join('src', p) for p in find_packages('src')] + \
-             [join('tests', p) for p in find_packages('tests')] + \
              ['data', 'shaders'],
     install_requires=[
-        'argparse==1.1.0',
+        'argparse',
         'cairocffi==0.7.2',
         'Pillow==3.2.0',
         'PyOpenGL==3.1.0',
@@ -47,8 +46,15 @@ setup(
     extras_require={
         'dev': [
             'flake8==2.6.2',
-            'pylint==1.5.5'
+            'pylint==1.5.5',
         ]
     },
-    test_suite='tests'
+    setup_requires=[
+        'pytest-runner==2.9'
+    ],
+    tests_require=[
+        'pytest==3.0.5',
+        'pytest-cov==2.4.0',
+        'coveralls==1.1',
+    ]
 )

@@ -3,15 +3,18 @@ import logging
 from numpy import array, zeros, ones, concatenate, sin, cos, arcsin
 
 ERROR_TEXT = {
-    'VERTICES_SIZE': "Size of vertices array should be a multiple of three, "
-                     "but {} provided",
-    'TRIANGLES_SHAPE': "Need array of triangles (x, 3), "
-                       "but array with shape {} provided",
-    'TRIANGLES_VERTICES': "Each triangle should contain 3 vertices, "
-                          "but {} provided",
     '3D_VECTOR': "{} should be represented by 3D vector, "
-                 "but array of shape {} provided"
+                 "but array of shape {} provided",
+    'NUMPY_ARRAY': "{} should be represented by flat array, "
+                   "but array of shape {} with {} dimensions provided"
 }
+
+
+def process_vector3d(value, name):
+    value = array(value, dtype='f')
+    if value.shape != (3,):
+        raise ValueError(ERROR_TEXT['3D_VECTOR'].format(name, value.shape))
+    return value
 
 
 def spherical_to_cartesian(phi, theta, radius=1.0):
@@ -33,23 +36,22 @@ def spherical_to_cartesian(phi, theta, radius=1.0):
     ])
 
 
-class Face:
+class Face(object):
     """Class to represent Face instances."""
 
     LIGHT_COMPONENTS_COUNT = 3
     DIRECTION_COMPONENTS_COUNT = 3
-    SCALE_COMPONENTS_COUNT = 2
+    SCALE_COMPONENTS_COUNT = 3
     NON_PCS_COUNT = (
         LIGHT_COMPONENTS_COUNT + DIRECTION_COMPONENTS_COUNT
         + SCALE_COMPONENTS_COUNT)
 
-    DIRECTION_COMPONENTS_START = - (LIGHT_COMPONENTS_COUNT
-                                    + DIRECTION_COMPONENTS_COUNT)
+    DIRECTION_COMPONENTS_START = - NON_PCS_COUNT
     DIRECTION_COMPONENTS_END = (DIRECTION_COMPONENTS_START
                                 + DIRECTION_COMPONENTS_COUNT)
     SCALE_COMPONENTS_START = DIRECTION_COMPONENTS_END
     SCALE_COMPONENTS_END = SCALE_COMPONENTS_START + SCALE_COMPONENTS_COUNT
-    LIGHT_COMPONENTS_START = DIRECTION_COMPONENTS_END
+    LIGHT_COMPONENTS_START = SCALE_COMPONENTS_END
     LIGHT_COMPONENTS_END = LIGHT_COMPONENTS_START + LIGHT_COMPONENTS_COUNT
 
     NON_PCS_SLICE = slice(0, - NON_PCS_COUNT)
@@ -74,24 +76,25 @@ class Face:
         self.ambient_light = ambient_light
 
         if directed_light is None:
-            self.directed_light = zeros(3, dtype='f')
-        else:
-            self.directed_light = directed_light
+            directed_light = zeros(3, dtype='f')
+        self.directed_light = directed_light
 
         if position is None:
-            self.position = zeros(3, dtype='f')
-        else:
-            self.position = position
+            position = zeros(3, dtype='f')
+        self.position = position
 
         if scale is None:
-            self.scale = ones(3, dtype='f')
-        else:
-            self.scale = scale
+            scale = ones(3, dtype='f')
+        self.scale = scale
 
         if coefficients is None:
             self.__coefficients = array([], dtype='f')
         else:
             self.__coefficients = array(coefficients, dtype='f')
+        if self.__coefficients.ndim != 1:
+            raise ValueError(ERROR_TEXT['NUMPY_ARRAY'].format(
+                'Coefficients', self.__coefficients.shape,
+                self.__coefficients.ndim))
 
     @property
     def position(self):
@@ -108,11 +111,7 @@ class Face:
     @position.setter
     def position(self, position):
         """Set position vector."""
-        position = array(position)
-        if position.shape != (3,):
-            raise ValueError(ERROR_TEXT['3D_VECTOR']
-                             .format('Position', position.shape))
-        self.__position = position
+        self.__position = process_vector3d(position, 'Position')
 
     @property
     def scale(self):
@@ -122,11 +121,7 @@ class Face:
     @scale.setter
     def scale(self, scale):
         """Set scales for axes."""
-        scale = array(scale)
-        if scale.shape != (3,):
-            raise ValueError(ERROR_TEXT['3D_VECTOR']
-                             .format('Scale', scale.shape))
-        self.__scale = scale
+        self.__scale = process_vector3d(scale, 'Shape')
 
     @property
     def directed_light(self):
@@ -143,11 +138,7 @@ class Face:
     @directed_light.setter
     def directed_light(self, directed_light):
         """Set directed light vector."""
-        directed_light = array(directed_light)
-        if directed_light.shape != (3,):
-            raise ValueError(ERROR_TEXT['3D_VECTOR']
-                             .format('Light', directed_light.shape))
-        self.__directed_light = directed_light
+        self.__directed_light = process_vector3d(directed_light, 'Light')
 
     @property
     def ambient_light(self):
@@ -182,6 +173,7 @@ class Face:
         result[Face.NON_PCS_SLICE] = self.coefficients
         result[Face.DIRECTION_COMPONENTS_SLICE] = self.position
         result[Face.LIGHT_COMPONENTS_SLICE] = self.directed_light
+        result[Face.SCALE_COMPONENTS_SLICE] = self.scale
         return result
 
     @staticmethod
@@ -203,6 +195,7 @@ class Face:
 
         float_format = '{:>6.04}'
         vector_3d_format = ', '.join([float_format] * 3)
+        coefficients_format = ', '.join([float_format] * len(coefficients))
 
         format_str = ''
         format_str += 'Light: <' + vector_3d_format + '>;'
