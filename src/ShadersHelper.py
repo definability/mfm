@@ -34,46 +34,28 @@ from shaders import get_shader_path
 
 def get_texture_type(dimensions):
     """Get texture type by dimensionality."""
-    if dimensions == 1:
-        return GL_TEXTURE_1D
-    elif dimensions == 2:
-        return GL_TEXTURE_2D
-    elif dimensions == 3:
-        return GL_TEXTURE_3D
+    assert 1 <= dimensions <= 3
+    return eval('GL_TEXTURE_{}D'.format(dimensions))
 
 
 def get_texture_constructor(dimensions):
     """Get texture constructor by dimensionality."""
-    if dimensions == 1:
-        return glTexImage1D
-    elif dimensions == 2:
-        return glTexImage2D
-    elif dimensions == 3:
-        return glTexImage3D
+    assert 1 <= dimensions <= 3
+    return eval('glTexImage{}D'.format(dimensions))
 
 
 def get_color_internal_format(components):
     """Get OpenGL internal color format by components count."""
-    if components == 1:
-        return GL_R32F
-    elif components == 2:
-        return GL_RG32F
-    elif components == 3:
-        return GL_RGB32F
-    elif components == 4:
-        return GL_RGBA32F
+    assert 1 <= components <= 3
+    return eval('GL_{}32F'.format('RGBA'[:components]))
 
 
 def get_color_format(components):
     """Get OpenGL color format by components count."""
+    assert 1 <= components <= 3
     if components == 1:
         return GL_RED
-    elif components == 2:
-        return GL_RG
-    elif components == 3:
-        return GL_RGB
-    elif components == 4:
-        return GL_RGBA
+    return eval('GL_{}'.format('RGBA'[:components]))
 
 
 class ShadersHelper:
