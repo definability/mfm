@@ -91,6 +91,10 @@ class Face:
             self.__coefficients = array([], dtype='f')
         else:
             self.__coefficients = array(coefficients, dtype='f')
+        if self.__coefficients.ndim != 1:
+            raise ValueError(ERROR_TEXT['NUMPY_ARRAY'].format(
+                'Coefficients', self.__coefficients.shape,
+                self.__coefficients.ndim))
 
     @property
     def position(self):
