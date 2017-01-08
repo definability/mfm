@@ -4,7 +4,9 @@ from numpy import array, zeros, ones, concatenate, sin, cos, arcsin
 
 ERROR_TEXT = {
     '3D_VECTOR': "{} should be represented by 3D vector, "
-                 "but array of shape {} provided"
+                 "but array of shape {} provided",
+    'NUMPY_ARRAY': "{} should be represented by flat array, "
+                   "but array of shape {} with {} dimensions provided"
 }
 
 
