@@ -56,8 +56,8 @@ class ModelInput:
         if release:
             return
         need_redraw = False
-        need_redraw |= self.__handle_alphanumerical_move(key, release)
-        need_redraw |= self.__handle_application_control(key, release)
+        need_redraw |= self.__handle_alphanumerical_move(key)
+        need_redraw |= self.__handle_application_control(key)
         if need_redraw:
             self.__model.redraw()
 
