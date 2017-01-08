@@ -38,7 +38,7 @@ setup(
     packages=[join('src', p) for p in find_packages('src')] + \
              ['data', 'shaders'],
     install_requires=[
-        'argparse==1.2.1',
+        'argparse',
         'cairocffi==0.7.2',
         'Pillow==3.2.0',
         'PyOpenGL==3.1.0',
