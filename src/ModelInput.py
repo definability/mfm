@@ -53,6 +53,8 @@ class ModelInput:
 
     def __handle_key(self, key, release=False):
         """Process alphanumerical keys of the keyboard."""
+        if release:
+            return
         need_redraw = False
         need_redraw |= self.__handle_alphanumerical_move(key, release)
         need_redraw |= self.__handle_application_control(key, release)
