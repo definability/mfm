@@ -19,7 +19,7 @@ def safe_add(direction, direction_delta, check_constraints=False):
     return direction
 
 
-class Model:
+class Model(object):
     """Main processor of the application.
 
     Makes calculations for Faces, works with Fitters and requests
