@@ -21,6 +21,12 @@ def test_start():
     Model(View()).start(ModelFitter)
 
 
+def test_close():
+    model = Model(View())
+    model.start()
+    model.close()
+
+
 def test_redraw():
     model = Model(View())
     model.start(None)
