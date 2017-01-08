@@ -9,7 +9,7 @@ ERROR_TEXT = {
 
 
 def process_vector3d(value, name):
-    value = array(value)
+    value = array(value, dtype='f')
     if value.shape != (3,):
         raise ValueError(ERROR_TEXT['3D_VECTOR'].format(name, value.shape))
     return value
