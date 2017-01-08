@@ -61,14 +61,14 @@ class ModelInput:
         if need_redraw:
             self.__model.redraw()
 
-    def __handle_alphanumerical_move(self, key, release=False):
+    def __handle_alphanumerical_move(self, key):
         if key in ModelInput.__rotation_keys:
             position = self.__get_initial_rotation()
             axis, value = ModelInput.__rotation_keys[key]
             position[axis] = value
             self.__model.rotate(direction=position, check_constraints=True)
             return True
-        elif key in ModelInput.__light_keys and not release:
+        elif key in ModelInput.__light_keys:
             directed_light = self.__get_initial_rotation()
             axis, value = ModelInput.__light_keys[key]
             directed_light[axis] = value
@@ -77,10 +77,8 @@ class ModelInput:
             return True
         return False
 
-    def __handle_application_control(self, key, release=False):
-        if release:
-            return False
-        elif key == b'r':
+    def __handle_application_control(self, key):
+        if key == b'r':
             self.__model.face = self.__model.generate_face()
             self.__model.redraw()
             return True
