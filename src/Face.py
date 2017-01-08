@@ -36,7 +36,7 @@ def spherical_to_cartesian(phi, theta, radius=1.0):
     ])
 
 
-class Face:
+class Face(object):
     """Class to represent Face instances."""
 
     LIGHT_COMPONENTS_COUNT = 3
