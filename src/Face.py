@@ -74,23 +74,11 @@ class Face(object):
         self.__scale = None
 
         self.ambient_light = ambient_light
-
-        if directed_light is None:
-            directed_light = zeros(3, dtype='f')
         self.directed_light = directed_light
-
-        if position is None:
-            position = zeros(3, dtype='f')
         self.position = position
-
-        if scale is None:
-            scale = ones(3, dtype='f')
         self.scale = scale
 
-        if coefficients is None:
-            self.__coefficients = array([], dtype='f')
-        else:
-            self.__coefficients = array(coefficients, dtype='f')
+        self.__coefficients = array(coefficients, dtype='f')
         if self.__coefficients.ndim != 1:
             raise ValueError(ERROR_TEXT['NUMPY_ARRAY'].format(
                 'Coefficients', self.__coefficients.shape,
