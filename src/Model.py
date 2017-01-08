@@ -118,9 +118,7 @@ class Model(object):
             self.__face.directed_light = safe_add(self.__face.directed_light,
                                                   direction, check_constraints)
         if intensity is not None:
-            constant_light = self.__face.get_constant_light()
-            constant_light += intensity
-            self.__face.ambient_light = constant_light
+            self.__face.ambient_light += intensity
 
     def close(self):
         """Close the viewport"""
