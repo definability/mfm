@@ -3,12 +3,6 @@ import logging
 from numpy import array, zeros, ones, concatenate, sin, cos, arcsin
 
 ERROR_TEXT = {
-    'VERTICES_SIZE': "Size of vertices array should be a multiple of three, "
-                     "but {} provided",
-    'TRIANGLES_SHAPE': "Need array of triangles (x, 3), "
-                       "but array with shape {} provided",
-    'TRIANGLES_VERTICES': "Each triangle should contain 3 vertices, "
-                          "but {} provided",
     '3D_VECTOR': "{} should be represented by 3D vector, "
                  "but array of shape {} provided"
 }
