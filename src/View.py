@@ -104,7 +104,7 @@ class View:
 
         vertices_count = self.__face_vertices.size // 3
         vertices = self.__face_vertices.reshape(vertices_count, 3)
-        vertices -= vertices.mean(axis=0)
+        vertices -= (vertices.max(axis=0) + vertices.min(axis=0)) / 2
 
         scales = vertices.max(axis=0) - vertices.min(axis=0)
         vertices /= scales * self.__face.scale
