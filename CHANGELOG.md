@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.8.4] - 2017-01-18
 ### Added
 - `get_face` method in `ModelFitter`.
 - `get_image` method in `Model`.
@@ -590,7 +592,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   [patterns recognition](https://github.com/char-lie/patterns_recognition)
   repository, which doesn't belong to this one.
 
-[Unreleased]: https://github.com/char-lie/mfm/compare/v0.8.3...HEAD
+[Unreleased]: https://github.com/char-lie/mfm/compare/v0.8.4...HEAD
+[0.8.4]: https://github.com/char-lie/mfm/compare/v0.8.3...v0.8.4
 [0.8.3]: https://github.com/char-lie/mfm/compare/v0.8.2...v0.8.3
 [0.8.2]: https://github.com/char-lie/mfm/compare/v0.8.1...v0.8.2
 [0.8.1]: https://github.com/char-lie/mfm/compare/v0.8.0...v0.8.1
