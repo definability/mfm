@@ -83,6 +83,13 @@ class Model(object):
         else:
             self.__on_draw_callbacks.append((face, callback))
 
+    def get_image(self, face):
+        self.__view.face = face
+        self.__view.redraw(synchronous=True)
+        img = array(self.__view.get_image())
+        img = img.reshape(img.size//4, 4)
+        return img
+
     def __on_redraw(self, callback):
         img = array(self.__view.get_image())
         img = img.reshape(img.size//4, 4)

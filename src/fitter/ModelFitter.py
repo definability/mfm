@@ -1,4 +1,4 @@
-from numpy import array, nonzero, zeros
+from numpy import array, nonzero, zeros, ndarray
 
 from src import Face
 
@@ -70,6 +70,16 @@ class ModelFitter:
         Provides normal vectors and label of Face which was requested.
         """
         raise NotImplementedError()
+
+    def get_face(self, face):
+        """Get face image by face object.
+
+        Accepts both `Face` instance
+        and Face representation as `NumPy` `array`.
+        """
+        if isinstance(face, ndarray):
+            face = Face.from_array(face)
+        return self.__model.get_image(face)
 
     def get_image_deviation(self, image):
         """Cost function for fitting result."""

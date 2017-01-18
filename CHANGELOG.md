@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- `get_face` method in `ModelFitter`.
+- `get_image` method in `Model`.
+- `synchronous` parameter in `redraw` method of `View`.
 
 ## [0.8.3] - 2017-01-18
 ### Added
