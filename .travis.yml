@@ -17,8 +17,9 @@ install:
 script:
   - python setup.py test
 after_success:
-  - pip install codeclimate-test-reporter
+  - pip install coveralls codeclimate-test-reporter
   - codeclimate-test-reporter
+  - coveralls
 addons:
   code_climate:
     repo_token: ad7b1d4b1d13f5d5c66dc81580c6f18502dc6c3568d757c1c3ad02e249677989
