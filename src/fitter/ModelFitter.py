@@ -19,15 +19,14 @@ class ModelFitter:
         self.__pcs = dimensions
         self._dimensions = (dimensions
                             + Face.LIGHT_COMPONENTS_COUNT
-                            + Face.DIRECTION_COMPONENTS_COUNT)
+                            + Face.DIRECTION_COMPONENTS_COUNT
+                            + Face.SCALE_COMPONENTS_COUNT)
         self.__callback = callback
 
         self._initial_face = initial_face
         if self._initial_face is None:
             self._initial_face = Face(
-                coefficients=zeros(self.__pcs, dtype='f'),
-                directed_light=(0, 0, 0),
-                ambient_light=0.5
+                coefficients=zeros(self.__pcs, dtype='f')
             )
         coefficients = self._initial_face.coefficients
         if len(coefficients) != self.__pcs:
@@ -37,7 +36,8 @@ class ModelFitter:
             self._initial_face = Face(
                 coefficients=correct_coefficients,
                 directed_light=self._initial_face.directed_light,
-                ambient_light=self._initial_face.ambient_light
+                ambient_light=self._initial_face.ambient_light,
+                scale=self._initial_face.scale
             )
 
     def start(self):
