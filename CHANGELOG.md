@@ -9,6 +9,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Using [pytest](http://doc.pytest.org) for unit tests.
 
+### Fixed
+- `scale` should be passed from initial Face for fitting procedure.
+
 ## [0.8.2] - 2017-01-05
 ### Added
 - Ability to control light levels via light intensity parameter.
