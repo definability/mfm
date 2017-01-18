@@ -18,7 +18,7 @@ from OpenGL.GL import GL_POLYGON_OFFSET_FILL
 
 from OpenGL.GLUT import GLUT_DEPTH, GLUT_RGB, GLUT_ALPHA, GLUT_DOUBLE
 
-from OpenGL.GLUT import glutSwapBuffers, glutMainLoop
+from OpenGL.GLUT import glutSwapBuffers, glutMainLoop, glutMainLoopEvent
 from OpenGL.GLUT import glutInitWindowSize, glutPostRedisplay
 from OpenGL.GLUT import glutCreateWindow, glutInit, glutInitWindowPosition
 from OpenGL.GLUT import glutInitDisplayMode, glutLeaveMainLoop, glutDisplayFunc
@@ -68,6 +68,7 @@ class View:
 
         glutDisplayFunc(self.__display)
         self.__callback = None
+        self.__synchronous = False
 
         self.__sh.add_attribute(0, array([]), 'face_vertices')
         self.__sh.add_attribute(1, array([]), 'normal_vector')
@@ -111,10 +112,14 @@ class View:
 
         self.__face_vertices = vertices.reshape(self.__face_vertices.size, 1)
 
-    def redraw(self, callback=None):
+    def redraw(self, callback=None, synchronous=False):
         """Trigger redisplay and trigger callback after render."""
+        assert not (callback and synchronous), 'Call should either be asynchronous or process callback'
         self.__callback = callback
+        self.__synchronous = synchronous
         glutPostRedisplay()
+        if self.__synchronous:
+            glutMainLoopEvent()
 
     def get_image(self):
         """Copy RGBA data from the viewport to NumPy Matrix of float."""
@@ -178,7 +183,9 @@ class View:
         self.__generate_model()
 
         glutSwapBuffers()
-        if self.__callback is not None:
+        if self.__synchronous:
+            glFinish()
+        elif self.__callback is not None:
             self.__callback()
 
     def __rotate_model(self):
