@@ -16,3 +16,6 @@ install:
   - source activate testenv
 script:
   - python setup.py test
+addons:
+  code_climate:
+    repo_token: ad7b1d4b1d13f5d5c66dc81580c6f18502dc6c3568d757c1c3ad02e249677989
