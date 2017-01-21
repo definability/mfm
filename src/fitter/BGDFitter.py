@@ -1,7 +1,6 @@
 import logging
 
-from numpy import ones, zeros, array, save
-from scipy.optimize import minimize, differential_evolution
+from numpy import array
 
 from src import Face
 from .ModelFitter import ModelFitter
