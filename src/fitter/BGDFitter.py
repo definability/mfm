@@ -39,6 +39,7 @@ class BGDFitter(ModelFitter):
         if i >= self._dimensions - Face.NON_PCS_COUNT:
             k = .05
             dx /= 5
+            logging.warn('Non-PCs BGD fitting not implemented')
             return 0
         value = face[i]
         face[i] = value - dx
