@@ -81,6 +81,10 @@ class ModelFitter:
             face = Face.from_array(face)
         return self.__model.get_image(face)
 
+    def get_face_deviation(self, face):
+        """Cost function for current face."""
+        return self.get_image_deviation(self.get_face(face))
+
     def get_image_deviation(self, image):
         """Cost function for fitting result."""
         indices = nonzero(image[:, -1])
