@@ -192,7 +192,7 @@ class View:
         """Update model rotation matrix."""
         self.__model_matrix = self.__get_rotation_matrix(
             self.__face.position_cartesian,
-            (1 + self.__face.position[2]) * 0.5)
+            self.__face.position[2] * 0.5)
 
         light = self.__face.directed_light_cartesian
         self.__light_matrix = self.__get_rotation_matrix(
