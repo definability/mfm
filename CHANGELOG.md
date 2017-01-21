@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- `Face` distance default value.
 
 ## [0.8.4] - 2017-01-18
 ### Added
