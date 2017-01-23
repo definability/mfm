@@ -12,7 +12,7 @@ def test_default_scale():
 
 
 def test_default_position():
-    assert allclose(Face().position, (0, 0, 0))
+    assert allclose(Face().position, (0, 0, 1))
 
 
 def test_default_position_cartesian():
