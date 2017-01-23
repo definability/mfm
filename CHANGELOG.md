@@ -3,8 +3,14 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- `PCS_SLICE` field of `Face`.
+
 ### Changed
 - `Face` distance default value.
+
+### Fixed
+- `NON_PCS_SLICE` field of `Face`.
 
 ## [0.8.4] - 2017-01-18
 ### Added
