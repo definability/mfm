@@ -29,20 +29,21 @@ def model():
     (True, (1, 2, 3), False),
 ])
 def test_rotate(model, constrained, rotation, valid):
-    result = rotation if valid else (0, 0, 0)
+    result_light = rotation if valid else (0, 0, 0)
+    result = result_light[0], result_light[1], result_light[2] + 1
     rotation = {
         'x': rotation[0],
         'y': rotation[1],
         'z': rotation[2]
     }
 
-    assert allclose(model.face.position, (0, 0, 0))
+    assert allclose(model.face.position, (0, 0, 1))
     model.rotate(rotation, constrained)
     assert allclose(model.face.position, result)
 
     assert allclose(model.face.directed_light, (0, 0, 0))
     model.change_light(direction=rotation, check_constraints=constrained)
-    assert allclose(model.face.directed_light, result)
+    assert allclose(model.face.directed_light, result_light)
 
 
 def test_change_light_intensity(model):
