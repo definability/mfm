@@ -54,7 +54,8 @@ class Face(object):
     LIGHT_COMPONENTS_START = SCALE_COMPONENTS_END
     LIGHT_COMPONENTS_END = LIGHT_COMPONENTS_START + LIGHT_COMPONENTS_COUNT
 
-    NON_PCS_SLICE = slice(0, - NON_PCS_COUNT)
+    NON_PCS_SLICE = slice(-NON_PCS_COUNT, None)
+    PCS_SLICE = slice(0, -NON_PCS_COUNT)
     LIGHT_COMPONENTS_SLICE = slice(LIGHT_COMPONENTS_START,
                                    LIGHT_COMPONENTS_END or None)
     DIRECTION_COMPONENTS_SLICE = slice(DIRECTION_COMPONENTS_START,
@@ -158,7 +159,7 @@ class Face(object):
     def as_array(self):
         """Get NumPy array representation of the Face."""
         result = zeros(self.coefficients.size + Face.NON_PCS_COUNT, dtype='f')
-        result[Face.NON_PCS_SLICE] = self.coefficients
+        result[Face.PCS_SLICE] = self.coefficients
         result[Face.DIRECTION_COMPONENTS_SLICE] = self.position
         result[Face.LIGHT_COMPONENTS_SLICE] = self.directed_light
         result[Face.SCALE_COMPONENTS_SLICE] = self.scale
@@ -176,7 +177,7 @@ class Face(object):
     @staticmethod
     def from_array(parameters):
         """Create Face from array of parameters."""
-        coefficients = parameters[Face.NON_PCS_SLICE]
+        coefficients = parameters[Face.PCS_SLICE]
         position = parameters[Face.DIRECTION_COMPONENTS_SLICE]
         directed_light = parameters[Face.LIGHT_COMPONENTS_SLICE]
         scale = parameters[Face.SCALE_COMPONENTS_SLICE]
