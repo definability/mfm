@@ -7,6 +7,6 @@ from .BGDFitter import BGDFitter
 from .MonteCarloFitter import MonteCarloFitter
 
 __all__ = ['FittersChain', 'ModelFitter',
-           'NelderMeadFitter', 'GibbsSamplerFitter',
+           'NelderMeadFitter',
            'BruteForceFitter', 'BGDFitter',
            'MonteCarloFitter']
