@@ -15,6 +15,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - `NON_PCS_SLICE` field of `Face`.
+- `Model` current `Face` saving into file.
 
 ### Removed
 - `GibbsSamplerFitter` in favor of `CoordinateDescentFitter`.
