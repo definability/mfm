@@ -78,13 +78,13 @@ class Model(object):
         """
         if len(self.__on_draw_callbacks) == 0 and not self.__now_processing:
             self.__now_processing = True
-            self.__view.face = face
+            self.face = face
             self.redraw(lambda: self.__on_redraw(callback))
         else:
             self.__on_draw_callbacks.append((face, callback))
 
     def get_image(self, face):
-        self.__view.face = face
+        self.face = face
         self.__view.redraw(synchronous=True)
         img = array(self.__view.get_image())
         img = img.reshape(img.size//4, 4)
@@ -96,7 +96,7 @@ class Model(object):
         callback(img)
         if len(self.__on_draw_callbacks) > 0:
             face, callback = self.__on_draw_callbacks.pop(0)
-            self.__view.face = face
+            self.face = face
             self.redraw(lambda: self.__on_redraw(callback))
         else:
             self.__now_processing = False
