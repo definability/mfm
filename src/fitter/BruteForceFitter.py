@@ -74,7 +74,21 @@ class BruteForceFitter(ModelFitter):
             self.__get_value(i, self.__indices[i])
             for i in range(len(self.__levels))]
 
-        self.__get_parameter()
+        change_on = 0
+        while change_on != -1:
+            self.__errors[tuple(self.__indices)] = self.__get_parameter(
+                change_on=change_on)
+            change_on = self.__inc_index()
+
+        result = self.__convert_parameters()
+
+        parameters = self._initial_face.as_array
+        parameters[self.__levels] = result[-1][0]
+
+        face = Face.from_array(parameters)
+        self.get_face(face)
+
+        self.finish(face)
 
     def __generate_errors(self, current_level=0, tail=None):
         if tail is None:
@@ -94,11 +108,11 @@ class BruteForceFitter(ModelFitter):
     def __get_values(self, parameters):
         return [self.__get_value(i, p) for i, p in enumerate(parameters)]
 
-    def __get_parameter(self, index=None, change_on=0):
+    def __get_parameter(self, change_on=0):
         value = self.__get_value(change_on, self.__indices[change_on])
         self.__parameters[self.__levels[change_on]] = value
         self.__face = Face.from_array(self.__parameters)
-        self.request_face(self.__face, index)
+        return self.get_face_deviation(self.__face)
 
     def __inc_index(self, level=0):
         self.__indices[level] += self.__directions[level]
@@ -110,26 +124,6 @@ class BruteForceFitter(ModelFitter):
         self.__directions[level] = - self.__directions[level]
         self.__indices[level] += self.__directions[level]
         return self.__inc_index(level + 1)
-
-    def receive_image(self, image, index=None):
-        if index == 'init':
-            return
-        elif index == 'finish':
-            self.finish(self.__face)
-            return
-
-        self.__errors[tuple(self.__indices)] = self.get_image_deviation(image)
-
-        change_on = self.__inc_index()
-        if change_on == -1:
-            result = self.__convert_parameters()
-            parameters = self._initial_face.as_array
-            parameters[self.__levels] = result[-1][0]
-            self.__face = Face.from_array(parameters)
-            self.request_face(self.__face, 'finish')
-            return
-
-        self.__get_parameter(change_on=change_on)
 
     def __convert_parameters(self):
         sorted_parameters = sorted(self.__errors.items(), key=lambda x: -x[1])
