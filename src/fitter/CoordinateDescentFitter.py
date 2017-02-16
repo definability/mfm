@@ -62,6 +62,13 @@ class CoordinateDescentFitter(ModelFitter):
         return values
 
     def __find_best_value(self, values, parameters, component):
+        """Find best value for specific model parameters component.
+
+        Finds the best value.
+        If the best value is not the last,
+        replaces model in Viewport by the best one.
+        Only then best value is returned.
+        """
         current = parameters.copy()
         best_value = (values[0], float('inf'))
         for value in values:
