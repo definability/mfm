@@ -70,6 +70,6 @@ class CoordinateDescentFitter(ModelFitter):
             if deviation < best_value[1]:
                 best_value = value, deviation
         if best_value[0] != values[-1]:
-            current[value] = best_value[0]
+            current[component] = best_value[0]
             self.get_face(current)
-        return value
+        return best_value[0]
