@@ -11,7 +11,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - `Face` distance default value.
 - Fitters made synchronous:
-    - `BGDFitter`.
+    - `BGDFitter`;
+    - `BruteForceFitter`.
 
 ### Fixed
 - `NON_PCS_SLICE` field of `Face`.
