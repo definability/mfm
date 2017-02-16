@@ -39,15 +39,15 @@ class CoordinateDescentFitter(ModelFitter):
         if component >= 0:
             start, finish = -3, 3
         elif (Face.LIGHT_COMPONENTS_START <= component
-                < Face.LIGHT_COMPONENTS_END):
+              < Face.LIGHT_COMPONENTS_END):
             start, finish = -1, 1
         elif (Face.DIRECTION_COMPONENTS_START <= component
-                < Face.DIRECTION_COMPONENTS_END - 1):
+              < Face.DIRECTION_COMPONENTS_END - 1):
             start, finish = -1, 1
         elif component == Face.DIRECTION_COMPONENTS_END - 1:
             start, finish = 0.5, 2
         elif (Face.SCALE_COMPONENTS_START <= component
-                < Face.SCALE_COMPONENTS_END):
+              < Face.SCALE_COMPONENTS_END):
             start, finish = 0.5, 2
         else:
             assert False, 'Unknown component {}'.format(component)
