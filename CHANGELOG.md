@@ -20,6 +20,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 - `GibbsSamplerFitter` in favor of `CoordinateDescentFitter`.
+- `MonteCarloFitter`.
 
 ## [0.8.4] - 2017-01-18
 ### Added
