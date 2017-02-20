@@ -36,10 +36,22 @@ class CoordinateDescentFitter(ModelFitter):
         return parameters
 
     def __get_bounds(self, component):
+        start, finish = None, None
+
         if component >= 0:
             start, finish = -3, 3
-        elif (Face.LIGHT_COMPONENTS_START <= component
-              < Face.LIGHT_COMPONENTS_END):
+        else:
+            start, finish = self.__get_non_pc_bounds(component)
+
+        if start is None or finish is None:
+            assert False, 'Unknown component {}'.format(component)
+
+        return start, finish
+
+    def __get_non_pc_bounds(self, component):
+        start, finish = None, None
+        if (Face.LIGHT_COMPONENTS_START <= component
+                < Face.LIGHT_COMPONENTS_END):
             start, finish = -1, 1
         elif (Face.DIRECTION_COMPONENTS_START <= component
               < Face.DIRECTION_COMPONENTS_END - 1):
@@ -49,8 +61,6 @@ class CoordinateDescentFitter(ModelFitter):
         elif (Face.SCALE_COMPONENTS_START <= component
               < Face.SCALE_COMPONENTS_END):
             start, finish = 0.5, 2
-        else:
-            assert False, 'Unknown component {}'.format(component)
         return start, finish
 
     def __get_values(self, start, finish, steps_count, initial_value):
