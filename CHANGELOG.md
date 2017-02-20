@@ -4,13 +4,23 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `get_face_deviation` method in `ModelFitter`.
 - `PCS_SLICE` field of `Face`.
+- `CoordinateDescentFitter`.
 
 ### Changed
 - `Face` distance default value.
+- Fitters made synchronous:
+    - `BGDFitter`;
+    - `BruteForceFitter`.
 
 ### Fixed
 - `NON_PCS_SLICE` field of `Face`.
+- `Model` current `Face` saving into file.
+
+### Removed
+- `GibbsSamplerFitter` in favor of `CoordinateDescentFitter`.
+- `MonteCarloFitter`.
 
 ## [0.8.4] - 2017-01-18
 ### Added
