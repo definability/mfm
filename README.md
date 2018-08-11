@@ -1,4 +1,6 @@
 # Morphable Face Model
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fchar-lie%2Fmfm.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fchar-lie%2Fmfm?ref=badge_shield)
+
 
 Data used in this example should be downloaded from the
 [official site](http://faces.cs.unibas.ch/bfm/main.php?nav=1-1-0&id=details)
@@ -42,3 +44,7 @@ Fake display explained on
 [askubuntu.com](http://askubuntu.com/questions/453109/add-fake-display-when-no-monitor-is-plugged-in)
 and [xpra.org](https://xpra.org/trac/wiki/Xdummy).
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fchar-lie%2Fmfm.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fchar-lie%2Fmfm?ref=badge_large)
